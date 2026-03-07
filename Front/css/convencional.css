@@ -1,0 +1,112 @@
+:root {
+  /* Cores de Identidade */
+  --primary-color: #1d9bf0;
+  --primary-light: #e6f7ff;
+  --bg-creme: #f5f0e5;
+  --text-main: #333333;
+  --white: #ffffff;
+
+  /* Cores da Scrollbar */
+  --scrollbar-thumb: #d6cdb7;
+  --scrollbar-hover: #c2b89f;
+
+  /* Sombras e Bordas */
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+
+  /* Transições */
+  --transition-fast: all 0.2s ease;
+  --transition-normal: all 0.3s ease;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--bg-creme);
+  color: var(--text-main);
+}
+
+.calendar-day {
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+/* Hover e Selecionados compartilham a mesma cor primária */
+.calendar-day:hover,
+.calendar-day.selected,
+.month-item.selected,
+.year-item.selected,
+.selector-tab.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.calendar-day.selected {
+  font-weight: bold;
+}
+
+.post {
+  transition: var(--transition-normal);
+}
+
+.post-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.post-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Barra de rolagem personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-creme);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Seletor de mês/ano */
+.month-year-selector {
+  position: absolute;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  padding: 16px;
+  z-index: 10;
+  width: 280px;
+  display: none;
+}
+
+.month-item,
+.year-item {
+  padding: 8px;
+  text-align: center;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.month-item:hover,
+.year-item:hover {
+  background-color: var(--primary-light);
+  color: var(
+    --primary-color
+  ); /* Fica mais elegante manter o texto azul no hover claro */
+}
+
+.selector-tab.active {
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--white); /* Sobrescrevendo para contraste */
+}
