@@ -12,6 +12,10 @@
     <!--script-- src="https://cdn.tailwindcss.com"></!--script-->
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 1. Estilo Global (Variáveis e Base) -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- 2. Estilo Específico da Página -->
     <link rel="stylesheet" href="css/convencional.css">
 </head>
 
@@ -28,7 +32,7 @@
                         </svg>
                     </div>
                     <div class="ml-3">
-                        <p class="font-bold text-lg">Nome de Usuário</p>
+                        <p class="font-bold text-lg">Usuário</p>
                     </div>
                 </div>
             </div>

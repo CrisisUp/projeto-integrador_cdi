@@ -7,6 +7,10 @@
     <title>Cadastro - CDI</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 1. Estilo Global (Variáveis e Base) -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- 2. Estilo Específico da Página -->
     <link rel="stylesheet" href="css/cadastro.css">
     <style>
         /* Estilos específicos para garantir o respiro da tabela */

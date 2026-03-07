@@ -1,126 +1,100 @@
-body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f5f0e5;
-            /* Fundo creme */
-            color: #333;
-        }
+.option-card {
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
 
-        .option-card {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+  background-color: var(--primary-light);
+  border: 2px solid var(--primary-color);
+}
 
-        .option-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-            background-color: #f0f9ff;
-            border: 2px solid #1d9bf0;
-        }
+.option-card.selected {
+  background-color: var(--primary-light);
+  border: 2px solid var(--primary-color);
+}
 
-        .option-card.selected {
-            background-color: #e6f7ff;
-            border: 2px solid #1d9bf0;
-        }
+.option-icon {
+  font-size: var(--text-4xl);
+  margin-bottom: 12px;
+  color: var(--primary-color);
+  transition: var(--transition-normal);
+}
 
-        .option-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-            color: #1d9bf0;
-            transition: all 0.3s ease;
-        }
+.option-card:hover .option-icon {
+  transform: scale(1.1);
+}
 
-        .option-card:hover .option-icon {
-            transform: scale(1.1);
-        }
+.logout-btn {
+  background-color: var(--gray-100);
+  color: var(--gray-600);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
 
-        .logout-btn {
-            background-color: #f3f4f6;
-            color: #4b5563;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
+.logout-btn:hover {
+  background-color: var(--danger-light);
+  color: var(--danger);
+  border-color: #fecaca;
+}
 
-        .logout-btn:hover {
-            background-color: #fee2e2;
-            color: #dc2626;
-            border-color: #fecaca;
-        }
+/* Animação de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-        /* Barra de rolagem personalizada */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 6px;
-        }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-        ::-webkit-scrollbar-track {
-            background: #f5f0e5;
-        }
+.animate-fade-in {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
 
-        ::-webkit-scrollbar-thumb {
-            background: #d6cdb7;
-            border-radius: 4px;
-        }
+.delay-100 {
+  animation-delay: 0.1s;
+}
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c2b89f;
-        }
+.delay-200 {
+  animation-delay: 0.2s;
+}
 
-        /* Animação de entrada */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+.delay-300 {
+  animation-delay: 0.3s;
+}
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.delay-400 {
+  animation-delay: 0.4s;
+}
 
-        .animate-fade-in {
-            animation: fadeInUp 0.5s ease-out forwards;
-        }
+.delay-500 {
+  animation-delay: 0.5s;
+}
 
-        .delay-100 {
-            animation-delay: 0.1s;
-        }
+.delay-600 {
+  animation-delay: 0.6s;
+}
 
-        .delay-200 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-300 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-400 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-500 {
-            animation-delay: 0.5s;
-        }
-
-        .delay-600 {
-            animation-delay: 0.6s;
-        }
-
-        .delay-700 {
-            animation-delay: 0.7s;
-        }
+.delay-700 {
+  animation-delay: 0.7s;
+}

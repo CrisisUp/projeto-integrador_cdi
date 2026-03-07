@@ -23,6 +23,12 @@
   transform: translateY(20px);
 }
 
+.weekend {
+  background-color: var(--gray-weekend);
+  /* Cinza médio para sábados e domingos */
+  color: var(--white);
+}
+
 .post-enter-active {
   opacity: 1;
   transform: translateY(0);
@@ -38,11 +44,11 @@
 }
 
 .sidebar-item {
-  transition: background-color 0.2s;
+  transition: var(--transition-fast);
 }
 
 .sidebar-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--sidebar-hover);
 }
 
 /* Estilos para o seletor de mês/ano */
@@ -75,7 +81,7 @@
 
 .month-item:hover,
 .year-item:hover {
-  background-color: var(--primary-light);
+  background-color: #e6f7ff;
 }
 
 .month-item.selected,
@@ -87,7 +93,7 @@
 .selector-tabs {
   display: flex;
   margin-bottom: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .selector-tab {

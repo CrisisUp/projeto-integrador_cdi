@@ -1,31 +1,3 @@
-:root {
-  /* Cores de Identidade */
-  --primary-color: #1d9bf0;
-  --primary-light: #e6f7ff;
-  --bg-creme: #f5f0e5;
-  --text-main: #333333;
-  --white: #ffffff;
-
-  /* Cores da Scrollbar */
-  --scrollbar-thumb: #d6cdb7;
-  --scrollbar-hover: #c2b89f;
-
-  /* Sombras e Bordas */
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --border-radius: 8px;
-  --border-radius-sm: 4px;
-
-  /* Transições */
-  --transition-fast: all 0.2s ease;
-  --transition-normal: all 0.3s ease;
-}
-
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: var(--bg-creme);
-  color: var(--text-main);
-}
-
 .calendar-day {
   cursor: pointer;
   transition: var(--transition-fast);
@@ -39,6 +11,7 @@ body {
 .selector-tab.active {
   background-color: var(--primary-color);
   color: var(--white);
+  border-bottom: 2px solid var(--primary-hover);
 }
 
 .calendar-day.selected {
@@ -57,24 +30,6 @@ body {
 .post-enter-active {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Barra de rolagem personalizada */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-creme);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: var(--border-radius-sm);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-hover);
 }
 
 /* Seletor de mês/ano */
@@ -101,12 +56,31 @@ body {
 .month-item:hover,
 .year-item:hover {
   background-color: var(--primary-light);
-  color: var(
-    --primary-color
-  ); /* Fica mais elegante manter o texto azul no hover claro */
+  color: var(--primary-color);
 }
 
-.selector-tab.active {
-  border-bottom: 2px solid var(--primary-color);
-  color: var(--white); /* Sobrescrevendo para contraste */
+.sidebar-item {
+  transition: background-color 0.2s;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.calendar-day,
+.month-item,
+.year-item {
+  font-size: var(--text-sm);
+  font-family: var(--font-main);
+}
+
+.calendar-day.selected {
+  font-weight: var(--weight-bold);
+}
+
+.month-grid,
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm, 8px);
 }

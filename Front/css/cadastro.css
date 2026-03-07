@@ -1,67 +1,16 @@
-:root {
-  /* Cores Principais */
-  --primary-color: #1d9bf0; /* Azul principal */
-  --primary-hover: #0d8ae0; /* Azul para hover */
-  --bg-main: #f5f0e5; /* Fundo creme */
-  --text-color: #333333; /* Texto padrão */
-  --white: #ffffff;
+/* 
+   ARQUIVO: cadastro.css 
+   Lógica: Estilos exclusivos para a tela de formulário.
+*/
 
-  /* Cores da Scrollbar e Detalhes */
-  --scrollbar-thumb: #d6cdb7;
-  --scrollbar-hover: #c2b89f;
-
-  /* Espaçamentos e Bordas */
-  --radius-md: 8px;
-  --radius-sm: 4px;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  /* Transições */
-  --transition-fast: all 0.2s ease;
-  --transition-normal: all 0.3s ease;
+/* Estilos específicos para garantir o respiro da tabela de cadastro */
+.form-grid table {
+  border-spacing: 0 12px;
+  border-collapse: separate;
+  width: 100%;
 }
 
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-color);
-}
-
-.calendar-day {
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-
-.calendar-day:hover,
-.calendar-day.selected,
-.month-item.selected,
-.year-item.selected {
-  background-color: var(--primary-color);
-  color: var(--white);
-}
-
-.calendar-day.selected {
-  font-weight: bold;
-}
-
-/* Barra de rolagem simplificada com variáveis */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-main);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: var(--radius-sm);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-hover);
-}
-
-/* Seletor de mês/ano */
+/* Estilos para o seletor de mês/ano (se usado nesta tela) */
 .month-year-selector {
   position: absolute;
   background-color: var(--white);
@@ -76,4 +25,15 @@ body {
 .selector-tab.active {
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
+}
+
+.calendar-day {
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.calendar-day:hover,
+.calendar-day.selected {
+  background-color: var(--primary-color);
+  color: var(--white);
 }
