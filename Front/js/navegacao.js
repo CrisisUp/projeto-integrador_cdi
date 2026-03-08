@@ -4,87 +4,56 @@ document.addEventListener("DOMContentLoaded", function () {
   const logoutButton = document.querySelector(".logout-btn");
   let selectedOption = null;
 
-  // Adicionar evento de clique a cada opção
+  // 1. Mapeamento de páginas (Fora dos eventos para ser global)
+  const paginas = {
+    cadastro: "cadastro.php",
+    "atividade-convencional": "convencional.php",
+    "atividade-enfermagem": "enfermagem.php",
+    frequencia: "presenca.php",
+    encaminhamentos: "encaminhamentos.php",
+    configuracoes: "configuracoes.php",
+  };
+
+  // 2. Evento de clique em cada card
   optionCards.forEach((card) => {
     card.addEventListener("click", function () {
-      // Remover seleção anterior
-      optionCards.forEach((c) => c.classList.remove("selected"));
+      // Remover seleção visual de todos os cards
+      optionCards.forEach((c) => {
+        c.classList.remove("selected", "ring-4", "ring-blue-400");
+      });
 
-      // Selecionar esta opção
-      this.classList.add("selected");
+      // Adicionar seleção visual ao card clicado
+      this.classList.add("selected", "ring-4", "ring-blue-400");
+
+      // Pegar o valor do data-option
       selectedOption = this.dataset.option;
 
-      // Habilitar botão de confirmação
+      // Habilitar o botão e dar feedback visual
       confirmButton.disabled = false;
+      confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
+      confirmButton.classList.add("bg-blue-600", "shadow-lg");
+    });
+
+    // Atalho: Duplo clique no card entra direto
+    card.addEventListener("dblclick", function () {
+      const opt = this.dataset.option;
+      if (paginas[opt]) window.location.href = paginas[opt];
     });
   });
 
-  // Evento de clique no botão de confirmação
+  // 3. Evento de clique no botão de confirmação
   confirmButton.addEventListener("click", function () {
-    if (selectedOption) {
-      // Mapeamento para os nomes reais dos seus arquivos
-      const opcao = this.dataset.option;
-      const paginas = {
-        cadastro: "cadastro.php",
-        "atividade-convencional": "convencional.php",
-        "atividade-enfermagem": "enfermagem.php",
-        frequencia: "presenca.php",
-        encaminhamentos: "#",
-        configuracoes: "#",
-      };
-
-      const destino = paginas[selectedOption];
-
-      if (destino !== "#") {
-        window.location.href = destino;
-      } else {
-        alert("Esta página ainda não foi implementada.");
-      }
+    if (selectedOption && paginas[selectedOption]) {
+      window.location.href = paginas[selectedOption];
+    } else {
+      alert("Por favor, selecione uma opção válida.");
     }
   });
 
-  // Evento de clique no botão de logout
-  logoutButton.addEventListener("click", function () {
-    if (confirm("Deseja realmente sair do sistema?")) {
-      window.location.href = "login.php"; // Removido o alert e ativado o link
-    }
-  });
+  // 4. Lógica de Logout (opcional, caso queira que o botão funcione)
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      window.location.href = "login.php";
+    });
+  }
 });
-
-/*
-
-(function () {
-  function c() {
-    var b = a.contentDocument || a.contentWindow.document;
-    if (b) {
-      var d = b.createElement("script");
-      d.innerHTML =
-        "window.__CF$cv$params={r:'93b9bec4b40e1433',t:'MTc0NjU0Nzc5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-      b.getElementsByTagName("head")[0].appendChild(d);
-    }
-  }
-  if (document.body) {
-    var a = document.createElement("iframe");
-    a.height = 1;
-    a.width = 1;
-    a.style.position = "absolute";
-    a.style.top = 0;
-    a.style.left = 0;
-    a.style.border = "none";
-    a.style.visibility = "hidden";
-    document.body.appendChild(a);
-    if ("loading" !== document.readyState) c();
-    else if (window.addEventListener)
-      document.addEventListener("DOMContentLoaded", c);
-    else {
-      var e = document.onreadystatechange || function () {};
-      document.onreadystatechange = function (b) {
-        e(b);
-        "loading" !== document.readyState &&
-          ((document.onreadystatechange = e), c());
-      };
-    }
-  }
-})();
-
-*/

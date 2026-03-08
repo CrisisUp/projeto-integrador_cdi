@@ -1,40 +1,64 @@
-// Manipulação do formulário de login
-document
-  .getElementById("loginForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+/**
+ * ARQUIVO: js/login.js
+ * Gerencia a validação visual e o envio do formulário de login para o PHP.
+ */
 
-    // Obter valores dos campos
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.getElementById("loginForm");
 
-    // Aqui você adicionaria a lógica de autenticação
-    // Por exemplo, enviar os dados para um script PHP via AJAX
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+      // 1. CAPTURAR OS CAMPOS
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const submitBtn = this.querySelector(".login-btn");
 
-    // Simulação de login bem-sucedido
-    console.log("Tentativa de login com:", {
-      email,
-      password,
+      // 2. VALIDAÇÃO BÁSICA (Lado do Cliente)
+      if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+        event.preventDefault(); // Impede o envio se estiver vazio
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+
+      // 3. FEEDBACK VISUAL DE CARREGAMENTO
+      // Em vez de um alert que trava a página, mudamos o texto do botão
+      if (submitBtn) {
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin mr-2"></i> Autenticando...';
+        submitBtn.style.opacity = "0.7";
+        submitBtn.style.cursor = "not-allowed";
+      }
+
+      console.log("Enviando credenciais para o servidor...");
+
+      // NOTA: Não usamos event.preventDefault() aqui para permitir que o
+      // formulário siga o 'action="auth.php"' definido no seu HTML.
+    });
+  }
+
+  // 4. ANIMAÇÃO DOS ÍCONES (FOCO NOS INPUTS)
+  const inputs = document.querySelectorAll(".form-input");
+
+  inputs.forEach((input) => {
+    // Quando o usuário clica no campo
+    input.addEventListener("focus", function () {
+      const icon = this.parentElement.querySelector(".input-icon");
+      if (icon) {
+        // Usa a cor primária definida no seu global.css
+        icon.style.color = "var(--primary-color, #1d9bf0)";
+        icon.style.transform = "scale(1.1)";
+        icon.style.transition = "all 0.3s ease";
+      }
     });
 
-    // Redirecionar para a página principal após login bem-sucedido
-    // Na implementação real, isso seria feito após verificar as credenciais
-    setTimeout(() => {
-      alert("Login bem-sucedido! Redirecionando...");
-      // window.location.href = 'index.php'; // Descomentar para redirecionar
-      window.location.href = "navegacao.php";
-    }, 1000);
-  });
-
-// Animação nos campos de entrada
-const inputs = document.querySelectorAll(".form-input");
-inputs.forEach((input) => {
-  input.addEventListener("focus", function () {
-    this.parentElement.querySelector(".input-icon").style.color = "#1d9bf0";
-  });
-
-  input.addEventListener("blur", function () {
-    this.parentElement.querySelector(".input-icon").style.color = "#9ca3af";
+    // Quando o usuário sai do campo
+    input.addEventListener("blur", function () {
+      const icon = this.parentElement.querySelector(".input-icon");
+      if (icon) {
+        icon.style.color = "#9ca3af"; // Cinza padrão
+        icon.style.transform = "scale(1)";
+      }
+    });
   });
 });
 

@@ -1,64 +1,43 @@
 /**
- * ARQUIVO: global.css
- * DESCRIÇÃO: Sistema de Design centralizado para o CDI Digital.
- * ORGANIZAÇÃO: Variáveis -> Base -> Componentes -> Modo Escuro.
+ * ARQUIVO: global.css - CDI Digital
+ * Versão Otimizada: Variáveis -> Reset -> Temas -> Componentes
  */
 
-/* ==========================================================================
-   1. VARIÁVEIS DE DESIGN (:root)
-   ========================================================================== */
+/* 1. VARIÁVEIS E TEMAS */
 :root {
   /* Tipografia */
-  --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
+  --font-main: "Segoe UI", system-ui, sans-serif;
   --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.5rem;
-
-  --weight-normal: 400;
-  --weight-bold: 700;
-  --leading-normal: 1.5;
-
-  /* Cores de Identidade (Claro por padrão) */
-  --primary-color: #1d9bf0;
-  --primary-hover: #0d8ae0;
-  --primary-light: #e6f7ff;
-  --bg-main: #f5f0e5; /* Fundo Creme */
-  --white: #ffffff; /* Fundo de Cards */
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-light: #eeeeee;
-
-  /* Status e Seções */
-  --danger: #dc2626;
-  --header-dados: #2563eb;
-  --header-dieta: #16a34a;
-  --header-beneficios: #9333ea;
-  --header-acesso: #d97706;
-
-  /* Utilidades Visuais */
   --radius-lg: 12px;
-  --radius-md: 8px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
+
+  /* Cores - Modo Claro (Padrão) */
+  --primary-color: #1d9bf0;
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #6b7280;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* ==========================================================================
-   2. ESTILOS BASE (HTML Reset)
-   ========================================================================== */
+/* Sobrescrita para Modo Escuro */
+.dark-mode {
+  --bg-main: #020617;
+  --card-bg: #0f172a;
+  --text-main: #f1f5f9;
+  --text-muted: #9ca3af;
+  --border-color: #1e293b;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* 2. RESET E BASE */
 * {
   box-sizing: border-box;
 }
 
 body {
   font-family: var(--font-main);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
   background-color: var(--bg-main);
   color: var(--text-main);
   margin: 0;
@@ -67,7 +46,7 @@ body {
     color 0.3s;
 }
 
-/* Força a cor do texto principal em todos os elementos comuns */
+/* Garante que todos os textos herdem a cor do tema automaticamente */
 h1,
 h2,
 h3,
@@ -76,23 +55,52 @@ p,
 span,
 label,
 td,
-th {
-  color: inherit; /* Herda do body ou do container */
+th,
+i {
+  color: inherit;
 }
 
-/* Classes de Utilidade */
-.text-muted {
-  color: var(--text-muted) !important;
-}
-.hidden {
-  display: none !important;
+/* 3. MAPEAMENTO DE CLASSES (O "Pulo do Gato") 
+   Aqui dizemos que as classes do Tailwind devem usar nossas variáveis */
+
+/* Fundo de Cards e Sidebar */
+.bg-white,
+.login-card,
+.sidebar,
+aside,
+.bg-gray-50 {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main);
 }
 
-/* ==========================================================================
-   3. COMPONENTES GLOBAIS
-   ========================================================================== */
+/* Fundo Geral */
+.bg-main,
+.bg-gray-100 {
+  background-color: var(--bg-main) !important;
+}
 
-/* Barra de Rolagem (Scrollbar) */
+/* Bordas Dinâmicas */
+.border,
+.border-r,
+.border-b,
+.grid-cell {
+  border-color: var(--border-color) !important;
+}
+
+/* 4. COMPONENTES ESPECÍFICOS */
+
+/* Inputs */
+input,
+select,
+textarea {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+/* Scrollbar Personalizada */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -100,81 +108,142 @@ th {
   background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6cdb7;
+  background: var(--text-muted);
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #c2b89f;
+
+/* Utilitários de Texto */
+.text-muted,
+.text-gray-500,
+.text-gray-600 {
+  color: var(--text-muted) !important;
 }
 
-/* Inputs e Selects (Geral) */
-input,
-select,
-textarea {
-  font-family: inherit;
-  transition: var(--transition);
+/* Sombras Dinâmicas */
+.shadow,
+.shadow-md,
+.shadow-lg {
+  box-shadow: var(--shadow) !important;
 }
 
-/* ==========================================================================
-   4. SISTEMA DE MODO ESCURO (THEMING)
-   ========================================================================== */
-
-/* Sobrescreve variáveis para o Modo Escuro */
-.dark-mode {
-  --bg-main: #111827; /* Azul marinho quase preto */
-  --white: #1f2937; /* Cinza escuro para os cards */
-  --text-main: #f9fafb; /* Branco acinzentado */
-  --text-muted: #d1d5db;
-  --border-light: #374151;
+/* Hover na Sidebar */
+.sidebar-item:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
-/* --- INTERVENÇÃO DE CONTRASTE --- */
+/* No seu global.css */
 
-/* Força o fundo escuro na página e nos containers principais */
-.dark-mode body,
-.dark-mode main {
-  background-color: var(--bg-main) !important;
+/* Faz a tabela ocupar 100% do container */
+table {
+  width: 100%;
+  table-layout: fixed; /* Ajuda a manter as colunas com tamanhos iguais */
 }
 
-/* Força o fundo dos cards e da sidebar a ficarem escuros */
-.dark-mode aside,
-.dark-mode .sidebar,
-.dark-mode div[class*="bg-white"],
-.dark-mode div[class*="border-r"] {
-  background-color: var(--white) !important;
-  border-color: var(--border-light) !important;
+/* Coluna do Nome (mais larga) */
+th:first-child,
+td:first-child {
+  width: 180px;
+  position: sticky; /* Opcional: mantém o nome visível ao dar scroll lateral */
+  left: 0;
+  font-size: larger;
+  background: var(--card-bg);
+  z-index: 10;
 }
 
-/* Força o texto de alto contraste em todos os elementos de leitura */
-.dark-mode h1,
-.dark-mode h2,
-.dark-mode h3,
-.dark-mode h4,
-.dark-mode p,
-.dark-mode span,
-.dark-mode label,
-.dark-mode td,
-.dark-mode th,
-.dark-mode i {
-  color: var(--text-main) !important;
+/* Colunas dos Dias (ajustam-se ao espaço restante) */
+.grid-cell,
+th:not(:first-child) {
+  min-width: 30px;
+  text-align: center;
 }
 
-/* Ajuste de Inputs no Modo Escuro */
-.dark-mode input,
-.dark-mode select,
-.dark-mode textarea {
-  background-color: #374151 !important;
-  color: #ffffff !important;
-  border-color: #4b5563 !important;
+/* ESTILO ÚNICO PARA A MARCAÇÃO */
+.grid-cell.active-mark {
+  color: var(--primary-color) !important;
+  font-weight: 500 !important;
 }
 
-/* Exceção: Mantém texto BRANCO em botões e elementos que já têm fundo colorido */
-.dark-mode .bg-primary *,
-.dark-mode button[class*="bg-"] {
-  color: #ffffff !important;
+/* NO MODO ESCURO, O CSS RESOLVE SOZINHO */
+.dark-mode .grid-cell.active-mark {
+  color: var(--primary-color) !important;
 }
 
-/* Células da Tabela de Frequência */
-.dark-mode .grid-cell {
-  border-color: var(--border-light) !important;
+/* 2. A coluna de TOTAL (Direita) e a linha de TOTAL (Baixo) */
+.total-column,
+.footer-row td,
+#total-geral {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+}
+
+/* 3. Efeito visual nas células ao passar o mouse */
+.grid-cell:hover {
+  background-color: var(--primary-light);
+  cursor: pointer;
+}
+
+/* Estilo para a linha e coluna de Totais */
+.footer-label,
+.footer-cell,
+.footer-total,
+[data-row-sum] {
+  font-size: 1rem !important;
+  background-color: var(--card-bg) !important; /* Fundo igual ao do card */
+  color: var(--primary-color) !important; /* Texto na cor do seu tema */
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Destaque especial para o Total Geral (canto inferior direito) */
+#total-sum {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important; /* Texto branco para contrastar com o fundo forte */
+}
+
+/* Ajuste para o Modo Escuro */
+.dark-mode .footer-cell,
+.dark-mode .footer-label {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.05
+  ) !important; /* Um cinza bem sutil */
+  color: var(--primary-color) !important;
+}
+
+.grid-container {
+  border-radius: 8px !important; /* Valor menor para um visual mais sóbrio */
+  overflow: hidden; /* Garante que os cantos da tabela não "vazem" o arredondamento */
+}
+
+/* Cabeçalhos de dia comuns */
+.day-header {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  font-size: medium;
+}
+
+/* Destaque sutil para finais de semana */
+.weekend-header,
+.weekend-cell {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.05
+  ) !important; /* Cinza bem leve no claro */
+  color: var(--text-main);
+}
+
+/* No Modo Escuro, o final de semana fica levemente mais escuro que o card */
+.dark-mode .weekend-header,
+.dark-mode .weekend-cell {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-muted); /* Número do dia fica mais discreto */
+}
+
+/* Se a célula de final de semana estiver MARCADA com "1", a cor do tema vence */
+.weekend-cell.active-mark {
+  background-color: var(--primary-light) !important;
+  color: var(--primary-color) !important;
 }

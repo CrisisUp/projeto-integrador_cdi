@@ -54,6 +54,47 @@
   border-color: #fecaca;
 }
 
+/* 1. Remover o Rodapé visualmente e ajustar o layout */
+footer {
+  display: none !important;
+}
+
+/* 2. Ajuste do Container Principal para ocupar a tela toda sem sobras */
+.min-h-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza o conteúdo verticalmente na tela */
+  background-color: var(--bg-main);
+}
+
+/* 3. O SEGREDO: Efeito de Hover que não move o botão */
+.option-card {
+  transition:
+    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  background-color: var(--white);
+  border: 2px solid transparent;
+  z-index: 1;
+}
+
+.option-card:hover {
+  /* Usamos transform para crescer "por cima" do layout sem empurrar nada */
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+  z-index: 10;
+}
+
+/* 4. Fixar a posição do botão */
+#confirmButton {
+  margin-top: 40px; /* Espaço fixo entre o grid e o botão */
+  min-width: 200px;
+  height: 54px; /* Altura fixa para evitar qualquer micro-movimento */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Animação de entrada */
 @keyframes fadeInUp {
   from {

@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    header("Location: login.php"); // Se não estiver logado, volta pro login
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -70,7 +78,7 @@
         </header>
 
         <main class="flex-1 p-4 md:p-8 overflow-y-auto">
-            <div class="max-w-7xl mx-auto">
+            <div class="max-w-[98%] mx-auto">
 
                 <!-- Título e Seletor -->
                 <div class="text-center mb-10">
@@ -91,7 +99,7 @@
                 </div>
 
                 <!-- Tabela de Presença -->
-                <div class="bg-white rounded-3xl shadow-card border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-lg shadow-card border border-gray-200 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
                             <thead id="grid-header" class="bg-gray-50">

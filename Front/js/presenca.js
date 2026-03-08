@@ -3,24 +3,27 @@
  */
 const PresencaApp = {
   // Configurações e Estado
-  rows: 5,
+  names: [],
+  rows: 0,
   date: { month: new Date().getMonth(), year: new Date().getFullYear() },
-  names: [
-    "Ana Silva",
-    "Carlos Oliveira",
-    "Mariana Santos",
-    "Pedro Costa",
-    "Juliana Lima",
-    "Roberto Alves",
-    "Fernanda Dias",
-    "Lucas Mendes",
-    "Camila Rocha",
-    "Bruno Gomes",
-  ],
 
-  init() {
+  async init() {
+    // 1. Busca os nomes do arquivo texto antes de renderizar
+    await this.carregarNomesDoArquivo();
+
     this.render();
     this.bindEvents();
+  },
+
+  async carregarNomesDoArquivo() {
+    try {
+      const resposta = await fetch("get_cadastrados.php");
+      this.names = await resposta.json();
+      this.rows = this.names.length;
+    } catch (erro) {
+      console.error("Erro ao carregar nomes:", erro);
+      this.names = ["Erro ao carregar"];
+    }
   },
 
   render() {
@@ -46,9 +49,9 @@ const PresencaApp = {
       let isWeekend = [0, 6].includes(
         new Date(this.date.year, this.date.month, d).getDay(),
       );
-      html += `<th class="border p-1 text-center text-xs ${isWeekend ? "bg-gray-200" : "bg-gray-50"}">${d}</th>`;
+      html += `<th class="border p-1 text-center text-xs ${isWeekend ? "weekend-header" : "day-header50"}">${d}</th>`;
     }
-    html += `<th class="border p-1 bg-blue-50 text-xs font-bold">Total</th>`;
+    html += `<th class="border p-1 day-header text-xs font-bold">Total</th>`;
     header.innerHTML = `<tr>${html}</tr>`;
   },
 
@@ -75,21 +78,23 @@ const PresencaApp = {
   },
 
   addFooterRow(days) {
-    let footer = `<td class="border p-2 font-bold bg-gray-50 text-xs text-right">TOTAL</td>`;
+    // Removi as cores fixas e deixei classes limpas: 'footer-label' e 'footer-cell'
+    let footer = `<td class="footer-label border p-2 font-bold text-xs text-right">TOTAL</td>`;
     for (let d = 0; d < days; d++)
-      footer += `<td class="border text-center font-bold bg-green-50 text-xs" data-col-sum="${d}">0</td>`;
-    footer += `<td class="border text-center font-bold bg-green-100" id="total-sum">0</td>`;
+      footer += `<td class="footer-cell border text-center font-bold text-xs" data-col-sum="${d}">0</td>`;
+
+    footer += `<td class="footer-total border text-center font-bold" id="total-sum">0</td>`;
     document.getElementById("grid").innerHTML += `<tr>${footer}</tr>`;
   },
 
   toggleCell(cell) {
-    const themeColor = CDIUtils.getThemeColor();
     const isMarked = cell.dataset.value === "0";
 
     cell.dataset.value = isMarked ? "1" : "0";
     cell.textContent = isMarked ? "1" : "";
-    cell.style.backgroundColor = isMarked ? themeColor : "";
-    cell.style.color = isMarked ? "white" : "";
+
+    // A ÚNICA COISA QUE O JS FAZ É ADICIONAR OU TIRAR A CLASSE
+    cell.classList.toggle("active-mark", isMarked);
 
     this.updateSums(cell.dataset.row, cell.dataset.col);
     this.saveData();
@@ -128,11 +133,17 @@ const PresencaApp = {
       localStorage.getItem(`presenca_${this.date.year}_${this.date.month}`) ||
         "[]",
     );
+
     saved.forEach((item) => {
       const cell = document.querySelector(
         `[data-row="${item.r}"][data-col="${item.c}"]`,
       );
-      if (cell) this.toggleCell(cell);
+      if (cell) {
+        // Garantimos que o valor atual seja 0 antes de disparar o toggle para 1
+        cell.dataset.value = "0";
+        cell.classList.remove("active-mark");
+        this.toggleCell(cell);
+      }
     });
     this.updateSums();
   },
@@ -171,11 +182,27 @@ const PresencaApp = {
         this.render();
       }
     };
-    document.getElementById("add-person-btn").onclick = () => {
-      this.rows++;
-      this.render();
+    document.getElementById("add-person-btn").onclick = async () => {
+      const novoNome = prompt("Digite o nome do novo idoso:");
+      if (novoNome) {
+        // Aqui enviaríamos para um arquivo 'salvar_idoso.php'
+        await this.salvarNovoIdoso(novoNome);
+      }
     };
-    window.onresize = () => this.adjustTableSize();
+  },
+
+  async salvarNovoIdoso(nome) {
+    // Enviamos o nome para o PHP salvar no .txt
+    const formData = new FormData();
+    formData.append("nome", nome);
+
+    await fetch("salvar_idoso.php", {
+      method: "POST",
+      body: formData,
+    });
+
+    // Recarrega tudo para atualizar a tela
+    await this.init();
   },
 };
 

@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    header("Location: login.php"); // Se não estiver logado, volta pro login
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -104,10 +112,6 @@
             </div>
         </main>
 
-        <!-- Rodapé vazio -->
-        <footer class="bg-white border-t border-gray-300 p-4 text-center text-gray-500 text-sm">
-            <!-- Texto de copyright removido -->
-        </footer>
     </div>
     <script src="js/navegacao.js"></script>
 </body>

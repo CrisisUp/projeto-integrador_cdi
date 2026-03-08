@@ -1,60 +1,56 @@
 /**
- * ARQUIVO: global.js
- * DESCRIÇÃO: O "Cérebro" visual e funcional do sistema CDI.
- * Carrega temas, formata dados e centraliza cálculos.
+ * ARQUIVO: js/global.js
+ * Este script roda em TODAS as páginas do sistema.
  */
 
-// 1. EXECUÇÃO IMEDIATA (Prevenir o "flash" de cor errada)
+// 1. APLICAÇÃO IMEDIATA (Evita o "flash" branco ao carregar)
 (function () {
-  const savedColor = localStorage.getItem("theme-color") || "#1d9bf0";
-  const isDark = localStorage.getItem("dark-mode") === "true";
+  const isDark = localStorage.getItem("dark-mode") === "enabled";
+  const savedColor = localStorage.getItem("theme-color");
 
-  applyThemeColor(savedColor);
-  if (isDark) applyDarkMode(true);
+  // Aplica a classe dark-mode ao root antes mesmo do body carregar totalmente
+  if (isDark) {
+    document.documentElement.classList.add("dark-mode");
+  }
+
+  // Aplica a cor do tema salva nas variáveis CSS
+  if (savedColor) {
+    document.documentElement.style.setProperty("--primary-color", savedColor);
+    document.documentElement.style.setProperty(
+      "--primary-light",
+      savedColor + "26",
+    );
+    document.documentElement.style.setProperty(
+      "--primary-glow",
+      `0 0 0 3px ${savedColor}33`,
+    );
+  }
 })();
 
-// 2. FUNÇÕES DE TEMA (Acessíveis por qualquer página)
-function applyThemeColor(color) {
-  document.documentElement.style.setProperty("--primary-color", color);
-  document.documentElement.style.setProperty(
-    "--primary-hover",
-    shadeColor(color, -15),
-  );
-  document.documentElement.style.setProperty("--primary-light", color + "26"); // 15% opacidade
-  document.documentElement.style.setProperty("--primary-glow", color + "33"); // 20% opacidade
-  localStorage.setItem("theme-color", color);
-}
+// 2. LÓGICA DE INTERAÇÃO (Roda após o DOM estar pronto)
+document.addEventListener("DOMContentLoaded", () => {
+  const isDark = localStorage.getItem("dark-mode") === "enabled";
 
-function applyDarkMode(enabled) {
-  const root = document.documentElement;
-
-  if (enabled) {
-    // Cores de Fundo (Escuras)
-    root.style.setProperty("--white", "#1f2937"); // Cards e Sidebar
-    root.style.setProperty("--bg-main", "#111827"); // Fundo da página
-
-    // Cores de Texto (Alto Contraste)
-    root.style.setProperty("--text-main", "#f9fafb"); // Texto principal (quase branco)
-    root.style.setProperty("--text-muted", "#9ca3af"); // Texto secundário (cinza claro)
-
-    // Bordas e Divisores
-    root.style.setProperty("--border-light", "#374151");
-
-    document.body?.classList.add("dark-mode");
-  } else {
-    // Cores de Fundo (Claras)
-    root.style.setProperty("--white", "#ffffff");
-    root.style.setProperty("--bg-main", "#f5f0e5");
-
-    // Cores de Texto (Padrão)
-    root.style.setProperty("--text-main", "#1f2937"); // Cinza muito escuro
-    root.style.setProperty("--text-muted", "#6b7280"); // Cinza médio
-
-    root.style.setProperty("--border-light", "#eeeeee");
-
-    document.body?.classList.remove("dark-mode");
+  // Sincroniza o estado no body para garantir que os seletores CSS funcionem
+  if (isDark) {
+    document.body.classList.add("dark-mode");
   }
-  localStorage.setItem("dark-mode", enabled);
+});
+
+/**
+ * Função Global para alternar o Modo Escuro
+ * Pode ser chamada de qualquer página (especialmente da tela de configurações)
+ */
+function applyDarkMode(enabled) {
+  if (enabled) {
+    document.body.classList.add("dark-mode");
+    document.documentElement.classList.add("dark-mode");
+    localStorage.setItem("dark-mode", "enabled");
+  } else {
+    document.body.classList.remove("dark-mode");
+    document.documentElement.classList.remove("dark-mode");
+    localStorage.setItem("dark-mode", "disabled");
+  }
 }
 
 // 3. UTILITÁRIOS (COM TRAVA DE SEGURANÇA)

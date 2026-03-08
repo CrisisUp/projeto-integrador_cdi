@@ -1,104 +1,61 @@
+/* 1. ESTILOS DO FEED (Essenciais para as postagens) */
+.post {
+  transition: var(--transition); /* Usando a variável global que criamos */
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.5rem;
+  background-color: var(--white);
+}
+
+.post:hover {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.01
+  ); /* Um leve destaque ao passar o mouse */
+}
+
+/* 2. CALENDÁRIO (Mantenha apenas se for usar o filtro lateral) */
 .calendar-day {
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: var(--transition);
+  border-radius: var(--radius-sm);
+  padding: 5px;
 }
 
 .calendar-day:hover {
-  background-color: var(--primary-color);
-  color: var(--white);
+  background-color: var(--primary-light);
+  color: var(--primary-color);
 }
 
 .calendar-day.selected {
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-weight: bold;
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  font-weight: var(--weight-bold);
 }
 
-.post {
-  transition: var(--transition-normal);
-}
-
-.post-enter {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.post-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.post-exit {
-  opacity: 1;
-}
-
-.post-exit-active {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-.sidebar-item {
-  transition: background-color 0.2s;
-}
-
-.sidebar-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Estilos para o seletor de mês/ano */
+/* 3. DROPDOWN DE MÊS/ANO (Opcional para o filtro) */
 .month-year-selector {
   position: absolute;
   background-color: var(--white);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
   padding: 16px;
   z-index: 10;
   width: 280px;
-  display: none;
-}
-
-.month-grid,
-.year-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.month-item,
-.year-item {
-  padding: 8px;
-  text-align: center;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition-fast);
+  display: none; /* Controlado pelo JS */
+  border: 1px solid var(--border-light);
 }
 
 .month-item:hover,
 .year-item:hover {
   background-color: var(--primary-light);
-}
-
-.month-item.selected,
-.year-item.selected {
-  background-color: var(--primary-color);
-  color: var(--white);
-}
-
-.selector-tabs {
-  display: flex;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-.selector-tab {
-  flex: 1;
-  text-align: center;
-  padding: 8px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.selector-tab.active {
-  border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
+}
+
+.tab-active {
+  border-bottom: 4px solid var(--primary-color);
+  color: var(--primary-color);
+  padding-bottom: 1rem;
+  font-weight: var(--weight-bold);
 }

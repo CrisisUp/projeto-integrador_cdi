@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    header("Location: login.php"); // Se não estiver logado, volta pro login
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,8 +20,9 @@
 
     <!-- 1. Estilo Global (Variáveis e Base) -->
     <link rel="stylesheet" href="css/global.css">
-    <!-- Usaremos o estilo de navegação para a sidebar e cards -->
-    <link rel="stylesheet" href="css/navegacao.css">
+
+    <!-- 2. SCRIPT GLOBAL (ESSENCIAL PARA O MODO ESCURO NÃO RESETAR) -->
+    <script src="js/global.js"></script>
 
     <style>
         body {
@@ -41,13 +50,13 @@
     </style>
 </head>
 
-<body class="bg-main min-h-screen flex flex-col md:flex-row">
+<body class="bg-main min-h-screen flex flex-col md:flex-row overflow-x-hidden">
 
     <!-- INCLUSÃO DA SIDEBAR CENTRALIZADA -->
     <?php include 'sidebar.php'; ?>
 
     <!-- Conteúdo Principal -->
-    <div class="flex-1 min-w-0 p-4 md:p-8">
+    <main class="flex-1 min-w-0 p-4 md:p-8">
         <header class="mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Configurações</h1>
             <p class="text-gray-500">Personalize a aparência e o comportamento do seu sistema.</p>
@@ -68,12 +77,13 @@
                     <div>
                         <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider mb-4">Cor Principal do Sistema</h3>
                         <div class="flex flex-wrap gap-6">
-                            <div onclick="setThemeColor('#1d9bf0')" class="color-dot bg-blue-500" title="Azul Padrão"></div>
-                            <div onclick="setThemeColor('#10b981')" class="color-dot bg-green-500" title="Verde"></div>
-                            <div onclick="setThemeColor('#f59e0b')" class="color-dot bg-yellow-500" title="Âmbar"></div>
-                            <div onclick="setThemeColor('#ef4444')" class="color-dot bg-red-500" title="Vermelho"></div>
-                            <div onclick="setThemeColor('#8b5cf6')" class="color-dot bg-purple-500" title="Roxo"></div>
-                            <div onclick="setThemeColor('#374151')" class="color-dot bg-gray-700" title="Grafite"></div>
+                            <!-- Forçamos o background-color exato para o JS reconhecer -->
+                            <div onclick="setThemeColor('#1d9bf0')" class="color-dot" style="background-color: #1d9bf0;" title="Azul Padrão"></div>
+                            <div onclick="setThemeColor('#10b981')" class="color-dot" style="background-color: #10b981;" title="Verde"></div>
+                            <div onclick="setThemeColor('#f59e0b')" class="color-dot" style="background-color: #f59e0b;" title="Âmbar"></div>
+                            <div onclick="setThemeColor('#ef4444')" class="color-dot" style="background-color: #ef4444;" title="Vermelho"></div>
+                            <div onclick="setThemeColor('#8b5cf6')" class="color-dot" style="background-color: #8b5cf6;" title="Roxo"></div>
+                            <div onclick="setThemeColor('#374151')" class="color-dot" style="background-color: #374151;" title="Grafite"></div>
                         </div>
                         <p class="mt-4 text-sm text-gray-500">Esta cor será aplicada em botões, links e destaques em todas as páginas.</p>
                     </div>
@@ -107,78 +117,10 @@
             </section>
 
         </div>
-    </div>
+    </main>
 
-    <script>
-        const darkModeSwitch = document.getElementById('dark-mode-switch');
-
-        // 1. Carregar preferências ao iniciar
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedColor = localStorage.getItem('theme-color') || '#1d9bf0';
-            setThemeColor(savedColor);
-
-            const isDark = localStorage.getItem('dark-mode') === 'true';
-            darkModeSwitch.checked = isDark;
-            if (isDark) applyDarkMode(true);
-        });
-
-        // 2. Função Principal para mudar a cor
-        function setThemeColor(color) {
-            // Altera as variáveis no CSS
-            document.documentElement.style.setProperty('--primary-color', color);
-            document.documentElement.style.setProperty('--primary-light', color + '26');
-            document.documentElement.style.setProperty('--primary-glow', `0 0 0 3px ${color}33`);
-
-            // Salva a escolha
-            localStorage.setItem('theme-color', color);
-
-            // Executa a função de atualização visual (que estava faltando)
-            updateColorDots(color);
-        }
-
-        // 3. Função para dar feedback visual nos círculos de cores
-        function updateColorDots(activeColor) {
-            document.querySelectorAll('.color-dot').forEach(dot => {
-                // Remove a classe de destaque de todos
-                dot.classList.remove('active', 'scale-110', 'border-gray-800');
-                dot.style.transform = "scale(1)";
-
-                // Adiciona destaque apenas no que combina com a cor ativa
-                if (rgbToHex(dot.style.backgroundColor) === activeColor.toLowerCase()) {
-                    dot.classList.add('active', 'scale-110');
-                    dot.style.transform = "scale(1.2)";
-                    dot.style.borderColor = "#333"; // Borda escura para indicar seleção
-                }
-            });
-        }
-
-        // 4. Lógica do Modo Escuro
-        darkModeSwitch.addEventListener('change', (e) => {
-            applyDarkMode(e.target.checked);
-        });
-
-        function applyDarkMode(enabled) {
-            if (enabled) {
-                document.documentElement.style.setProperty('--white', '#1f2937');
-                document.documentElement.style.setProperty('--bg-main', '#111827');
-                document.body.style.color = '#f9fafb';
-                localStorage.setItem('dark-mode', 'true');
-            } else {
-                document.documentElement.style.setProperty('--white', '#ffffff');
-                document.documentElement.style.setProperty('--bg-main', '#f5f0e5');
-                document.body.style.color = '#1f2937';
-                localStorage.setItem('dark-mode', 'false');
-            }
-        }
-
-        // Função auxiliar para converter RGB (do navegador) para HEX (nosso padrão)
-        function rgbToHex(rgb) {
-            if (!rgb) return "";
-            const vals = rgb.match(/\d+/g);
-            if (!vals) return "";
-            return "#" + vals.map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
-        }
-    </script>
+    <!-- Scripts de Funcionalidade -->
+    <script src="js/configuracoes.js"></script>
 </body>
 
 </html>

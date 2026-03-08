@@ -28,11 +28,24 @@
             <div class="p-8">
                 <h1 class="text-2xl font-bold text-center mb-6">Bem-vindo</h1>
 
+                <!-- Bloco de Mensagem de Erro -->
+                <?php if (isset($_GET['erro'])): ?>
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm animate-pulse" role="alert">
+                        <p class="text-sm font-bold"><i class="fas fa-exclamation-circle mr-2"></i> Usuário ou senha incorretos.</p>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_GET['saiu'])): ?>
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 mb-4 rounded shadow-sm">
+                        <p class="text-sm font-bold"><i class="fas fa-check-circle mr-2"></i> Você saiu com segurança!</p>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Formulário de Login -->
-                <form id="loginForm" class="mt-8">
+                <form id="loginForm" action="auth.php" method="POST" class="mt-4">
                     <div class="input-group">
-                        <i class="input-icon fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="Nome de usuário" required>
+                        <i class="input-icon fas fa-user"></i>
+                        <input type="text" id="email" name="email" class="form-input" placeholder="Usuário ou Email" required>
                     </div>
 
                     <div class="input-group">

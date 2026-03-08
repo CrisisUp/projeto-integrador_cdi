@@ -29,6 +29,10 @@
             <i class="fas fa-heartbeat mr-4 text-xl"></i><span class="text-xl">Enfermagem</span>
         </a>
 
+        <a href="convencional.php" class="flex items-center p-3 text-gray-700 sidebar-item rounded-full mb-2 transition hover:bg-gray-100">
+            <i class="fas fa-heartbeat mr-4 text-xl"></i><span class="text-xl">Convencional</span>
+        </a>
+
         <hr class="my-4 border-gray-100">
 
         <a href="configuracoes.php" class="flex items-center p-3 text-gray-700 sidebar-item rounded-full mb-2 transition hover:bg-gray-100">
@@ -37,7 +41,7 @@
     </nav>
 
     <div class="p-4 border-t border-gray-100">
-        <a href="login.php" class="flex items-center p-3 text-red-600 sidebar-item rounded-full whitespace-nowrap transition hover:bg-red-50 font-medium md:mt-4">
+        <a href="logout.php" class="flex items-center p-3 text-red-600 sidebar-item rounded-full whitespace-nowrap transition hover:bg-red-50 font-medium md:mt-4">
             <i class="fas fa-sign-out-alt md:mr-4 text-xl"></i><span class="text-xl">Sair</span>
         </a>
     </div>

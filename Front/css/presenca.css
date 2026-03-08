@@ -19,12 +19,6 @@
   transform: translateY(20px);
 }
 
-.weekend {
-  background-color: var(--gray-weekend);
-  /* Cinza médio para sábados e domingos */
-  color: var(--white) !important;
-}
-
 .post-enter-active {
   opacity: 1;
   transform: translateY(0);
@@ -52,9 +46,9 @@
   position: absolute;
   background-color: var(--white);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
   padding: 16px;
-  z-index: 10;
+  z-index: 50;
   width: 280px;
   display: none;
   border: 1px solid var(--border-light);
@@ -75,11 +69,13 @@
   cursor: pointer;
   transition: var(--transition);
   color: var(--text-main);
+  background-color: transparent;
 }
 
 .month-item:hover,
 .year-item:hover {
   background-color: var(--primary-light);
+  color: var(--primary-color);
 }
 
 .month-item.selected,
@@ -114,4 +110,8 @@
   gap: 12px; /* Espaço entre os botões */
   margin-top: 30px; /* Isso aqui vai empurrar os botões para baixo */
   padding-bottom: 20px; /* Garante que não colem no fim da página */
+}
+
+#total-sum {
+  border-radius: 4px !important; /* Em vez de circular, fica um quadrado arredondado */
 }
