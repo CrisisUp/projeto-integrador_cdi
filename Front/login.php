@@ -15,6 +15,9 @@
     <!-- 1. Estilo Global (Variáveis e Base) -->
     <link rel="stylesheet" href="css/global.css">
 
+    <!-- Script Global deve vir primeiro para aplicar o tema cedo -->
+    <script src="js/global.js"></script>
+
     <!-- 2. Estilo Específico da Página -->
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -41,7 +44,6 @@
                         Entrar
                     </button>
                 </form>
-
             </div>
         </div>
     </div>

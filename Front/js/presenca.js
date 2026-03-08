@@ -1,16 +1,11 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const rows = 5; // Número inicial de pessoas
-  const grid = document.getElementById("grid");
-  const gridHeader = document.getElementById("grid-header");
-  const currentMonthDisplay = document.getElementById("current-month");
-
-  // Variáveis para controle do mês
-  let currentDate = new Date();
-  let currentMonth = currentDate.getMonth();
-  let currentYear = currentDate.getFullYear();
-
-  // Nomes de exemplo
-  const sampleNames = [
+/**
+ * ARQUIVO: presenca.js (Refatorado)
+ */
+const PresencaApp = {
+  // Configurações e Estado
+  rows: 5,
+  date: { month: new Date().getMonth(), year: new Date().getFullYear() },
+  names: [
     "Ana Silva",
     "Carlos Oliveira",
     "Mariana Santos",
@@ -21,461 +16,167 @@ document.addEventListener("DOMContentLoaded", function () {
     "Lucas Mendes",
     "Camila Rocha",
     "Bruno Gomes",
-  ];
+  ],
 
-  // Atualizar o display do mês atual
-  function updateMonthDisplay() {
-    const monthNames = [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
-    ];
-    currentMonthDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-  }
+  init() {
+    this.render();
+    this.bindEvents();
+  },
 
-  // Obter o número de dias no mês
-  function getDaysInMonth(year, month) {
-    return new Date(year, month + 1, 0).getDate();
-  }
+  render() {
+    this.updateMonthDisplay();
+    this.createHeader();
+    this.createGrid();
+    this.adjustTableSize();
+  },
 
-  // Criar o cabeçalho
-  function createHeader() {
-    gridHeader.innerHTML = "";
-    const headerRow = document.createElement("tr");
+  updateMonthDisplay() {
+    const display = document.getElementById("current-month");
+    if (display)
+      display.textContent = `${CDIUtils.getMonthNames()[this.date.month]} ${this.date.year}`;
+  },
 
-    // Célula para o título da coluna de nomes
-    const nameHeader = document.createElement("th");
-    nameHeader.className =
-      "header-cell name-header border border-gray-300 p-1 text-left name-column";
-    nameHeader.textContent = "Nome";
-    headerRow.appendChild(nameHeader);
+  createHeader() {
+    const header = document.getElementById("grid-header");
+    if (!header) return;
+    let days = CDIUtils.getDaysInMonth(this.date.year, this.date.month);
 
-    // Criar cabeçalhos para os dias do mês
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentYear, currentMonth, day);
-      const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-      const dayHeader = document.createElement("th");
-      dayHeader.className = `header-cell border border-gray-300 p-1 text-center day-cell ${isWeekend ? "weekend" : ""}`;
-
-      // Formato mais compacto para o cabeçalho
-      dayHeader.innerHTML = `<div>${day}</div><div class="text-xs">${dayOfWeek === 0 ? "D" : dayOfWeek === 6 ? "S" : ""}</div>`;
-      dayHeader.dataset.day = day - 1;
-      headerRow.appendChild(dayHeader);
+    let html = `<th class="border p-2 bg-gray-50 text-left text-xs font-bold uppercase">Nome</th>`;
+    for (let d = 1; d <= days; d++) {
+      let isWeekend = [0, 6].includes(
+        new Date(this.date.year, this.date.month, d).getDay(),
+      );
+      html += `<th class="border p-1 text-center text-xs ${isWeekend ? "bg-gray-200" : "bg-gray-50"}">${d}</th>`;
     }
+    html += `<th class="border p-1 bg-blue-50 text-xs font-bold">Total</th>`;
+    header.innerHTML = `<tr>${html}</tr>`;
+  },
 
-    // Célula para o total
-    const totalHeader = document.createElement("th");
-    totalHeader.className =
-      "header-cell border border-gray-300 p-1 text-center bg-blue-100 total-column";
-    totalHeader.textContent = "Total";
-    headerRow.appendChild(totalHeader);
-
-    gridHeader.appendChild(headerRow);
-  }
-
-  // Criar o grid
-  function createGrid() {
+  createGrid() {
+    const grid = document.getElementById("grid");
+    if (!grid) return;
+    let days = CDIUtils.getDaysInMonth(this.date.year, this.date.month);
     grid.innerHTML = "";
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
-    // Criar linhas e células
-    for (let i = 0; i < rows; i++) {
-      const row = document.createElement("tr");
-
-      // Célula de nome
-      const nameCell = document.createElement("td");
-      nameCell.className = "name-cell border border-gray-300 p-1 name-column";
-      nameCell.textContent = sampleNames[i] || `Pessoa ${i + 1}`;
-      row.appendChild(nameCell);
-
-      // Células para os dias
-      for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(currentYear, currentMonth, day);
-        const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-        const cell = document.createElement("td");
-        cell.className = `grid-cell border border-gray-300 p-1 text-center h-8 day-cell cursor-pointer ${isWeekend ? "weekend" : "bg-white"}`;
-        cell.dataset.row = i;
-        cell.dataset.col = day - 1;
-        cell.dataset.value = "0";
-        cell.addEventListener("click", toggleCell);
-        row.appendChild(cell);
+    for (let i = 0; i < this.rows; i++) {
+      let rowHtml = `<td class="border p-2 text-sm bg-white whitespace-nowrap">${this.names[i] || "Idoso " + (i + 1)}</td>`;
+      for (let d = 0; d < days; d++) {
+        let isWeekend = [0, 6].includes(
+          new Date(this.date.year, this.date.month, d + 1).getDay(),
+        );
+        rowHtml += `<td class="grid-cell border text-center h-10 cursor-pointer ${isWeekend ? "bg-gray-100" : "bg-white"}" 
+                                data-row="${i}" data-col="${d}" data-value="0" onclick="PresencaApp.toggleCell(this)"></td>`;
       }
-
-      // Célula de soma da linha
-      const rowSum = document.createElement("td");
-      rowSum.className =
-        "sum-cell border border-gray-300 p-1 text-center h-8 bg-blue-100 total-column";
-      rowSum.textContent = "0";
-      rowSum.dataset.rowSum = i;
-      row.appendChild(rowSum);
-
-      grid.appendChild(row);
+      rowHtml += `<td class="border text-center font-bold bg-blue-50 text-blue-800" data-row-sum="${i}">0</td>`;
+      grid.innerHTML += `<tr>${rowHtml}</tr>`;
     }
+    this.addFooterRow(days);
+    this.loadData();
+  },
 
-    // Criar linha para somas das colunas
-    const sumRow = document.createElement("tr");
+  addFooterRow(days) {
+    let footer = `<td class="border p-2 font-bold bg-gray-50 text-xs text-right">TOTAL</td>`;
+    for (let d = 0; d < days; d++)
+      footer += `<td class="border text-center font-bold bg-green-50 text-xs" data-col-sum="${d}">0</td>`;
+    footer += `<td class="border text-center font-bold bg-green-100" id="total-sum">0</td>`;
+    document.getElementById("grid").innerHTML += `<tr>${footer}</tr>`;
+  },
 
-    // Célula de texto "Total"
-    const totalLabel = document.createElement("td");
-    totalLabel.className =
-      "name-cell border border-gray-300 p-1 text-left font-medium name-column";
-    totalLabel.textContent = "Total";
-    sumRow.appendChild(totalLabel);
+  toggleCell(cell) {
+    const themeColor = CDIUtils.getThemeColor();
+    const isMarked = cell.dataset.value === "0";
 
-    // Células de soma para cada coluna
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentYear, currentMonth, day);
-      const dayOfWeek = date.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    cell.dataset.value = isMarked ? "1" : "0";
+    cell.textContent = isMarked ? "1" : "";
+    cell.style.backgroundColor = isMarked ? themeColor : "";
+    cell.style.color = isMarked ? "white" : "";
 
-      const colSum = document.createElement("td");
-      colSum.className = `sum-cell border border-gray-300 p-1 text-center h-8 day-cell ${isWeekend ? "bg-green-200" : "bg-green-100"}`;
-      colSum.textContent = "0";
-      colSum.dataset.colSum = day - 1;
-      sumRow.appendChild(colSum);
-    }
+    this.updateSums(cell.dataset.row, cell.dataset.col);
+    this.saveData();
+  },
 
-    // Célula vazia no canto inferior direito
-    const emptyCell = document.createElement("td");
-    emptyCell.className =
-      "border border-gray-300 p-1 text-center h-8 bg-gray-100 font-bold total-column";
-    emptyCell.id = "total-sum";
-    emptyCell.textContent = "0";
-    sumRow.appendChild(emptyCell);
+  updateSums(row, col) {
+    const getSum = (selector) =>
+      Array.from(document.querySelectorAll(selector)).reduce(
+        (acc, c) => acc + parseInt(c.dataset.value || 0),
+        0,
+      );
 
-    grid.appendChild(sumRow);
+    if (row)
+      document.querySelector(`[data-row-sum="${row}"]`).textContent = getSum(
+        `[data-row="${row}"]`,
+      );
+    if (col)
+      document.querySelector(`[data-col-sum="${col}"]`).textContent = getSum(
+        `[data-col="${col}"]`,
+      );
+    document.getElementById("total-sum").textContent = getSum(".grid-cell");
+  },
 
-    updateAllSums();
+  saveData() {
+    const active = Array.from(
+      document.querySelectorAll(".grid-cell[data-value='1']"),
+    ).map((c) => ({ r: c.dataset.row, c: c.dataset.col }));
+    localStorage.setItem(
+      `presenca_${this.date.year}_${this.date.month}`,
+      JSON.stringify(active),
+    );
+  },
 
-    // Adicionar linhas vazias para preencher o espaço disponível
-    addEmptyRowsToFill();
-  }
-
-  // Adicionar linhas vazias para preencher o espaço disponível
-  function addEmptyRowsToFill() {
-    const gridContainer = document.querySelector(".grid-container");
-    const tableHeight = document.querySelector("table").offsetHeight;
-    const containerHeight = gridContainer.clientHeight;
-
-    // Se a tabela for menor que o container, adicionar linhas vazias
-    if (tableHeight < containerHeight) {
-      const currentRows = document.querySelectorAll("#grid tr").length - 1; // -1 para a linha de soma
-      const rowHeight = 32; // Altura aproximada de uma linha em pixels
-      const extraSpace = containerHeight - tableHeight;
-      const rowsToAdd = Math.floor(extraSpace / rowHeight);
-
-      // Adicionar linhas vazias
-      const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-      const sumRow = document.querySelector("#grid tr:last-child");
-
-      for (let i = 0; i < rowsToAdd && currentRows + i < 10; i++) {
-        const row = document.createElement("tr");
-
-        // Célula de nome
-        const nameCell = document.createElement("td");
-        nameCell.className = "name-cell border border-gray-300 p-1 name-column";
-        nameCell.textContent =
-          sampleNames[currentRows + i] || `Pessoa ${currentRows + i + 1}`;
-        row.appendChild(nameCell);
-
-        // Células para os dias
-        for (let day = 1; day <= daysInMonth; day++) {
-          const date = new Date(currentYear, currentMonth, day);
-          const dayOfWeek = date.getDay();
-          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-          const cell = document.createElement("td");
-          cell.className = `grid-cell border border-gray-300 p-1 text-center h-8 day-cell cursor-pointer ${isWeekend ? "weekend" : "bg-white"}`;
-          cell.dataset.row = currentRows + i;
-          cell.dataset.col = day - 1;
-          cell.dataset.value = "0";
-          cell.addEventListener("click", toggleCell);
-          row.appendChild(cell);
-        }
-
-        // Célula de soma da linha
-        const rowSum = document.createElement("td");
-        rowSum.className =
-          "sum-cell border border-gray-300 p-1 text-center h-8 bg-blue-100 total-column";
-        rowSum.textContent = "0";
-        rowSum.dataset.rowSum = currentRows + i;
-        row.appendChild(rowSum);
-
-        // Inserir antes da linha de soma
-        grid.insertBefore(row, sumRow);
-      }
-
-      updateAllSums();
-    }
-  }
-
-  // Alternar valor da célula
-  function toggleCell() {
-    const currentValue = parseInt(this.dataset.value);
-    const newValue = currentValue === 0 ? 1 : 0;
-
-    this.dataset.value = newValue;
-    this.textContent = newValue === 0 ? "" : newValue;
-
-    const isWeekend = this.classList.contains("weekend");
-
-    if (newValue === 1) {
-      if (isWeekend) {
-        this.classList.add("active");
-      } else {
-        this.classList.add("bg-blue-50");
-      }
-    } else {
-      if (isWeekend) {
-        this.classList.remove("active");
-      } else {
-        this.classList.remove("bg-blue-50");
-      }
-    }
-
-    updateSums(parseInt(this.dataset.row), parseInt(this.dataset.col));
-  }
-
-  // Atualizar somas para uma célula específica
-  function updateSums(row, col) {
-    updateRowSum(row);
-    updateColSum(col);
-    updateTotalSum();
-  }
-
-  // Atualizar soma da linha
-  function updateRowSum(row) {
-    let sum = 0;
-    const cells = document.querySelectorAll(`td[data-row="${row}"]`);
-
-    cells.forEach((cell) => {
-      sum += parseInt(cell.dataset.value || 0);
+  loadData() {
+    const saved = JSON.parse(
+      localStorage.getItem(`presenca_${this.date.year}_${this.date.month}`) ||
+        "[]",
+    );
+    saved.forEach((item) => {
+      const cell = document.querySelector(
+        `[data-row="${item.r}"][data-col="${item.c}"]`,
+      );
+      if (cell) this.toggleCell(cell);
     });
+    this.updateSums();
+  },
 
-    const rowSumCell = document.querySelector(`td[data-row-sum="${row}"]`);
-    rowSumCell.textContent = sum;
-  }
-
-  // Atualizar soma da coluna
-  function updateColSum(col) {
-    let sum = 0;
-    const cells = document.querySelectorAll(`td[data-col="${col}"]`);
-
-    cells.forEach((cell) => {
-      sum += parseInt(cell.dataset.value || 0);
-    });
-
-    const colSumCell = document.querySelector(`td[data-col-sum="${col}"]`);
-    colSumCell.textContent = sum;
-  }
-
-  // Atualizar soma total
-  function updateTotalSum() {
-    let sum = 0;
-    const cells = document.querySelectorAll(".grid-cell");
-
-    cells.forEach((cell) => {
-      sum += parseInt(cell.dataset.value || 0);
-    });
-
-    const totalSumCell = document.getElementById("total-sum");
-    totalSumCell.textContent = sum;
-  }
-
-  // Atualizar todas as somas
-  function updateAllSums() {
-    const currentRows = document.querySelectorAll("#grid tr").length - 1; // -1 para a linha de soma
-
-    for (let i = 0; i < currentRows; i++) {
-      updateRowSum(i);
-    }
-
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    for (let day = 1; day <= daysInMonth; day++) {
-      updateColSum(day - 1);
-    }
-
-    updateTotalSum();
-  }
-
-  // Limpar o grid
-  document.getElementById("reset-btn").addEventListener("click", function () {
-    const cells = document.querySelectorAll(".grid-cell");
-    cells.forEach((cell) => {
-      cell.dataset.value = "0";
-      cell.textContent = "";
-
-      if (cell.classList.contains("weekend")) {
-        cell.classList.remove("active");
-      } else {
-        cell.classList.remove("bg-blue-50");
-      }
-    });
-
-    updateAllSums();
-  });
-
-  // Adicionar pessoa
-  document
-    .getElementById("add-person-btn")
-    .addEventListener("click", function () {
-      const currentRows = document.querySelectorAll("#grid tr").length - 1; // -1 para a linha de soma
-      if (currentRows >= 10) {
-        alert("Máximo de 10 pessoas atingido!");
-        return;
-      }
-
-      const row = document.createElement("tr");
-      const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-
-      // Célula de nome
-      const nameCell = document.createElement("td");
-      nameCell.className = "name-cell border border-gray-300 p-1 name-column";
-      nameCell.textContent =
-        sampleNames[currentRows] || `Pessoa ${currentRows + 1}`;
-      row.appendChild(nameCell);
-
-      // Células para os dias
-      for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(currentYear, currentMonth, day);
-        const dayOfWeek = date.getDay();
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-        const cell = document.createElement("td");
-        cell.className = `grid-cell border border-gray-300 p-1 text-center h-8 day-cell cursor-pointer ${isWeekend ? "weekend" : "bg-white"}`;
-        cell.dataset.row = currentRows;
-        cell.dataset.col = day - 1;
-        cell.dataset.value = "0";
-        cell.addEventListener("click", toggleCell);
-        row.appendChild(cell);
-      }
-
-      // Célula de soma da linha
-      const rowSum = document.createElement("td");
-      rowSum.className =
-        "sum-cell border border-gray-300 p-1 text-center h-8 bg-blue-100 total-column";
-      rowSum.textContent = "0";
-      rowSum.dataset.rowSum = currentRows;
-      row.appendChild(rowSum);
-
-      // Inserir antes da linha de soma
-      const sumRow = document.querySelector("#grid tr:last-child");
-      grid.insertBefore(row, sumRow);
-
-      updateAllSums();
-    });
-
-  // Navegação entre meses
-  document.getElementById("prev-month").addEventListener("click", function () {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    updateMonthDisplay();
-    createHeader();
-    createGrid();
-  });
-
-  document.getElementById("next-month").addEventListener("click", function () {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-    updateMonthDisplay();
-    createHeader();
-    createGrid();
-  });
-
-  // Ajustar tamanho da tabela para caber na tela
-  function adjustTableSize() {
+  adjustTableSize() {
     const container = document.querySelector(".grid-container");
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+    if (container)
+      document.querySelector("table").style.minWidth =
+        CDIUtils.getDaysInMonth(this.date.year, this.date.month) * 35 +
+        150 +
+        "px";
+  },
 
-    // Calcular largura disponível (menos margens e paddings)
-    const availableWidth = container.clientWidth - 20; // 20px para margens
+  bindEvents() {
+    document.getElementById("prev-month").onclick = () => {
+      this.date.month--;
+      if (this.date.month < 0) {
+        this.date.month = 11;
+        this.date.year--;
+      }
+      this.render();
+    };
+    document.getElementById("next-month").onclick = () => {
+      this.date.month++;
+      if (this.date.month > 11) {
+        this.date.month = 0;
+        this.date.year++;
+      }
+      this.render();
+    };
+    document.getElementById("reset-btn").onclick = () => {
+      if (confirm("Limpar mês?")) {
+        localStorage.removeItem(
+          `presenca_${this.date.year}_${this.date.month}`,
+        );
+        this.render();
+      }
+    };
+    document.getElementById("add-person-btn").onclick = () => {
+      this.rows++;
+      this.render();
+    };
+    window.onresize = () => this.adjustTableSize();
+  },
+};
 
-    // Largura necessária para nome e total
-    const fixedWidth = 8 + 3; // 8rem para nome + 3rem para total
-
-    // Largura disponível para células de dias
-    const availableForDays = availableWidth - fixedWidth * 16; // convertendo rem para px aproximadamente
-
-    // Largura ideal para cada célula de dia
-    const idealDayWidth = Math.floor(availableForDays / daysInMonth);
-
-    // Atualizar CSS se necessário
-    if (idealDayWidth > 0) {
-      const style = document.createElement("style");
-      style.textContent = `.day-cell { width: ${idealDayWidth}px; min-width: ${idealDayWidth}px; max-width: ${idealDayWidth}px; }`;
-      document.head.appendChild(style);
-    }
-
-    // Verificar se precisamos adicionar linhas vazias
-    setTimeout(addEmptyRowsToFill, 100);
-  }
-
-  // Inicializar
-  updateMonthDisplay();
-  createHeader();
-  createGrid();
-
-  // Ajustar tamanho quando a janela for redimensionada
-  window.addEventListener("resize", adjustTableSize);
-  // Ajustar tamanho inicial
-  setTimeout(adjustTableSize, 100);
-});
-
-/*
-
-(function () {
-  function c() {
-    var b = a.contentDocument || a.contentWindow.document;
-    if (b) {
-      var d = b.createElement("script");
-      d.innerHTML =
-        "window.__CF$cv$params={r:'93bcf18d92471b21',t:'MTc0NjU4MTMzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-      b.getElementsByTagName("head")[0].appendChild(d);
-    }
-  }
-  if (document.body) {
-    var a = document.createElement("iframe");
-    a.height = 1;
-    a.width = 1;
-    a.style.position = "absolute";
-    a.style.top = 0;
-    a.style.left = 0;
-    a.style.border = "none";
-    a.style.visibility = "hidden";
-    document.body.appendChild(a);
-    if ("loading" !== document.readyState) c();
-    else if (window.addEventListener)
-      document.addEventListener("DOMContentLoaded", c);
-    else {
-      var e = document.onreadystatechange || function () {};
-      document.onreadystatechange = function (b) {
-        e(b);
-        "loading" !== document.readyState &&
-          ((document.onreadystatechange = e), c());
-      };
-    }
-  }
-})();
-
-*/
+document.addEventListener("DOMContentLoaded", () => PresencaApp.init());

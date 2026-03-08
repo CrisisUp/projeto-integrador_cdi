@@ -1,21 +1,17 @@
 .calendar-day {
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: var(--transition);
 }
 
-.calendar-day:hover {
-  background-color: var(--primary-color);
-  color: var(--white);
-}
-
+.calendar-day:hover,
 .calendar-day.selected {
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-weight: bold;
+  background-color: var(--primary-color) !important;
+  color: var(--white); /* Branco fixo para contraste com o azul */
+  font-weight: var(--weight-bold);
 }
 
 .post {
-  transition: var(--transition-normal);
+  transition: var(--transition);
 }
 
 .post-enter {
@@ -26,7 +22,7 @@
 .weekend {
   background-color: var(--gray-weekend);
   /* Cinza médio para sábados e domingos */
-  color: var(--white);
+  color: var(--white) !important;
 }
 
 .post-enter-active {
@@ -44,7 +40,7 @@
 }
 
 .sidebar-item {
-  transition: var(--transition-fast);
+  transition: var(--transition);
 }
 
 .sidebar-item:hover {
@@ -61,6 +57,7 @@
   z-index: 10;
   width: 280px;
   display: none;
+  border: 1px solid var(--border-light);
 }
 
 .month-grid,
@@ -76,12 +73,13 @@
   text-align: center;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: var(--transition);
+  color: var(--text-main);
 }
 
 .month-item:hover,
 .year-item:hover {
-  background-color: #e6f7ff;
+  background-color: var(--primary-light);
 }
 
 .month-item.selected,
@@ -101,10 +99,19 @@
   text-align: center;
   padding: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
+  color: var(--text-muted);
 }
 
 .selector-tab.active {
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
+}
+
+.footer-section {
+  display: flex;
+  justify-content: center;
+  gap: 12px; /* Espaço entre os botões */
+  margin-top: 30px; /* Isso aqui vai empurrar os botões para baixo */
+  padding-bottom: 20px; /* Garante que não colem no fim da página */
 }

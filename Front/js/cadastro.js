@@ -1,166 +1,109 @@
 /**
- * ARQUIVO: cadastro.js
- * Descrição: Gerencia cálculos e comportamentos do formulário de cadastro.
+ * ARQUIVO: cadastro.js (Refatorado)
+ * Descrição: Engine de gerenciamento do formulário de pacientes.
  */
 
-// 1. FUNÇÕES DE LÓGICA (Definições)
+const CadastroApp = {
+  // 1. Inicialização
+  init() {
+    this.bindEvents();
+    console.log("CadastroApp: Engine carregada.");
+  },
 
-function calcularIdade() {
-  const dataNascimento = document.getElementById("data_nascimento").value;
+  // 2. Mapeamento de Eventos (Onde a mágica começa)
+  bindEvents() {
+    const form = document.getElementById("cadastroForm");
+    if (!form) return;
 
-  if (dataNascimento) {
-    const hoje = new Date();
-    const nascimento = new Date(dataNascimento);
-    let idade = hoje.getFullYear() - nascimento.getFullYear();
+    // Escuta mudanças na Data de Nascimento
+    document
+      .getElementById("data_nascimento")
+      ?.addEventListener("change", (e) => this.handleIdade(e.target.value));
 
-    const mesAtual = hoje.getMonth();
-    const diaAtual = hoje.getDate();
-    const mesNascimento = nascimento.getMonth();
-    const diaNascimento = nascimento.getDate();
-
-    if (
-      mesAtual < mesNascimento ||
-      (mesAtual === mesNascimento && diaAtual < diaNascimento)
-    ) {
-      idade--;
-    }
-
-    document.getElementById("idade").value = idade;
-
-    // Definir faixa etária
-    let faixaEtariaValue = "";
-    if (idade < 3) faixaEtariaValue = "bebe";
-    else if (idade < 12) faixaEtariaValue = "crianca";
-    else if (idade < 18) faixaEtariaValue = "adolescente";
-    else if (idade < 60) faixaEtariaValue = "adulto";
-    else if (idade <= 64) faixaEtariaValue = "idoso_60_64";
-    else if (idade <= 69) faixaEtariaValue = "idoso_65_69";
-    else if (idade <= 74) faixaEtariaValue = "idoso_70_74";
-    else faixaEtariaValue = "idoso_75_mais";
-
-    document.getElementById("faixa_etaria").value = faixaEtariaValue;
-  }
-}
-
-// 2. INICIALIZAÇÃO (Onde os eventos são ligados aos elementos)
-
-document.addEventListener("DOMContentLoaded", function () {
-  // --- Evento para o campo de data de nascimento ---
-  const inputDataNasc = document.getElementById("data_nascimento");
-  if (inputDataNasc) {
-    inputDataNasc.addEventListener("change", calcularIdade);
-  }
-
-  // --- Mostrar/ocultar dieta especial ---
-  const selectDieta = document.getElementById("dieta_especial");
-  if (selectDieta) {
-    selectDieta.addEventListener("change", function () {
-      const detalhesDiv = document.getElementById("dieta_especial_detalhes");
-      this.value === "sim"
-        ? detalhesDiv.classList.remove("hidden")
-        : detalhesDiv.classList.add("hidden");
-    });
-  }
-
-  // --- Mostrar/ocultar campos de desligamento ---
-  const selectStatus = document.getElementById("status");
-  if (selectStatus) {
-    selectStatus.addEventListener("change", function () {
-      const containerData = document.getElementById(
-        "data_desligamento_container",
-      );
-      const containerMotivo = document.getElementById(
-        "motivo_desligamento_container",
+    // Escuta mudanças na Dieta
+    document
+      .getElementById("dieta_especial")
+      ?.addEventListener("change", (e) =>
+        this.toggleSection("dieta_especial_detalhes", e.target.value === "sim"),
       );
 
-      if (this.value === "desligado") {
-        containerData.classList.remove("hidden");
-        containerMotivo.classList.remove("hidden");
-      } else {
-        containerData.classList.add("hidden");
-        containerMotivo.classList.add("hidden");
-        document.getElementById("data_desligamento").value = "";
-        document.getElementById("motivo_desligamento").value = "";
-      }
-    });
-  }
+    // Escuta mudanças no Status (Desligamento)
+    document
+      .getElementById("status")
+      ?.addEventListener("change", (e) => this.handleStatus(e.target.value));
 
-  // --- Gerenciar checkboxes de benefícios ---
-  const checkNaoRecebe = document.getElementById("nao_recebe");
-  if (checkNaoRecebe) {
-    checkNaoRecebe.addEventListener("change", function () {
-      const outrosBeneficios = document.querySelectorAll(
-        'input[name="beneficios"]:not(#nao_recebe)',
-      );
-      outrosBeneficios.forEach((cb) => {
-        cb.checked = false;
-        cb.disabled = this.checked;
-      });
-    });
+    // Escuta mudanças nos Benefícios
+    this.setupBeneficiosLogic();
 
-    // Lógica inversa: Se marcar qualquer outro, desmarca o "Não recebe"
-    const outrosBeneficios = document.querySelectorAll(
+    // Escuta o envio do formulário
+    form.addEventListener("submit", (e) => this.handleSubmit(e));
+  },
+
+  // 3. Lógica de Negócio (Tratamento de dados)
+  handleIdade(dataISO) {
+    const resIdade = CDIUtils.calcularIdade(dataISO);
+    const inputIdade = document.getElementById("idade");
+    if (inputIdade) inputIdade.value = resIdade;
+
+    const idadeNum = parseInt(resIdade);
+    if (!isNaN(idadeNum)) this.definirFaixaEtaria(idadeNum);
+  },
+
+  definirFaixaEtaria(idade) {
+    const inputFaixa = document.getElementById("faixa_etaria");
+    if (!inputFaixa) return;
+
+    let faixa = "adulto";
+    if (idade < 3) faixa = "bebe";
+    else if (idade < 12) faixa = "crianca";
+    else if (idade < 18) faixa = "adolescente";
+    else if (idade >= 60 && idade <= 64) faixa = "idoso_60_64";
+    else if (idade >= 65 && idade <= 69) faixa = "idoso_65_69";
+    else if (idade >= 70 && idade <= 74) faixa = "idoso_70_74";
+    else if (idade >= 75) faixa = "idoso_75_mais";
+
+    inputFaixa.value = faixa;
+  },
+
+  handleStatus(status) {
+    const isDesligado = status === "desligado";
+    this.toggleSection("data_desligamento_container", isDesligado);
+    this.toggleSection("motivo_desligamento_container", isDesligado);
+  },
+
+  setupBeneficiosLogic() {
+    const checkNaoRecebe = document.getElementById("nao_recebe");
+    const outros = document.querySelectorAll(
       'input[name="beneficios"]:not(#nao_recebe)',
     );
-    outrosBeneficios.forEach((cb) => {
-      cb.addEventListener("change", function () {
-        if (this.checked) checkNaoRecebe.checked = false;
 
-        const algumMarcado = Array.from(outrosBeneficios).some(
-          (c) => c.checked,
-        );
-        checkNaoRecebe.disabled = algumMarcado;
+    checkNaoRecebe?.addEventListener("change", (e) => {
+      outros.forEach((cb) => {
+        cb.checked = false;
+        cb.disabled = e.target.checked;
       });
     });
-  }
 
-  // --- Manipulação do envio do formulário ---
-  const formCadastro = document.getElementById("cadastroForm");
-  if (formCadastro) {
-    formCadastro.addEventListener("submit", function (e) {
-      e.preventDefault();
-      alert("Formulário validado com sucesso!");
-      // Aqui chamaremos a função de salvar no banco de dados futuramente
+    outros.forEach((cb) => {
+      cb.addEventListener("change", () => {
+        if (cb.checked && checkNaoRecebe) checkNaoRecebe.checked = false;
+      });
     });
-  }
+  },
 
-  // console.log("Módulo de Cadastro carregado com sucesso!");
-});
+  // 4. Utilitários de Interface
+  toggleSection(id, show) {
+    const el = document.getElementById(id);
+    if (el) show ? el.classList.remove("hidden") : el.classList.add("hidden");
+  },
 
-/*
+  handleSubmit(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    console.log("Dados capturados:", Object.fromEntries(data));
+    alert("Dados validados com sucesso pela Engine!");
+  },
+};
 
-(function () {
-  function c() {
-    var b = a.contentDocument || a.contentWindow.document;
-    if (b) {
-      var d = b.createElement("script");
-      d.innerHTML =
-        "window.__CF$cv$params={r:'93baad4da4fca47f',t:'MTc0NjU1NzU3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-      b.getElementsByTagName("head")[0].appendChild(d);
-    }
-  }
-  if (document.body) {
-    var a = document.createElement("iframe");
-    a.height = 1;
-    a.width = 1;
-    a.style.position = "absolute";
-    a.style.top = 0;
-    a.style.left = 0;
-    a.style.border = "none";
-    a.style.visibility = "hidden";
-    document.body.appendChild(a);
-    if ("loading" !== document.readyState) c();
-    else if (window.addEventListener)
-      document.addEventListener("DOMContentLoaded", c);
-    else {
-      var e = document.onreadystatechange || function () {};
-      document.onreadystatechange = function (b) {
-        e(b);
-        "loading" !== document.readyState &&
-          ((document.onreadystatechange = e), c());
-      };
-    }
-  }
-})();
-
-*/
+// Dispara a aplicação
+document.addEventListener("DOMContentLoaded", () => CadastroApp.init());
