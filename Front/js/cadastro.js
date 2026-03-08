@@ -1,80 +1,46 @@
 /**
- * ARQUIVO: cadastro.js (Refatorado)
- * Descrição: Engine de gerenciamento do formulário de pacientes.
+ * ARQUIVO: cadastro.js (Versão Final Consolidada)
  */
 
 const CadastroApp = {
-  // 1. Inicialização
   init() {
     this.bindEvents();
-    console.log("CadastroApp: Engine carregada.");
+    this.aplicarMascaras();
+    console.log("CadastroApp: Engine carregada com validação.");
   },
 
-  // 2. Mapeamento de Eventos (Onde a mágica começa)
   bindEvents() {
     const form = document.getElementById("cadastroForm");
     if (!form) return;
 
-    // Escuta mudanças na Data de Nascimento
+    // Cálculo automático de idade
     document
       .getElementById("data_nascimento")
       ?.addEventListener("change", (e) => this.handleIdade(e.target.value));
 
-    // Escuta mudanças na Dieta
-    document
-      .getElementById("dieta_especial")
-      ?.addEventListener("change", (e) =>
-        this.toggleSection("dieta_especial_detalhes", e.target.value === "sim"),
-      );
-
-    // Escuta mudanças no Status (Desligamento)
-    document
-      .getElementById("status")
-      ?.addEventListener("change", (e) => this.handleStatus(e.target.value));
-
-    // Escuta mudanças nos Benefícios
+    // Lógica de Benefícios (Bloqueia outros se "Não recebe" estiver marcado)
     this.setupBeneficiosLogic();
 
-    // Escuta o envio do formulário
+    // Envio do formulário
     form.addEventListener("submit", (e) => this.handleSubmit(e));
   },
 
-  // 3. Lógica de Negócio (Tratamento de dados)
   handleIdade(dataISO) {
-    const resIdade = CDIUtils.calcularIdade(dataISO);
+    if (!dataISO) return;
+    const hoje = new Date();
+    const nasc = new Date(dataISO);
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    const m = hoje.getMonth() - nasc.getMonth();
+    if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+
     const inputIdade = document.getElementById("idade");
-    if (inputIdade) inputIdade.value = resIdade;
-
-    const idadeNum = parseInt(resIdade);
-    if (!isNaN(idadeNum)) this.definirFaixaEtaria(idadeNum);
-  },
-
-  definirFaixaEtaria(idade) {
-    const inputFaixa = document.getElementById("faixa_etaria");
-    if (!inputFaixa) return;
-
-    let faixa = "adulto";
-    if (idade < 3) faixa = "bebe";
-    else if (idade < 12) faixa = "crianca";
-    else if (idade < 18) faixa = "adolescente";
-    else if (idade >= 60 && idade <= 64) faixa = "idoso_60_64";
-    else if (idade >= 65 && idade <= 69) faixa = "idoso_65_69";
-    else if (idade >= 70 && idade <= 74) faixa = "idoso_70_74";
-    else if (idade >= 75) faixa = "idoso_75_mais";
-
-    inputFaixa.value = faixa;
-  },
-
-  handleStatus(status) {
-    const isDesligado = status === "desligado";
-    this.toggleSection("data_desligamento_container", isDesligado);
-    this.toggleSection("motivo_desligamento_container", isDesligado);
+    if (inputIdade) inputIdade.value = idade + " anos";
   },
 
   setupBeneficiosLogic() {
     const checkNaoRecebe = document.getElementById("nao_recebe");
     const outros = document.querySelectorAll(
-      'input[name="beneficios"]:not(#nao_recebe)',
+      'input[name="beneficios[]"]:not(#nao_recebe)',
     );
 
     checkNaoRecebe?.addEventListener("change", (e) => {
@@ -83,27 +49,122 @@ const CadastroApp = {
         cb.disabled = e.target.checked;
       });
     });
+  },
 
-    outros.forEach((cb) => {
-      cb.addEventListener("change", () => {
-        if (cb.checked && checkNaoRecebe) checkNaoRecebe.checked = false;
-      });
+  aplicarMascaras() {
+    const nisInput = document.getElementById("nis");
+    if (!nisInput) return;
+
+    nisInput.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+      // Aplica a formatação 000.00000.00-0
+      if (value.length > 3 && value.length <= 8) {
+        value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
+      } else if (value.length > 8 && value.length <= 10) {
+        value = value.replace(/^(\d{3})(\d{5})(\d+)/, "$1.$2.$3");
+      } else if (value.length > 10) {
+        value = value.replace(/^(\d{3})(\d{5})(\d{2})(\d{1})/, "$1.$2.$3-$4");
+      }
+
+      e.target.value = value;
     });
   },
 
-  // 4. Utilitários de Interface
-  toggleSection(id, show) {
-    const el = document.getElementById(id);
-    if (el) show ? el.classList.remove("hidden") : el.classList.add("hidden");
+  // Método de Validação
+  validarFormulario(dados) {
+    const obrigatorios = {
+      matricula: "Nº Matrícula",
+      nome: "Nome do Usuário",
+      sexo: "Sexo",
+      cor_raca: "Cor/Raça",
+      data_nascimento: "Data de Nascimento",
+      nis: "NIS",
+    };
+
+    for (let campo in obrigatorios) {
+      if (!dados[campo] || dados[campo].trim() === "") {
+        alert(`⚠️ O campo [${obrigatorios[campo]}] é obrigatório.`);
+        const el =
+          document.getElementsByName(campo)[0] ||
+          document.getElementById(campo);
+        el?.focus();
+        return false;
+      }
+    }
+
+    // Verifica se o array de benefícios existe e tem pelo menos um item
+    if (!dados.beneficios || dados.beneficios.length === 0) {
+      alert(
+        "⚠️ Você deve selecionar pelo menos uma opção em 'Benefícios'. Se não houver nenhum, marque 'Não recebe'.",
+      );
+      document.getElementById("nao_recebe")?.focus();
+      return false;
+    }
+
+    // Validação extra: O NIS precisa ter 11 dígitos numéricos
+    const nisLimpo = dados.nis.replace(/\D/g, ""); // Remove pontos ou espaços
+    if (nisLimpo.length !== 11) {
+      alert("⚠️ O NIS deve conter exatamente 11 dígitos.");
+      document.getElementsByName("nis")[0]?.focus();
+      return false;
+    }
+
+    return true;
   },
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
-    const data = new FormData(e.target);
-    console.log("Dados capturados:", Object.fromEntries(data));
-    alert("Dados validados com sucesso pela Engine!");
+    const form = e.target;
+
+    // 1. Captura os dados
+    const formData = new FormData(form);
+    const dados = {};
+    formData.forEach((value, key) => {
+      if (key.endsWith("[]")) {
+        const cleanKey = key.replace("[]", "");
+        if (!dados[cleanKey]) dados[cleanKey] = [];
+        dados[cleanKey].push(value);
+      } else {
+        dados[key] = value;
+      }
+    });
+
+    // 2. Valida antes de enviar
+    if (!this.validarFormulario(dados)) return;
+
+    // 3. Feedback visual no botão
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Salvando...';
+
+    try {
+      // Ajustado para o nome do arquivo que funcionou anteriormente
+      const resposta = await fetch("salvar_dados_cadastrados.php", {
+        method: "POST",
+        body: JSON.stringify(dados),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const resultado = await resposta.json();
+
+      if (resultado.status === "sucesso") {
+        alert("✅ Cadastro de " + dados.nome + " realizado com sucesso!");
+        form.reset();
+        if (document.getElementById("idade"))
+          document.getElementById("idade").value = "";
+      } else {
+        alert("❌ Erro: " + (resultado.mensagem || "Falha ao salvar"));
+      }
+    } catch (error) {
+      console.error("Erro técnico:", error);
+      alert("❌ Falha na comunicação com o servidor.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
   },
 };
 
-// Dispara a aplicação
 document.addEventListener("DOMContentLoaded", () => CadastroApp.init());

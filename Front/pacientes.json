@@ -1,0 +1,144 @@
+[
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "branca",
+        "nis": "0987654321",
+        "data_nascimento": "1969-06-03",
+        "idade": "56 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios[]": "on",
+        "beneficios": [
+            "on",
+            "on"
+        ],
+        "id": "69adcc8740cc6",
+        "cadastrado_em": "2026-03-08 19:22:47"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "branca",
+        "nis": "0987654321",
+        "data_nascimento": "1957-09-08",
+        "idade": "68 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios[]": "on",
+        "beneficios": [
+            "on",
+            "on",
+            "on"
+        ],
+        "id": "69adcfc5db5bb",
+        "cadastrado_em": "2026-03-08 19:36:37"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "branca",
+        "nis": "0987654321",
+        "data_nascimento": "1956-09-08",
+        "idade": "69 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios": [
+            "Bolsa Família",
+            "BPC - Idoso",
+            "Aposentadoria"
+        ],
+        "id": "69add23a0f8d8",
+        "cadastrado_em": "2026-03-08 19:47:06"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "",
+        "nis": "",
+        "data_nascimento": "1946-09-08",
+        "idade": "79 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Selecione",
+        "dieta_especial": "Selecione",
+        "id": "69add4447dea0",
+        "cadastrado_em": "2026-03-08 19:55:48"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "",
+        "nis": "",
+        "data_nascimento": "1946-09-08",
+        "idade": "79 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Selecione",
+        "dieta_especial": "Selecione",
+        "id": "69add7771b8ea",
+        "cadastrado_em": "2026-03-08 20:09:27"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "branca",
+        "nis": "123.45123.45-1",
+        "data_nascimento": "1935-09-08",
+        "idade": "90 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios": [
+            "Bolsa Família",
+            "BPC - Idoso",
+            "Aposentadoria"
+        ],
+        "id": "69add8cac3061",
+        "cadastrado_em": "2026-03-08 20:15:06"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro",
+        "sexo": "masculino",
+        "cor_raca": "",
+        "nis": "765.43217.65-4",
+        "data_nascimento": "1948-09-08",
+        "idade": "77 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios": [
+            "Bolsa Família",
+            "BPC - Idoso",
+            "Aposentadoria"
+        ],
+        "id": "69addaa3e773e",
+        "cadastrado_em": "2026-03-08 20:22:59"
+    },
+    {
+        "matricula": "1234567890",
+        "nome": "Jessé Ribeiro Antunes",
+        "sexo": "masculino",
+        "cor_raca": "branca",
+        "nis": "987.65123.45-6",
+        "data_nascimento": "1999-09-09",
+        "idade": "26 anos",
+        "status": "ativo",
+        "lanche_tipo_2": "Sim",
+        "dieta_especial": "sim",
+        "beneficios": [
+            "Bolsa Família",
+            "Aposentadoria"
+        ],
+        "id": "69addbe2e3360",
+        "cadastrado_em": "2026-03-08 20:28:18"
+    }
+]

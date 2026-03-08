@@ -69,7 +69,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
                 <div class="bg-blue-600 text-white px-6 py-4">
                     <h2 class="text-lg font-semibold flex items-center">
-                        <i class="fas fa-id-card mr-3"></i> Dados Gerais
+                        <i class="fas fa-id-card mr-3"></i>Dados Gerais
                     </h2>
                 </div>
 
@@ -77,17 +77,17 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                 <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Nº Matrícula</label>
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Nº Matrícula</label>
                         <input type="text" id="matricula" name="matricula" class="form-input-style">
                     </div>
 
                     <div class="flex flex-col md:col-span-2 lg:col-span-3">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Nome do Usuário</label>
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Nome do Usuário</label>
                         <input type="text" id="nome" name="nome" class="form-input-style">
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Sexo</label>
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Sexo</label>
                         <select id="sexo" name="sexo" class="form-input-style">
                             <option value="">Selecione</option>
                             <option value="masculino">Masculino</option>
@@ -97,7 +97,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Cor/Raça</label>
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Cor/Raça</label>
                         <select id="cor_raca" name="cor_raca" class="form-input-style">
                             <option value="">Selecione</option>
                             <option value="branca">Branca</option>
@@ -109,12 +109,19 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">NIS</label>
-                        <input type="text" id="nis" name="nis" class="form-input-style">
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">NIS</label>
+                        <input
+                            type="text"
+                            id="nis"
+                            name="nis"
+                            class="form-input-style"
+                            placeholder="000.00000.00-0"
+                            maxlength="14"
+                            autocomplete="off">
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Data de Nascimento</label>
+                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Data de Nascimento</label>
                         <input type="date" id="data_nascimento" name="data_nascimento" class="form-input-style" onchange="calcularIdade()">
                     </div>
 
@@ -139,12 +146,12 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                 <!-- Card Dieta -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-green-600 text-white px-6 py-3 font-semibold flex items-center">
-                        <i class="fas fa-utensils mr-2"></i> Dieta
+                        <i class="fas fa-utensils mr-2"></i>Dieta
                     </div>
                     <div class="p-6 space-y-4">
                         <div class="flex flex-col">
                             <label class="text-xs font-bold text-gray-600 uppercase mb-1">Lanche Tipo 2</label>
-                            <select class="form-input-style">
+                            <select name="lanche_tipo_2" class="form-input-style">
                                 <option>Selecione</option>
                                 <option>Sim</option>
                                 <option>Não</option>
@@ -152,7 +159,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                         </div>
                         <div class="flex flex-col">
                             <label class="text-xs font-bold text-gray-600 uppercase mb-1">Dieta Especial</label>
-                            <select id="dieta_especial" class="form-input-style">
+                            <select name="dieta_especial" id="dieta_especial" class="form-input-style">
                                 <option>Selecione</option>
                                 <option value="sim">Sim</option>
                                 <option value="nao">Não</option>
@@ -164,23 +171,38 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                 <!-- Card Benefícios -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-purple-600 text-white px-6 py-3 font-semibold flex items-center">
-                        <i class="fas fa-hand-holding-heart mr-2"></i> Benefícios
+                        <i class="fas fa-hand-holding-heart mr-2 required"></i> Benefícios
                     </div>
                     <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input type="checkbox" id="nao_recebe" name="beneficios" class="h-4 w-4 text-blue-600">
+                            <input
+                                type="checkbox"
+                                id="nao_recebe"
+                                name="beneficios[]"
+                                value="Não recebe"
+                                class="h-4 w-4 text-blue-600">
                             <span>Não recebe</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input type="checkbox" name="beneficios" class="h-4 w-4 text-blue-600">
+                            <input
+                                type="checkbox"
+                                name="beneficios[]" value="Bolsa Família" class="h-4 w-4 text-blue-600">
                             <span>Bolsa Família</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input type="checkbox" name="beneficios" class="h-4 w-4 text-blue-600">
+                            <input
+                                type="checkbox"
+                                name="beneficios[]"
+                                value="BPC - Idoso"
+                                class="h-4 w-4 text-blue-600">
                             <span>BPC - Idoso</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input type="checkbox" name="beneficios" class="h-4 w-4 text-blue-600">
+                            <input
+                                type="checkbox"
+                                name="beneficios[]"
+                                value="Aposentadoria"
+                                class="h-4 w-4 text-blue-600">
                             <span>Aposentadoria</span>
                         </label>
                     </div>
@@ -189,12 +211,8 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
 
             <!-- Botões de Ação (Ajustados para celular) -->
             <div class="flex flex-col sm:flex-row justify-end gap-4 pb-12">
-                <button type="reset" class="px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition duration-200">
-                    Limpar
-                </button>
-                <button type="submit" class="px-10 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition duration-200">
-                    Salvar Cadastro
-                </button>
+                <button type="reset" class="px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition duration-200">Limpar</button>
+                <button type="submit" class="px-10 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition duration-200">Salvar Cadastro</button>
             </div>
         </form>
     </div>
