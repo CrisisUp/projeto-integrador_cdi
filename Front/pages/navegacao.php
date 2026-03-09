@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: login.php"); // Se não estiver logado, volta pro login
+    header("Location: ../login.php"); // Se não estiver logado, volta pro login
     exit();
 }
 ?>
@@ -17,13 +17,13 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- 1. Estilo Global (Variáveis e Base) -->
-    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="../css/global.css">
 
     <!-- Script Global deve vir primeiro para aplicar o tema cedo -->
-    <script src="js/global.js"></script>
+    <script src="../js/global.js"></script>
 
     <!-- 2. Estilo Específico da Página -->
-    <link rel="stylesheet" href="css/navegacao.css">
+    <link rel="stylesheet" href="../css/navegacao.css">
 </head>
 
 <body>
@@ -32,12 +32,12 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
         <header class="sticky top-0 z-10 bg-opacity-90 shadow-sm" style="background-color: rgba(245, 240, 229, 0.95);">
             <div class="p-4 flex justify-between items-center">
                 <div class="flex items-center">
-                    <h2 class="text-lg font-medium">Bem Vindo <span class="font-bold">Username</span></h2>
+                    <h2 class="text-lg font-medium">Bem Vindo <span class="font-bold"><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></span></h2>
                 </div>
-                <button class="logout-btn">
+                <a href="../logout.php" class="logout-btn flex items-center gap-2">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sair</span>
-                </button>
+                </a>
             </div>
         </header>
 
@@ -113,7 +113,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
         </main>
 
     </div>
-    <script src="js/navegacao.js"></script>
+    <script src="../js/navegacao.js"></script>
 </body>
 
 </html>

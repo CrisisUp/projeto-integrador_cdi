@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: login.php"); // Se não estiver logado, volta pro login
+    header("Location: ../login.php"); // Se não estiver logado, volta pro login
     exit();
 }
 ?>
@@ -19,10 +19,10 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- 1. Estilo Global (Variáveis e Base) -->
-    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="../css/global.css">
 
     <!-- 2. SCRIPT GLOBAL (ESSENCIAL PARA O MODO ESCURO NÃO RESETAR) -->
-    <script src="js/global.js"></script>
+    <script src="../js/global.js"></script>
 
     <style>
         body {
@@ -53,7 +53,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
 <body class="bg-main min-h-screen flex flex-col md:flex-row overflow-x-hidden">
 
     <!-- INCLUSÃO DA SIDEBAR CENTRALIZADA -->
-    <?php include 'sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <!-- Conteúdo Principal -->
     <main class="flex-1 min-w-0 p-4 md:p-8">
@@ -105,14 +105,38 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
                 </div>
             </section>
 
-            <!-- SEÇÃO: CONTA (Exemplo de futura implementação) -->
-            <section class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden opacity-75">
-                <div class="bg-gray-700 text-white px-6 py-4 flex items-center">
+            <!-- SEÇÃO: SEGURANÇA (ALTERAÇÃO DE SENHA) -->
+            <section class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden animate-fade-in">
+                <div class="bg-gray-800 text-white px-6 py-4 flex items-center">
                     <i class="fas fa-user-shield mr-3 text-xl"></i>
                     <h2 class="text-lg font-semibold">Segurança da Conta</h2>
                 </div>
-                <div class="p-6 text-center text-gray-400 italic">
-                    Funcionalidades de segurança serão liberadas na próxima atualização.
+                <div class="p-6 md:p-8">
+                    <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider mb-6">Alterar Senha de Acesso</h3>
+                    
+                    <form id="formAlterarSenha" class="space-y-4 max-w-md">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Senha Atual</label>
+                            <input type="password" id="senha_atual" name="senha_atual" class="w-full border border-gray-300 rounded-xl py-2 px-4 focus:ring-2 focus:ring-purple-500 outline-none transition" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha</label>
+                                <input type="password" id="nova_senha" name="nova_senha" class="w-full border border-gray-300 rounded-xl py-2 px-4 focus:ring-2 focus:ring-purple-500 outline-none transition" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Nova Senha</label>
+                                <input type="password" id="confirmacao" name="confirmacao" class="w-full border border-gray-300 rounded-xl py-2 px-4 focus:ring-2 focus:ring-purple-500 outline-none transition" required>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-xl transition shadow-md">
+                                Atualizar Senha
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
@@ -120,7 +144,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     </main>
 
     <!-- Scripts de Funcionalidade -->
-    <script src="js/configuracoes.js"></script>
+    <script src="../js/configuracoes.js"></script>
 </body>
 
 </html>

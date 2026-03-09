@@ -1,235 +1,160 @@
 /**
- * ARQUIVO: convencional.js
- * Organizado por: Dados -> Funções -> Execução Segura
+ * ARQUIVO: convencional.js (Versão com Banco de Dados)
  */
 
-// 1. DADOS DE EXEMPLO
-const allPosts = [
-  {
-    id: 1,
-    username: "TechGuru",
-    date: "2023-06-15",
-    content:
-      "Acabei de lançar meu novo site! Confira e me diga o que você acha.",
-  },
-  {
-    id: 2,
-    username: "DesignMaster",
-    date: "2023-06-15",
-    content:
-      "Dica de UI: Sempre considere a hierarquia visual dos seus elementos.",
-  },
-  {
-    id: 3,
-    username: "CodeNinja",
-    date: "2023-06-14",
-    content: "Aprender uma nova linguagem de programação é sempre empolgante!",
-  },
-  {
-    id: 4,
-    username: "DevLife",
-    date: "2023-06-13",
-    content:
-      "Quando seu código funciona na primeira tentativa e você não sabe por quê 😅",
-  },
-  {
-    id: 5,
-    username: "TechNews",
-    date: "2023-06-12",
-    content: "Urgente: Novo framework JavaScript lançado!",
-  },
-  {
-    id: 6,
-    username: "UXResearcher",
-    date: "2023-06-11",
-    content: "Realizei testes com usuários hoje e obtive insights incríveis!",
-  },
-  {
-    id: 7,
-    username: "AIEnthusiast",
-    date: "2023-06-10",
-    content: "Os avanços em IA e aprendizado de máquina são incríveis!",
-  },
-];
+const ConvencionalApp = {
+    currentDate: new Date(),
+    selectedDate: null,
+    atividades: [],
+    monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
 
-// 2. VARIÁVEIS DE ESTADO
-let currentDate = new Date();
-let selectedDate = null;
-const monthNames = [
-  "Janeiro",
-  "Fevereiro",
-  "Março",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro",
-];
+    async init() {
+        await this.carregarAtividades();
+        this.renderCalendar();
+        this.bindEvents();
+    },
 
-// 3. FUNÇÕES (FERRAMENTAS)
+    async carregarAtividades(data = null) {
+        let url = `../api/get_atividades.php?tipo=convencional`;
+        if (data) url += `&data=${data}`;
 
-function renderPosts(posts) {
-  const container = document.getElementById("posts-container");
-  if (!container) return;
-  container.innerHTML = "";
+        try {
+            const resposta = await fetch(url);
+            this.atividades = await resposta.json();
+            this.renderPosts();
+        } catch (erro) {
+            console.error("Erro ao carregar atividades:", erro);
+        }
+    },
 
-  if (posts.length === 0) {
-    container.innerHTML = `<div class="p-8 text-center text-gray-500"><p class="text-xl">Nenhuma postagem nesta data.</p></div>`;
-    return;
-  }
+    async postarAtividade() {
+        const textarea = document.querySelector('textarea');
+        const conteudo = textarea.value.trim();
 
-  posts.forEach((post) => {
-    const postElement = document.createElement("div");
-    postElement.className =
-      "border-b border-gray-300 p-4 hover:bg-gray-100 transition-colors post";
-    postElement.innerHTML = `
-            <div class="flex">
-                <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="ml-3 flex-1">
-                    <div class="flex items-center">
-                        <span class="font-bold">${post.username}</span>
-                        <span class="text-gray-500 mx-1">·</span>
-                        <span class="text-gray-500">${new Date(post.date).toLocaleDateString("pt-BR")}</span>
+        if (!conteudo) return alert("Por favor, descreva a atividade.");
+
+        const btn = document.querySelector('button.bg-green-600');
+        btn.disabled = true;
+        btn.textContent = "Salvando...";
+
+        try {
+            const resposta = await fetch('../api/salvar_atividade.php', {
+                method: 'POST',
+                body: JSON.stringify({
+                    tipo: 'convencional',
+                    descricao: conteudo
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const resultado = await resposta.json();
+
+            if (resultado.status === 'sucesso') {
+                textarea.value = "";
+                await this.carregarAtividades(); // Recarrega o feed
+            } else {
+                alert("Erro ao salvar: " + resultado.mensagem);
+            }
+        } catch (erro) {
+            alert("Erro técnico ao salvar atividade.");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Postar Atividade";
+        }
+    },
+
+    renderPosts() {
+        const container = document.getElementById("posts-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        if (this.atividades.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center text-gray-400"><p class="text-lg">Nenhuma atividade registrada.</p></div>`;
+            return;
+        }
+
+        this.atividades.forEach(post => {
+            const postElement = document.createElement("div");
+            postElement.className = "border-b border-gray-100 p-6 hover:bg-gray-50/50 transition-colors";
+            
+            // Auditoria: Se não houver nome de funcionário, usa um padrão
+            const autor = post.funcionario_nome || "Sistema";
+
+            postElement.innerHTML = `
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <i class="fas fa-clipboard-check"></i>
                     </div>
-                    <p class="mt-1">${post.content}</p>
-                </div>
-            </div>`;
-    container.appendChild(postElement);
-  });
-}
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-bold text-gray-800">${autor}</span>
+                            <span class="text-gray-400 text-xs">·</span>
+                            <span class="text-gray-400 text-xs">${new Date(post.data_postagem).toLocaleString('pt-BR')}</span>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">${post.descricao}</p>
+                    </div>
+                </div>`;
+            container.appendChild(postElement);
+        });
+    },
 
-function renderCalendar() {
-  const monthYear = document.getElementById("monthYear");
-  const calendarDays = document.getElementById("calendarDays");
-  if (!monthYear || !calendarDays) return;
+    renderCalendar() {
+        const monthYear = document.getElementById("monthYear");
+        const calendarDays = document.getElementById("calendarDays");
+        if (!monthYear || !calendarDays) return;
 
-  monthYear.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-  calendarDays.innerHTML = "";
+        monthYear.textContent = `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+        calendarDays.innerHTML = "";
 
-  const firstDay = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1,
-  ).getDay();
-  const daysInMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0,
-  ).getDate();
+        const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
+        const daysInMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
 
-  for (let i = 0; i < firstDay; i++) {
-    calendarDays.appendChild(document.createElement("div"));
-  }
+        for (let i = 0; i < firstDay; i++) calendarDays.appendChild(document.createElement("div"));
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dayElement = document.createElement("div");
-    const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement("div");
+            const dateString = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            
+            dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm transition-all
+                ${this.selectedDate === dateString ? 'bg-green-600 text-white font-bold shadow-md' : 'text-gray-600 hover:bg-green-50'}`;
+            dayElement.textContent = day;
 
-    const hasPosts = allPosts.some((p) => p.date === dateString);
-    dayElement.className = `calendar-day h-8 w-8 flex items-center justify-center rounded-full cursor-pointer ${hasPosts ? "text-blue-600 font-bold" : "text-gray-500"} ${selectedDate === dateString ? "bg-blue-500 text-white" : ""}`;
-    dayElement.textContent = day;
+            dayElement.onclick = () => {
+                if (this.selectedDate === dateString) {
+                    this.selectedDate = null;
+                    document.getElementById("activeFilter").classList.add("hidden");
+                    this.carregarAtividades();
+                } else {
+                    this.selectedDate = dateString;
+                    this.carregarAtividades(dateString);
+                    document.getElementById("activeFilter").classList.remove("hidden");
+                    document.getElementById("filterDate").textContent = `${day} de ${this.monthNames[this.currentDate.getMonth()]}`;
+                }
+                this.renderCalendar();
+            };
+            calendarDays.appendChild(dayElement);
+        }
+    },
 
-    dayElement.onclick = () => {
-      if (selectedDate === dateString) {
-        selectedDate = null;
-      } else {
-        selectedDate = dateString;
-        renderPosts(allPosts.filter((p) => p.date === selectedDate));
-        document.getElementById("activeFilter").classList.remove("hidden");
-        document.getElementById("filterDate").textContent =
-          dayElement.textContent;
-      }
-      renderCalendar();
-      if (!selectedDate) clearFilter();
-    };
-    calendarDays.appendChild(dayElement);
-  }
-}
+    bindEvents() {
+        const btnPost = document.querySelector('button.bg-green-600');
+        if (btnPost) btnPost.onclick = () => this.postarAtividade();
 
-function clearFilter() {
-  selectedDate = null;
-  const filterTag = document.getElementById("activeFilter");
-  if (filterTag) filterTag.classList.add("hidden");
-  renderCalendar();
-  renderPosts(allPosts);
-}
-
-// 4. INICIALIZAÇÃO (O "ABRAÇO" DE SEGURANÇA)
-document.addEventListener("DOMContentLoaded", () => {
-  renderCalendar();
-  renderPosts(allPosts);
-
-  // Selecionar botões e adicionar eventos
-  const btnPrev = document.getElementById("prevMonth");
-  const btnNext = document.getElementById("nextMonth");
-  const btnClear = document.getElementById("clearFilter");
-  const monthYearTitle = document.getElementById("monthYear");
-
-  if (btnPrev)
-    btnPrev.onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar();
-    };
-  if (btnNext)
-    btnNext.onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar();
-    };
-  if (btnClear) btnClear.onclick = clearFilter;
-
-  // Lógica do seletor de mês/ano
-  if (monthYearTitle) {
-    monthYearTitle.onclick = () => {
-      const selector = document.getElementById("monthYearSelector");
-      if (selector)
-        selector.style.display =
-          selector.style.display === "block" ? "none" : "block";
-    };
-  }
-
-  // console.log("Módulo Convencional Ativado!");
-});
-
-/*
-
-(function () {
-  function c() {
-    var b = a.contentDocument || a.contentWindow.document;
-    if (b) {
-      var d = b.createElement("script");
-      d.innerHTML =
-        "window.__CF$cv$params={r:'93937ab93647621f',t:'MTc0NjE0NjU1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-      b.getElementsByTagName("head")[0].appendChild(d);
+        document.getElementById("prevMonth").onclick = () => {
+            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+            this.renderCalendar();
+        };
+        document.getElementById("nextMonth").onclick = () => {
+            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+            this.renderCalendar();
+        };
+        document.getElementById("clearFilter").onclick = () => {
+            this.selectedDate = null;
+            document.getElementById("activeFilter").classList.add("hidden");
+            this.carregarAtividades();
+            this.renderCalendar();
+        };
     }
-  }
-  if (document.body) {
-    var a = document.createElement("iframe");
-    a.height = 1;
-    a.width = 1;
-    a.style.position = "absolute";
-    a.style.top = 0;
-    a.style.left = 0;
-    a.style.border = "none";
-    a.style.visibility = "hidden";
-    document.body.appendChild(a);
-    if ("loading" !== document.readyState) c();
-    else if (window.addEventListener)
-      document.addEventListener("DOMContentLoaded", c);
-    else {
-      var e = document.onreadystatechange || function () {};
-      document.onreadystatechange = function (b) {
-        e(b);
-        "loading" !== document.readyState &&
-          ((document.onreadystatechange = e), c());
-      };
-    }
-  }
-})();
+};
 
-*/
+document.addEventListener("DOMContentLoaded", () => ConvencionalApp.init());

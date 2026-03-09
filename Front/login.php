@@ -42,7 +42,7 @@
                 <?php endif; ?>
 
                 <!-- Formulário de Login -->
-                <form id="loginForm" action="auth.php" method="POST" class="mt-4">
+                <form id="loginForm" action="includes/auth.php" method="POST" class="mt-4">
                     <div class="input-group">
                         <i class="input-icon fas fa-user"></i>
                         <input type="text" id="email" name="email" class="form-input" placeholder="Usuário ou Email" required>

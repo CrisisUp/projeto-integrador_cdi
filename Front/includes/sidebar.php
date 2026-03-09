@@ -41,7 +41,7 @@
     </nav>
 
     <div class="p-4 border-t border-gray-100">
-        <a href="logout.php" class="flex items-center p-3 text-red-600 sidebar-item rounded-full whitespace-nowrap transition hover:bg-red-50 font-medium md:mt-4">
+        <a href="../logout.php" class="flex items-center p-3 text-red-600 sidebar-item rounded-full whitespace-nowrap transition hover:bg-red-50 font-medium md:mt-4">
             <i class="fas fa-sign-out-alt md:mr-4 text-xl"></i><span class="text-xl">Sair</span>
         </a>
     </div>

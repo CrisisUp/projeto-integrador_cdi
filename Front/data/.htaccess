@@ -1,0 +1,2 @@
+1# Bloqueia o acesso a todos os arquivos desta pasta via navegador
+Require all denied

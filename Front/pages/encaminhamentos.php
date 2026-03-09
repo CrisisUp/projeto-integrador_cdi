@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: login.php"); // Se não estiver logado, volta pro login
+    header("Location: ../login.php"); // Se não estiver logado, volta pro login
     exit();
 }
 ?>
@@ -19,11 +19,11 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- 1. Estilos Globais -->
-    <link rel="stylesheet" href="css/global.css">
-    <script src="js/global.js"></script>
+    <link rel="stylesheet" href="../css/global.css">
+    <script src="../js/global.js"></script>
 
     <!-- 2. Scripts Específicos (Com DEFER para carregar após o HTML) -->
-    <script src="js/encaminhamentos.js" defer></script>
+    <script src="../js/encaminhamentos.js" defer></script>
 
     <style>
         /* Ajuste para o efeito de vidro no cabeçalho */
@@ -42,7 +42,7 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
 <body class="bg-main min-h-screen flex flex-col md:flex-row">
 
     <!-- INCLUSÃO DA SIDEBAR CENTRALIZADA -->
-    <?php include 'sidebar.php'; ?>
+    <?php include '../includes/sidebar.php'; ?>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 p-6 md:p-10 flex flex-col min-w-0">

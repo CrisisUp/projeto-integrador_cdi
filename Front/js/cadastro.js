@@ -141,7 +141,7 @@ const CadastroApp = {
 
     try {
       // Ajustado para o nome do arquivo que funcionou anteriormente
-      const resposta = await fetch("salvar_dados_cadastrados.php", {
+      const resposta = await fetch("../api/salvar_dados_cadastrados.php", {
         method: "POST",
         body: JSON.stringify(dados),
         headers: { "Content-Type": "application/json" },
