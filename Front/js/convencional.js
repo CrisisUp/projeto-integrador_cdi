@@ -1,12 +1,11 @@
 /**
- * ARQUIVO: convencional.js (Versão com Banco de Dados)
+ * ARQUIVO: convencional.js (Versão com Banco de Dados e CDIUtils)
  */
 
 const ConvencionalApp = {
     currentDate: new Date(),
     selectedDate: null,
     atividades: [],
-    monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
 
     async init() {
         await this.carregarAtividades();
@@ -77,7 +76,6 @@ const ConvencionalApp = {
             const postElement = document.createElement("div");
             postElement.className = "border-b border-gray-100 p-6 hover:bg-gray-50/50 transition-colors";
             
-            // Auditoria: Se não houver nome de funcionário, usa um padrão
             const autor = post.funcionario_nome || "Sistema";
 
             postElement.innerHTML = `
@@ -103,17 +101,21 @@ const ConvencionalApp = {
         const calendarDays = document.getElementById("calendarDays");
         if (!monthYear || !calendarDays) return;
 
-        monthYear.textContent = `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+        const month = this.currentDate.getMonth();
+        const year = this.currentDate.getFullYear();
+        const monthNames = CDIUtils.getMonthNames();
+
+        monthYear.textContent = `${monthNames[month]} ${year}`;
         calendarDays.innerHTML = "";
 
-        const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
-        const daysInMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
+        const firstDay = CDIUtils.getFirstDayOfMonth(year, month);
+        const daysInMonth = CDIUtils.getDaysInMonth(year, month);
 
         for (let i = 0; i < firstDay; i++) calendarDays.appendChild(document.createElement("div"));
 
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement("div");
-            const dateString = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
             dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm transition-all
                 ${this.selectedDate === dateString ? 'bg-green-600 text-white font-bold shadow-md' : 'text-gray-600 hover:bg-green-50'}`;
@@ -128,7 +130,7 @@ const ConvencionalApp = {
                     this.selectedDate = dateString;
                     this.carregarAtividades(dateString);
                     document.getElementById("activeFilter").classList.remove("hidden");
-                    document.getElementById("filterDate").textContent = `${day} de ${this.monthNames[this.currentDate.getMonth()]}`;
+                    document.getElementById("filterDate").textContent = `${day} de ${monthNames[month]}`;
                 }
                 this.renderCalendar();
             };

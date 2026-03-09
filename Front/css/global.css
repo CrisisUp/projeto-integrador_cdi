@@ -1,249 +1,97 @@
-/**
- * ARQUIVO: global.css - CDI Digital
- * Versão Otimizada: Variáveis -> Reset -> Temas -> Componentes
- */
+/* css/global.css - Estilos Compartilhados do Sistema CDI */
 
-/* 1. VARIÁVEIS E TEMAS */
 :root {
-  /* Tipografia */
-  --font-main: "Segoe UI", system-ui, sans-serif;
-  --text-base: 1rem;
-  --radius-lg: 12px;
-  --transition: all 0.3s ease;
-
-  /* Cores - Modo Claro (Padrão) */
-  --primary-color: #1d9bf0;
-  --bg-main: #f8fafc;
-  --card-bg: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #6b7280;
-  --border-color: #e2e8f0;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --primary-color: #1d9bf0;
+    --primary-light: rgba(29, 155, 240, 0.1);
+    --bg-main: #f5f0e5;
+    --text-main: #1f2937;
+    --white: #ffffff;
+    --border-color: #e5e7eb;
+    --transition-fast: 0.2s ease;
+    --radius-md: 12px;
+    --radius-lg: 24px;
 }
 
-/* Sobrescrita para Modo Escuro */
-.dark-mode {
-  --bg-main: #020617;
-  --card-bg: #0f172a;
-  --text-main: #f1f5f9;
-  --text-muted: #9ca3af;
-  --border-color: #1e293b;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* 2. RESET E BASE */
-* {
-  box-sizing: border-box;
-}
-
+/* 1. RESET E BASE */
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  margin: 0;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Garante que todos os textos herdem a cor do tema automaticamente */
-h1,
-h2,
-h3,
-h4,
-p,
-span,
-label,
-td,
-th,
-i {
-  color: inherit;
+/* 2. MODO ESCURO (DEFINIÇÕES GLOBAIS) */
+body.dark-mode {
+    --bg-main: #111827; /* Fundo cinza muito escuro */
+    --text-main: #f9fafb; /* Texto quase branco */
+    --white: #1f2937;    /* Cards ficam em cinza escuro */
+    --border-color: #374151;
 }
 
-/* 3. MAPEAMENTO DE CLASSES (O "Pulo do Gato") 
-   Aqui dizemos que as classes do Tailwind devem usar nossas variáveis */
-
-/* Fundo de Cards e Sidebar */
-.bg-white,
-.login-card,
-.sidebar,
-aside,
-.bg-gray-50 {
-  background-color: var(--card-bg) !important;
-  color: var(--text-main);
+/* Aplicando a cor de fundo e texto globalmente */
+.dark-mode body {
+    background-color: var(--bg-main);
 }
 
-/* Fundo Geral */
-.bg-main,
-.bg-gray-100 {
-  background-color: var(--bg-main) !important;
+.dark-mode .bg-white {
+    background-color: var(--white) !important;
 }
 
-/* Bordas Dinâmicas */
-.border,
-.border-r,
-.border-b,
-.grid-cell {
-  border-color: var(--border-color) !important;
+.dark-mode .text-gray-800, 
+.dark-mode .text-gray-700 {
+    color: var(--text-main) !important;
 }
 
-/* 4. COMPONENTES ESPECÍFICOS */
-
-/* Inputs */
-input,
-select,
-textarea {
-  background-color: var(--card-bg);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 8px;
+.dark-mode .text-gray-500,
+.dark-mode .text-gray-600 {
+    color: #9ca3af !important; /* Texto secundário cinza claro */
 }
 
-/* Scrollbar Personalizada */
+.dark-mode .border-gray-200,
+.dark-mode .border-gray-300 {
+    border-color: var(--border-color) !important;
+}
+
+/* 3. GLASSMORPHISM (CABEÇALHOS) */
+.glass-header {
+    background-color: rgba(245, 240, 229, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+body.dark-mode .glass-header {
+    background-color: rgba(17, 24, 39, 0.85);
+}
+
+/* 4. SCROLLBARS PERSONALIZADAS */
 ::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
+    height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+    background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: 10px;
+    background: #cbd5e1;
+    border-radius: 10px;
 }
 
-/* Utilitários de Texto */
-.text-muted,
-.text-gray-500,
-.text-gray-600 {
-  color: var(--text-muted) !important;
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: #4b5563;
 }
 
-/* Sombras Dinâmicas */
-.shadow,
-.shadow-md,
-.shadow-lg {
-  box-shadow: var(--shadow) !important;
+/* 5. COMPONENTES REUTILIZÁVEIS */
+.shadow-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
-/* Hover na Sidebar */
-.sidebar-item:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* No seu global.css */
-
-/* Faz a tabela ocupar 100% do container */
-table {
-  width: 100%;
-  table-layout: fixed; /* Ajuda a manter as colunas com tamanhos iguais */
-}
-
-/* Coluna do Nome (mais larga) */
-th:first-child,
-td:first-child {
-  width: 180px;
-  position: sticky; /* Opcional: mantém o nome visível ao dar scroll lateral */
-  left: 0;
-  font-size: larger;
-  background: var(--card-bg);
-  z-index: 10;
-}
-
-/* Colunas dos Dias (ajustam-se ao espaço restante) */
-.grid-cell,
-th:not(:first-child) {
-  min-width: 30px;
-  text-align: center;
-}
-
-/* ESTILO ÚNICO PARA A MARCAÇÃO */
-.grid-cell.active-mark {
-  color: var(--primary-color) !important;
-  font-weight: 500 !important;
-}
-
-/* NO MODO ESCURO, O CSS RESOLVE SOZINHO */
-.dark-mode .grid-cell.active-mark {
-  color: var(--primary-color) !important;
-}
-
-/* 2. A coluna de TOTAL (Direita) e a linha de TOTAL (Baixo) */
-.total-column,
-.footer-row td,
-#total-geral {
-  color: var(--primary-color) !important;
-  font-weight: bold;
-}
-
-/* 3. Efeito visual nas células ao passar o mouse */
-.grid-cell:hover {
-  background-color: var(--primary-light);
-  cursor: pointer;
-}
-
-/* Estilo para a linha e coluna de Totais */
-.footer-label,
-.footer-cell,
-.footer-total,
-[data-row-sum] {
-  font-size: 1rem !important;
-  background-color: var(--card-bg) !important; /* Fundo igual ao do card */
-  color: var(--primary-color) !important; /* Texto na cor do seu tema */
-  border: 1px solid var(--border-color) !important;
-}
-
-/* Destaque especial para o Total Geral (canto inferior direito) */
-#total-sum {
-  background-color: var(--primary-color) !important;
-  color: #ffffff !important; /* Texto branco para contrastar com o fundo forte */
-}
-
-/* Ajuste para o Modo Escuro */
-.dark-mode .footer-cell,
-.dark-mode .footer-label {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.05
-  ) !important; /* Um cinza bem sutil */
-  color: var(--primary-color) !important;
-}
-
-.grid-container {
-  border-radius: 8px !important; /* Valor menor para um visual mais sóbrio */
-  overflow: hidden; /* Garante que os cantos da tabela não "vazem" o arredondamento */
-}
-
-/* Cabeçalhos de dia comuns */
-.day-header {
-  background-color: var(--card-bg);
-  color: var(--text-main);
-  font-size: medium;
-}
-
-/* Destaque sutil para finais de semana */
-.weekend-header,
-.weekend-cell {
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.05
-  ) !important; /* Cinza bem leve no claro */
-  color: var(--text-main);
-}
-
-/* No Modo Escuro, o final de semana fica levemente mais escuro que o card */
-.dark-mode .weekend-header,
-.dark-mode .weekend-cell {
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  color: var(--text-muted); /* Número do dia fica mais discreto */
-}
-
-/* Se a célula de final de semana estiver MARCADA com "1", a cor do tema vence */
-.weekend-cell.active-mark {
-  background-color: var(--primary-light) !important;
-  color: var(--primary-color) !important;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -103,6 +103,4 @@
 
     <!-- Script da Engine -->
     <script src="../js/convencional.js"></script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>

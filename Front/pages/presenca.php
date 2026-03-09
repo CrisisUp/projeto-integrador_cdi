@@ -74,6 +74,4 @@
 
     <!-- Scripts de Funcionalidade -->
     <script src="../js/presenca.js"></script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>

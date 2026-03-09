@@ -91,6 +91,4 @@
 
     </div>
     <script src="../js/navegacao.js"></script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>

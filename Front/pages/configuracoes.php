@@ -121,6 +121,4 @@
 
     <!-- Scripts de Funcionalidade -->
     <script src="../js/configuracoes.js"></script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>

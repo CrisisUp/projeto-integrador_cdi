@@ -184,6 +184,4 @@
             document.getElementById('idade').value = idade >= 0 ? idade + " anos" : "Data inválida";
         }
     </script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>

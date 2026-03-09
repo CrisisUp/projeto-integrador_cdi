@@ -98,6 +98,4 @@
 
     <!-- Scripts -->
     <script src="../js/enfermagem.js"></script>
-</body>
-
-</html>
+<?php include '../includes/footer.php'; ?>
