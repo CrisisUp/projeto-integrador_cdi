@@ -15,38 +15,41 @@ echo "<!DOCTYPE html>
         th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; }
         th { background: #f9fafb; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; }
         .tag { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .tag-blue { background: #dbeafe; color: #1e40af; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
         .tag-green { background: #dcfce7; color: #166534; }
     </style>
 </head>
 <body>
 
-    <h1 class='text-3xl font-bold mb-8 text-gray-800'>🔍 Inspeção de Banco de Dados (SQLite)</h1>
+    <h1 class='text-3xl font-bold mb-8 text-gray-800'>🔍 Inspeção de Banco de Dados (Auditoria)</h1>
 
     <!-- 1. TABELA DE PACIENTES -->
     <div class='card'>
-        <h2>Pacientes Cadastrados</h2>
+        <h2>Lista de Pacientes (Todos os Status)</h2>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Matrícula</th>
-                    <th>NIS</th>
-                    <th>Data Nasc.</th>
-                    <th>Cadastrado em</th>
+                    <th>Status</th>
+                    <th>Removido por</th>
+                    <th>Data Remoção</th>
                 </tr>
             </thead>
             <tbody>";
-            $pacientes = $pdo->query("SELECT * FROM pacientes ORDER BY nome ASC")->fetchAll();
+            $sql = "SELECT p.*, u.nome as removido_por_nome 
+                    FROM pacientes p 
+                    LEFT JOIN usuarios u ON p.inativado_por = u.id 
+                    ORDER BY p.status ASC, p.nome ASC";
+            $pacientes = $pdo->query($sql)->fetchAll();
             foreach($pacientes as $p) {
+                $statusTag = $p['status'] === 'ativo' ? 'tag-green' : 'tag-red';
                 echo "<tr>
                     <td>{$p['id']}</td>
-                    <td class='font-bold text-blue-600'>{$p['nome']}</td>
-                    <td>" . ($p['matricula'] ?? '---') . "</td>
-                    <td>" . ($p['nis'] ?? '---') . "</td>
-                    <td>{$p['data_nascimento']}</td>
-                    <td class='text-gray-400'>{$p['cadastrado_em']}</td>
+                    <td class='font-bold'>{$p['nome']}</td>
+                    <td><span class='tag {$statusTag}'>" . strtoupper($p['status']) . "</span></td>
+                    <td>" . ($p['removido_por_nome'] ?? '---') . "</td>
+                    <td class='text-gray-400'>" . ($p['inativado_em'] ?? '---') . "</td>
                 </tr>";
             }
 echo "      </tbody>
@@ -55,22 +58,24 @@ echo "      </tbody>
 
     <!-- 2. TABELA DE ATIVIDADES -->
     <div class='card'>
-        <h2>Últimas Atividades / Evoluções</h2>
+        <h2>Auditoria de Postagens</h2>
         <table>
             <thead>
                 <tr>
                     <th>Data/Hora</th>
-                    <th>Tipo</th>
+                    <th>Autor</th>
                     <th>Descrição</th>
                 </tr>
             </thead>
             <tbody>";
-            $atividades = $pdo->query("SELECT * FROM atividades ORDER BY data_postagem DESC LIMIT 10")->fetchAll();
+            $atividades = $pdo->query("SELECT a.*, u.nome as funcionario 
+                                     FROM atividades a 
+                                     LEFT JOIN usuarios u ON a.usuario_id = u.id 
+                                     ORDER BY a.data_postagem DESC LIMIT 10")->fetchAll();
             foreach($atividades as $a) {
-                $tagClass = $a['tipo'] === 'enfermagem' ? 'tag-blue' : 'tag-green';
                 echo "<tr>
                     <td class='whitespace-nowrap'>{$a['data_postagem']}</td>
-                    <td><span class='tag {$tagClass}'>" . strtoupper($a['tipo']) . "</span></td>
+                    <td class='font-bold text-blue-600'>" . ($a['funcionario'] ?? 'Sistema') . "</td>
                     <td class='text-gray-700'>{$a['descricao']}</td>
                 </tr>";
             }
@@ -78,37 +83,8 @@ echo "      </tbody>
         </table>
     </div>
 
-    <!-- 3. TABELA DE PRESENÇA -->
-    <div class='card'>
-        <h2>Registros de Presença (Frequência)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Paciente (ID)</th>
-                    <th>Data</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>";
-            $presencas = $pdo->query("SELECT p.nome, pr.data_presenca, pr.status 
-                                     FROM presenca pr 
-                                     JOIN pacientes p ON p.id = pr.paciente_id 
-                                     ORDER BY pr.data_presenca DESC LIMIT 15")->fetchAll();
-            foreach($presencas as $pr) {
-                $status = $pr['status'] == 1 ? '✅ PRESENTE' : '❌ AUSENTE';
-                echo "<tr>
-                    <td class='font-bold'>{$pr['nome']}</td>
-                    <td>{$pr['data_presenca']}</td>
-                    <td class='" . ($pr['status'] == 1 ? 'text-green-600' : 'text-red-600') . " font-bold'>{$status}</td>
-                </tr>";
-            }
-echo "      </tbody>
-        </table>
-    </div>
-
     <div class='text-center text-gray-400 text-sm'>
-        Caminho do Banco: <code>data/clinica.db</code><br>
-        Gerado automaticamente pelo Assistente Gemini
+        Caminho do Banco: <code>data/clinica.db</code>
     </div>
 
 </body>

@@ -1,55 +1,6 @@
-<?php
-session_start();
-if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: ../login.php"); // Se não estiver logado, volta pro login
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - CDI</title>
-    <!-- Tailwind CSS -->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 1. Estilo Global (Variáveis e Base) -->
-    <link rel="stylesheet" href="../css/global.css">
-    <!-- Script Global deve vir primeiro para aplicar o tema cedo -->
-    <script src="../js/global.js"></script>
-
-    <!-- Script Global deve vir primeiro para aplicar o tema cedo -->
-    <script src="../js/global.js"></script>
-
-    <!-- 2. Estilo Específico da Página -->
-    <link rel="stylesheet" href="../css/cadastro.css">
-
-    <style>
-        /* Ajuste para garantir que o fundo creme do CDI se mantenha */
-        body {
-            background-color: var(--bg-main, #f5f0e5);
-        }
-
-        /* Estilização dos inputs para manter o padrão CDI */
-        .form-input-style {
-            width: 100%;
-            border: 1px solid #d1d5db;
-            border-radius: var(--radius-md, 8px);
-            padding: 0.5rem;
-            outline: none;
-            transition: var(--transition-fast);
-        }
-
-        .form-input-style:focus {
-            border-color: var(--primary-color, #1d9bf0);
-            box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.1);
-        }
-    </style>
+<?php include '../includes/header.php'; ?>
+<title>Cadastro - CDI</title>
+<link rel="stylesheet" href="../css/cadastro.css">
 </head>
 
 <body class="bg-main min-h-screen flex flex-col md:flex-row">

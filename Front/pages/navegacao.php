@@ -1,28 +1,5 @@
-<?php
-session_start();
-if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: ../login.php"); // Se não estiver logado, volta pro login
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu de Opções</title>
-    <!--script-- src="https://cdn.tailwindcss.com"></!--script-->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 1. Estilo Global (Variáveis e Base) -->
-    <link rel="stylesheet" href="../css/global.css">
-
-    <!-- Script Global deve vir primeiro para aplicar o tema cedo -->
-    <script src="../js/global.js"></script>
-
-    <!-- 2. Estilo Específico da Página -->
+<?php include '../includes/header.php'; ?>
+    <title>Menu de Opções - CDI</title>
     <link rel="stylesheet" href="../css/navegacao.css">
 </head>
 

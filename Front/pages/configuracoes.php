@@ -1,29 +1,5 @@
-<?php
-session_start();
-if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: ../login.php"); // Se não estiver logado, volta pro login
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include '../includes/header.php'; ?>
     <title>Configurações - CDI</title>
-    <!-- Tailwind CSS -->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 1. Estilo Global (Variáveis e Base) -->
-    <link rel="stylesheet" href="../css/global.css">
-
-    <!-- 2. SCRIPT GLOBAL (ESSENCIAL PARA O MODO ESCURO NÃO RESETAR) -->
-    <script src="../js/global.js"></script>
-
     <style>
         body {
             background-color: var(--bg-main, #f5f0e5);

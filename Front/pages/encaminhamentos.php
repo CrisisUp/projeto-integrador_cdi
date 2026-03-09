@@ -1,30 +1,7 @@
-<?php
-session_start();
-if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
-    header("Location: ../login.php"); // Se não estiver logado, volta pro login
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include '../includes/header.php'; ?>
     <title>Encaminhamentos - CDI</title>
-
-    <!-- CSS e Bibliotecas -->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 1. Estilos Globais -->
-    <link rel="stylesheet" href="../css/global.css">
-    <script src="../js/global.js"></script>
-
-    <!-- 2. Scripts Específicos (Com DEFER para carregar após o HTML) -->
+    <!-- Scripts Específicos -->
     <script src="../js/encaminhamentos.js" defer></script>
-
     <style>
         /* Ajuste para o efeito de vidro no cabeçalho */
         .glass-header {

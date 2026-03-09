@@ -115,3 +115,34 @@
 #total-sum {
   border-radius: 4px !important; /* Em vez de circular, fica um quadrado arredondado */
 }
+
+/* Estilos específicos para a tabela de presença */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 10px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+  border: 2px solid var(--white);
+}
+
+.grid-cell {
+  min-width: 40px;
+  height: 40px;
+}
+
+/* Backdrop blur para o cabeçalho no scroll */
+.glass-header {
+  background-color: rgba(245, 240, 229, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark-mode .glass-header {
+  background-color: rgba(17, 24, 39, 0.8);
+}
