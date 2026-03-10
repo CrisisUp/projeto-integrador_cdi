@@ -1,5 +1,5 @@
 /**
- * ARQUIVO: encaminhamentos.js (Versão com Banco de Dados e Filtros Ativos)
+ * ARQUIVO: encaminhamentos.js (Versão com Vínculo ao Paciente)
  */
 
 const EncaminhamentoApp = {
@@ -8,6 +8,25 @@ const EncaminhamentoApp = {
     async init() {
         await this.carregar();
         this.bindEvents();
+        await this.carregarListaPacientes();
+    },
+
+    async carregarListaPacientes() {
+        try {
+            const res = await fetch("../api/get_cadastrados.php");
+            const pacientes = await res.json();
+            const select = document.getElementById("select-pacientes");
+            if (select) {
+                pacientes.forEach(p => {
+                    const opt = document.createElement("option");
+                    opt.value = p.id;
+                    opt.textContent = `${p.nome} (Matrícula: ${p.matricula || '---'})`;
+                    select.appendChild(opt);
+                });
+            }
+        } catch (e) {
+            console.error("Erro ao carregar lista de pacientes:", e);
+        }
     },
 
     async carregar() {
@@ -33,7 +52,7 @@ const EncaminhamentoApp = {
             container.innerHTML = `
                 <div class="p-20 text-center text-gray-400">
                     <i class="fas fa-folder-open text-4xl mb-4"></i>
-                    <p>Nenhum encaminhamento encontrado com os filtros aplicados.</p>
+                    <p>Nenhum encaminhamento encontrado.</p>
                 </div>`;
             return;
         }
@@ -56,7 +75,8 @@ const EncaminhamentoApp = {
                         <i class="fas ${isConcluido ? 'fa-check-circle' : 'fa-file-medical'}"></i>
                     </div>
                     <div class="ml-4">
-                        <h3 class="font-bold text-gray-800 text-lg ${isConcluido ? 'line-through opacity-50' : ''}">${item.paciente}</h3>
+                        <h3 class="font-bold text-gray-800 text-lg ${isConcluido ? 'line-through opacity-50' : ''}">${item.paciente_nome}</h3>
+                        <p class="text-xs text-blue-500 font-bold uppercase tracking-tighter mb-1">Matrícula: ${item.matricula || '---'}</p>
                         <p class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i> ${item.destino}</p>
                         <p class="text-[10px] text-gray-400 mt-1 uppercase">Registrado por: ${autor}</p>
                     </div>
@@ -88,11 +108,9 @@ const EncaminhamentoApp = {
     },
 
     bindEvents() {
-        // Filtros (Busca e Status)
         document.querySelector('input[placeholder="Digite o nome do idoso..."]').addEventListener('input', () => this.carregar());
         document.querySelector('select').addEventListener('change', () => this.carregar());
 
-        // Novo Encaminhamento
         document.getElementById("btn-novo-encaminhamento")?.addEventListener("click", () => this.toggleModal(true));
         document.getElementById("form-encaminhamento")?.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -103,7 +121,7 @@ const EncaminhamentoApp = {
     async handleSalvar(form) {
         const formData = new FormData(form);
         const dados = {
-            paciente: formData.get("paciente"),
+            paciente_id: formData.get("paciente_id"),
             data: formData.get("data"),
             urgencia: formData.get("urgencia"),
             destino: formData.get("destino")
@@ -147,7 +165,16 @@ const EncaminhamentoApp = {
         const modal = document.getElementById("modal-encaminhamento");
         if (modal) {
             show ? modal.classList.remove("hidden") : modal.classList.add("hidden");
-            if (show) document.querySelector('input[name="paciente"]').focus();
+            
+            if (show) {
+                // Bloqueia datas retroativas
+                const inputData = document.querySelector('input[name="data"]');
+                if (inputData) {
+                    const hoje = new Date().toISOString().split('T')[0];
+                    inputData.setAttribute('min', hoje);
+                    inputData.value = hoje; // Define hoje como padrão
+                }
+            }
         }
     }
 };

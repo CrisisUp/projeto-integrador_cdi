@@ -1,123 +1,113 @@
 /**
- * ARQUIVO: cadastro.js (Versão Final Consolidada)
+ * ARQUIVO: cadastro.js (Versão Final com Edição)
  */
 
 const CadastroApp = {
   init() {
     this.bindEvents();
     this.aplicarMascaras();
-    console.log("CadastroApp: Engine carregada com validação.");
+    this.carregarListaEdicao();
+    console.log("CadastroApp: Engine pronta com suporte a Edição.");
+  },
+
+  async carregarListaEdicao() {
+    try {
+      const res = await fetch("../api/get_cadastrados.php");
+      const pacientes = await res.json();
+      const select = document.getElementById("select-editar");
+      if (select) {
+        // Limpa opções antigas exceto a primeira
+        select.innerHTML = '<option value="">Novo Cadastro...</option>';
+        pacientes.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = p.nome;
+          select.appendChild(opt);
+        });
+      }
+    } catch (e) { console.error(e); }
+  },
+
+  async carregarDadosParaEdicao(id) {
+    if (!id) { this.resetarFormulario(); return; }
+
+    try {
+      const res = await fetch(`../api/get_paciente_por_id.php?id=${id}`);
+      const result = await res.json();
+
+      if (result.status === 'sucesso') {
+        this.preencherFormulario(result.paciente);
+      }
+    } catch (e) { alert("Erro ao carregar dados."); }
+  },
+
+  preencherFormulario(p) {
+    document.getElementById("paciente_id").value = p.id;
+    document.getElementById("matricula").value = p.matricula || "";
+    document.getElementById("nome").value = p.nome;
+    document.getElementById("sexo").value = p.sexo || "";
+    document.getElementById("cor_raca").value = p.cor_raca || "";
+    document.getElementById("nis").value = p.nis || "";
+    document.getElementById("data_nascimento").value = p.data_nascimento || "";
+    document.getElementById("status").value = p.status || "ativo";
+    
+    if (typeof calcularIdade === 'function') calcularIdade();
+
+    // Resetar checkboxes de benefícios
+    const checkboxes = document.querySelectorAll('input[name="beneficios[]"]');
+    checkboxes.forEach(cb => {
+      cb.checked = p.beneficios && p.beneficios.includes(cb.value);
+    });
+
+    // Mudar visual para Edição
+    document.getElementById("form-header-color").classList.replace("bg-blue-600", "bg-yellow-600");
+    document.getElementById("form-title").textContent = "Editando: " + p.nome;
+    document.querySelector('button[type="submit"]').textContent = "Atualizar Cadastro";
+  },
+
+  resetarFormulario() {
+    document.getElementById("cadastroForm").reset();
+    document.getElementById("paciente_id").value = "";
+    document.getElementById("form-header-color").classList.replace("bg-yellow-600", "bg-blue-600");
+    document.getElementById("form-title").textContent = "Novo Cadastro";
+    document.querySelector('button[type="submit"]').textContent = "Salvar Cadastro";
   },
 
   bindEvents() {
     const form = document.getElementById("cadastroForm");
-    if (!form) return;
+    const selectEditar = document.getElementById("select-editar");
+    const inputData = document.getElementById("data_nascimento");
 
-    // Cálculo automático de idade
-    document
-      .getElementById("data_nascimento")
-      ?.addEventListener("change", (e) => this.handleIdade(e.target.value));
+    selectEditar?.addEventListener("change", (e) => this.carregarDadosParaEdicao(e.target.value));
 
-    // Lógica de Benefícios (Bloqueia outros se "Não recebe" estiver marcado)
-    this.setupBeneficiosLogic();
+    // Validação de Ano (Impede anos com mais de 4 dígitos)
+    inputData?.addEventListener("input", (e) => {
+      const valor = e.target.value;
+      const ano = valor.split("-")[0];
+      if (ano && ano.length > 4) {
+        e.target.value = valor.substring(0, 4) + valor.substring(ano.length);
+        alert("⚠️ O ano deve ter no máximo 4 dígitos.");
+      }
+    });
 
-    // Envio do formulário
-    form.addEventListener("submit", (e) => this.handleSubmit(e));
-  },
-
-  handleIdade(dataISO) {
-    if (!dataISO) return;
-    const hoje = new Date();
-    const nasc = new Date(dataISO);
-    let idade = hoje.getFullYear() - nasc.getFullYear();
-    const m = hoje.getMonth() - nasc.getMonth();
-    if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
-
-    const inputIdade = document.getElementById("idade");
-    if (inputIdade) inputIdade.value = idade + " anos";
-  },
-
-  setupBeneficiosLogic() {
-    const checkNaoRecebe = document.getElementById("nao_recebe");
-    const outros = document.querySelectorAll(
-      'input[name="beneficios[]"]:not(#nao_recebe)',
-    );
-
-    checkNaoRecebe?.addEventListener("change", (e) => {
-      outros.forEach((cb) => {
-        cb.checked = false;
-        cb.disabled = e.target.checked;
-      });
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.handleSubmit(e.target);
     });
   },
 
   aplicarMascaras() {
     const nisInput = document.getElementById("nis");
-    if (!nisInput) return;
-
-    nisInput.addEventListener("input", (e) => {
-      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
-
-      // Aplica a formatação 000.00000.00-0
-      if (value.length > 3 && value.length <= 8) {
-        value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
-      } else if (value.length > 8 && value.length <= 10) {
-        value = value.replace(/^(\d{3})(\d{5})(\d+)/, "$1.$2.$3");
-      } else if (value.length > 10) {
-        value = value.replace(/^(\d{3})(\d{5})(\d{2})(\d{1})/, "$1.$2.$3-$4");
-      }
-
+    nisInput?.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 3 && value.length <= 8) value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
+      else if (value.length > 8 && value.length <= 10) value = value.replace(/^(\d{3})(\d{5})(\d+)/, "$1.$2.$3");
+      else if (value.length > 10) value = value.replace(/^(\d{3})(\d{5})(\d{2})(\d{1})/, "$1.$2.$3-$4");
       e.target.value = value;
     });
   },
 
-  // Método de Validação
-  validarFormulario(dados) {
-    const obrigatorios = {
-      matricula: "Nº Matrícula",
-      nome: "Nome do Usuário",
-      sexo: "Sexo",
-      cor_raca: "Cor/Raça",
-      data_nascimento: "Data de Nascimento",
-      nis: "NIS",
-    };
-
-    for (let campo in obrigatorios) {
-      if (!dados[campo] || dados[campo].trim() === "") {
-        alert(`⚠️ O campo [${obrigatorios[campo]}] é obrigatório.`);
-        const el =
-          document.getElementsByName(campo)[0] ||
-          document.getElementById(campo);
-        el?.focus();
-        return false;
-      }
-    }
-
-    // Verifica se o array de benefícios existe e tem pelo menos um item
-    if (!dados.beneficios || dados.beneficios.length === 0) {
-      alert(
-        "⚠️ Você deve selecionar pelo menos uma opção em 'Benefícios'. Se não houver nenhum, marque 'Não recebe'.",
-      );
-      document.getElementById("nao_recebe")?.focus();
-      return false;
-    }
-
-    // Validação extra: O NIS precisa ter 11 dígitos numéricos
-    const nisLimpo = dados.nis.replace(/\D/g, ""); // Remove pontos ou espaços
-    if (nisLimpo.length !== 11) {
-      alert("⚠️ O NIS deve conter exatamente 11 dígitos.");
-      document.getElementsByName("nis")[0]?.focus();
-      return false;
-    }
-
-    return true;
-  },
-
-  async handleSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-
-    // 1. Captura os dados
+  async handleSubmit(form) {
     const formData = new FormData(form);
     const dados = {};
     formData.forEach((value, key) => {
@@ -125,44 +115,35 @@ const CadastroApp = {
         const cleanKey = key.replace("[]", "");
         if (!dados[cleanKey]) dados[cleanKey] = [];
         dados[cleanKey].push(value);
-      } else {
-        dados[key] = value;
-      }
+      } else { dados[key] = value; }
     });
 
-    // 2. Valida antes de enviar
-    if (!this.validarFormulario(dados)) return;
+    const isEdicao = !!dados.id;
+    const url = isEdicao ? "../api/atualizar_paciente.php" : "../api/salvar_dados_cadastrados.php";
 
-    // 3. Feedback visual no botão
     const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.textContent;
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Salvando...';
+    btn.textContent = "Processando...";
 
     try {
-      // Ajustado para o nome do arquivo que funcionou anteriormente
-      const resposta = await fetch("../api/salvar_dados_cadastrados.php", {
+      const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify(dados),
         headers: { "Content-Type": "application/json" },
       });
+      const result = await res.json();
 
-      const resultado = await resposta.json();
-
-      if (resultado.status === "sucesso") {
-        alert("✅ Cadastro de " + dados.nome + " realizado com sucesso!");
-        form.reset();
-        if (document.getElementById("idade"))
-          document.getElementById("idade").value = "";
+      if (result.status === "sucesso") {
+        alert(isEdicao ? "✅ Cadastro atualizado!" : "✅ Salvo com sucesso!");
+        if (!isEdicao) form.reset();
+        this.carregarListaEdicao();
       } else {
-        alert("❌ Erro: " + (resultado.mensagem || "Falha ao salvar"));
+        alert("❌ Erro: " + result.mensagem);
       }
-    } catch (error) {
-      console.error("Erro técnico:", error);
-      alert("❌ Falha na comunicação com o servidor.");
-    } finally {
+    } catch (error) { alert("❌ Erro de comunicação."); }
+    finally {
       btn.disabled = false;
-      btn.textContent = originalText;
+      btn.textContent = isEdicao ? "Atualizar Cadastro" : "Salvar Cadastro";
     }
   },
 };

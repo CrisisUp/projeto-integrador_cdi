@@ -77,9 +77,12 @@
 
             <form id="form-encaminhamento" class="p-8 space-y-5">
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Paciente</label>
-                    <input type="text" name="paciente" required placeholder="Nome completo do idoso"
-                        class="w-full border border-gray-200 p-4 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Paciente (Inscrição)</label>
+                    <select name="paciente_id" id="select-pacientes" required
+                        class="w-full border border-gray-200 p-4 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
+                        <option value="">Selecione o Idoso...</option>
+                        <!-- Populado via JS -->
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">

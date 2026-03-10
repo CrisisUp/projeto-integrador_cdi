@@ -9,18 +9,31 @@
 
     <!-- Conteúdo Principal -->
     <div class="flex-1 min-w-0 p-4 md:p-8">
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Cadastro</h1>
-            <p class="text-gray-500">Insira as informações detalhadas do usuário abaixo.</p>
+        <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Gerenciar Idosos</h1>
+                <p class="text-gray-500">Cadastre novos idosos ou edite informações existentes.</p>
+            </div>
+            
+            <!-- BUSCA PARA EDIÇÃO -->
+            <div class="bg-white p-3 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 min-w-[300px]">
+                <i class="fas fa-search text-gray-400 ml-2"></i>
+                <select id="select-editar" class="w-full bg-transparent outline-none text-sm font-medium text-gray-700">
+                    <option value="">Novo Cadastro...</option>
+                    <!-- Populado via JS -->
+                </select>
+            </div>
         </header>
 
         <form id="cadastroForm" class="max-w-6xl mx-auto">
+            <!-- Campo oculto para o ID (Necessário para saber se é edição ou novo) -->
+            <input type="hidden" id="paciente_id" name="id">
 
             <!-- Seção 1: Dados Gerais -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
-                <div class="bg-blue-600 text-white px-6 py-4">
+                <div id="form-header-color" class="bg-blue-600 text-white px-6 py-4 transition-colors">
                     <h2 class="text-lg font-semibold flex items-center">
-                        <i class="fas fa-id-card mr-3"></i>Dados Gerais
+                        <i class="fas fa-id-card mr-3"></i><span id="form-title">Novo Cadastro</span>
                     </h2>
                 </div>
 
@@ -73,7 +86,8 @@
 
                     <div class="flex flex-col">
                         <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Data de Nascimento</label>
-                        <input type="date" id="data_nascimento" name="data_nascimento" class="form-input-style" onchange="calcularIdade()">
+                        <input type="date" id="data_nascimento" name="data_nascimento" class="form-input-style" 
+                            max="<?php echo date('Y-m-d'); ?>" onchange="calcularIdade()">
                     </div>
 
                     <div class="flex flex-col">

@@ -21,7 +21,56 @@
         <!-- Conteúdo Principal -->
         <main class="flex-1 p-4 md:p-6 lg:p-8">
             <div class="max-w-6xl mx-auto">
-                <h1 class="text-2xl font-bold mb-6">Início</h1>
+                <h1 class="text-2xl font-bold mb-6">Painel Administrativo</h1>
+
+                <!-- DASHBOARD: INDICADORES RÁPIDOS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10 animate-fade-in">
+                    <!-- Presentes Hoje -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div>
+                            <span id="stat-presentes" class="block text-2xl font-bold text-gray-800">0</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Presentes Hoje</p>
+                        </div>
+                    </div>
+
+                    <!-- Evoluções 24h -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                            <i class="fas fa-notes-medical"></i>
+                        </div>
+                        <div>
+                            <span id="stat-evolucoes" class="block text-2xl font-bold text-gray-800">0</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Evoluções (24h)</p>
+                        </div>
+                    </div>
+
+                    <!-- Encaminhamentos Urgentes -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <span id="stat-urgentes" class="block text-2xl font-bold text-gray-800">0</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Urgentes Pendentes</p>
+                        </div>
+                    </div>
+
+                    <!-- Total Ativos -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <span id="stat-total" class="block text-2xl font-bold text-gray-800">0</span>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total de Ativos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-6">Menu de Ações</h2>
 
                 <!-- Matriz de Opções -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

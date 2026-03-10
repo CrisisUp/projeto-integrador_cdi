@@ -1,23 +1,25 @@
 /**
- * ARQUIVO: presenca.js (Versão com Banco de Dados)
+ * ARQUIVO: presenca.js (Versão com Banco de Dados e Link para Prontuário)
  */
 const PresencaApp = {
-    names: [],
+    pacientes: [], // Agora armazena {id, nome}
+    names: [],     // Array simples de nomes para busca rápida
     rows: 0,
     date: { month: new Date().getMonth(), year: new Date().getFullYear() },
 
     async init() {
-        await this.carregarNomesDoArquivo();
+        await this.carregarNomesDoBanco();
         this.render();
         await this.loadData(); // Carrega as presenças do banco
         this.bindEvents();
     },
 
-    async carregarNomesDoArquivo() {
+    async carregarNomesDoBanco() {
         try {
             const resposta = await fetch("../api/get_cadastrados.php");
-            this.names = await resposta.json();
-            this.rows = this.names.length;
+            this.pacientes = await resposta.json();
+            this.names = this.pacientes.map(p => p.nome);
+            this.rows = this.pacientes.length;
         } catch (erro) {
             console.error("Erro ao carregar nomes:", erro);
         }
@@ -25,11 +27,9 @@ const PresencaApp = {
 
     async loadData() {
         try {
-            // Busca do banco o mês e ano atual (adicionando 1 ao mês pois JS é 0-11 e PHP/SQL é 1-12)
             const resposta = await fetch(`../api/get_presencas.php?mes=${this.date.month + 1}&ano=${this.date.year}`);
             const presencas = await resposta.json();
 
-            // Limpa marcações visuais antes de carregar
             document.querySelectorAll(".grid-cell").forEach(c => {
                 c.dataset.value = "0";
                 c.textContent = "";
@@ -37,7 +37,6 @@ const PresencaApp = {
             });
 
             presencas.forEach(p => {
-                // Pega o dia da data 'YYYY-MM-DD'
                 const dia = parseInt(p.data_presenca.split('-')[2]);
                 const rowIdx = this.names.indexOf(p.nome);
 
@@ -60,13 +59,11 @@ const PresencaApp = {
         const isMarked = cell.dataset.value === "0";
         const novoStatus = isMarked ? 1 : 0;
 
-        // 1. Atualização Visual Imediata (Padrão CDI)
         cell.dataset.value = novoStatus.toString();
         cell.textContent = isMarked ? "1" : "";
         cell.classList.toggle("active-mark", isMarked);
         this.updateSums(cell.dataset.row, cell.dataset.col);
 
-        // 2. Salva no Banco de Dados
         const nomeIdoso = this.names[cell.dataset.row];
         const dia = parseInt(cell.dataset.col) + 1;
         const dataFormatada = `${this.date.year}-${String(this.date.month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
@@ -119,7 +116,14 @@ const PresencaApp = {
         grid.innerHTML = "";
 
         for (let i = 0; i < this.rows; i++) {
-            let rowHtml = `<td class="border p-2 text-sm bg-white whitespace-nowrap font-medium">${this.names[i]}</td>`;
+            const p = this.pacientes[i];
+            let rowHtml = `
+                <td class="border p-2 text-sm bg-white whitespace-nowrap font-medium">
+                    <a href="perfil.php?id=${p.id}" class="text-blue-600 hover:underline flex items-center gap-2" title="Ver Prontuário">
+                        <i class="fas fa-file-medical text-[10px] opacity-50"></i>
+                        ${p.nome}
+                    </a>
+                </td>`;
             for (let d = 0; d < days; d++) {
                 let isWeekend = [0, 6].includes(new Date(this.date.year, this.date.month, d + 1).getDay());
                 rowHtml += `<td class="grid-cell border text-center h-10 cursor-pointer ${isWeekend ? 'bg-gray-50' : 'bg-white'}" 
@@ -140,9 +144,14 @@ const PresencaApp = {
 
     updateSums(row, col) {
         const getSum = (selector) => Array.from(document.querySelectorAll(selector)).reduce((acc, c) => acc + parseInt(c.dataset.value || 0), 0);
-        
-        if (row !== undefined) document.querySelector(`[data-row-sum="${row}"]`).textContent = getSum(`[data-row="${row}"]`);
-        if (col !== undefined) document.querySelector(`[data-col-sum="${col}"]`).textContent = getSum(`[data-col="${col}"]`);
+        if (row !== undefined) {
+            const el = document.querySelector(`[data-row-sum="${row}"]`);
+            if (el) el.textContent = getSum(`[data-row="${row}"]`);
+        }
+        if (col !== undefined) {
+            const el = document.querySelector(`[data-col-sum="${col}"]`);
+            if (el) el.textContent = getSum(`[data-col="${col}"]`);
+        }
         document.getElementById("total-sum").textContent = getSum(".grid-cell");
     },
 
@@ -164,35 +173,23 @@ const PresencaApp = {
             this.render();
             await this.loadData();
         };
-        document.getElementById("reset-btn").onclick = () => {
-             alert("Para limpar, desmarque as células individualmente (Segurança de Dados).");
-        };
 
-        // NOVA LÓGICA: Remover (Inativar) Pessoa da Planilha
         const addBtn = document.getElementById("add-person-btn");
         if (addBtn) {
             addBtn.innerHTML = '<i class="fas fa-user-minus mr-2"></i> Remover da Lista';
-            addBtn.className = addBtn.className.replace("bg-primary", "bg-red-500").replace("hover:bg-opacity-90", "hover:bg-red-600");
+            addBtn.className = addBtn.className.replace("bg-green-600", "bg-red-500").replace("hover:bg-green-700", "hover:bg-red-600");
             
             addBtn.onclick = async () => {
                 const nome = prompt("Digite o nome EXATO do idoso que deseja remover desta lista:");
-                if (nome && confirm(`Tem certeza que deseja remover ${nome} da frequência diária? (O histórico não será apagado)`)) {
-                    try {
-                        const res = await fetch("../api/inativar_paciente.php", {
-                            method: 'POST',
-                            body: JSON.stringify({ nome: nome }),
-                            headers: { 'Content-Type': 'application/json' }
-                        });
-                        const data = await res.json();
-                        if (data.status === 'sucesso') {
-                            alert("Paciente removido com sucesso!");
-                            await this.init(); // Recarrega a planilha
-                        } else {
-                            alert("Erro: " + data.mensagem);
-                        }
-                    } catch (e) {
-                        alert("Falha na comunicação com o servidor.");
-                    }
+                if (nome && confirm(`Deseja remover ${nome} da frequência diária?`)) {
+                    const res = await fetch("../api/inativar_paciente.php", {
+                        method: 'POST',
+                        body: JSON.stringify({ nome: nome }),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const data = await res.json();
+                    if (data.status === 'sucesso') { alert("Removido!"); await this.init(); }
+                    else { alert(data.mensagem); }
                 }
             };
         }

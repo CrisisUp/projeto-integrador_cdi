@@ -6,15 +6,17 @@ $busca  = $_GET['busca'] ?? '';
 $status = $_GET['status'] ?? 'Todos os Status';
 
 try {
-    $sql = "SELECT e.*, u.nome as funcionario_nome 
+    // JOIN com pacientes para pegar nome e matricula
+    $sql = "SELECT e.*, p.nome as paciente_nome, p.matricula, u.nome as funcionario_nome 
             FROM encaminhamentos e 
+            JOIN pacientes p ON e.paciente_id = p.id
             LEFT JOIN usuarios u ON e.usuario_id = u.id 
             WHERE 1=1";
     
     $params = [];
 
     if ($busca !== '') {
-        $sql .= " AND e.paciente LIKE :busca";
+        $sql .= " AND p.nome LIKE :busca";
         $params[':busca'] = "%$busca%";
     }
 

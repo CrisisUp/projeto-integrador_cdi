@@ -17,7 +17,9 @@ body {
     background-color: var(--bg-main);
     color: var(--text-main);
     transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* 2. MODO ESCURO (DEFINIÇÕES GLOBAIS) */
@@ -94,4 +96,45 @@ body.dark-mode .glass-header {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* 6. REGRAS PARA IMPRESSÃO / GERAR PDF */
+@media print {
+    /* Esconde elementos desnecessários no prontuário impresso */
+    aside, .sidebar, .logout-btn, button, #btn-imprimir, header.sticky {
+        display: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        color: black !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .bg-main {
+        background-color: white !important;
+    }
+
+    /* Garante que as cores de fundo dos cards apareçam no PDF */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Força quebras de página evitadas dentro de itens da linha do tempo */
+    .timeline-item {
+        page-break-inside: avoid;
+    }
+
+    .card, .bg-white {
+        border: 1px solid #eee !important;
+        box-shadow: none !important;
+    }
 }
