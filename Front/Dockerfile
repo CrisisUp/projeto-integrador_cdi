@@ -13,7 +13,7 @@ RUN a2enmod rewrite
 COPY . /var/www/html/
 
 # Define as permissões corretas para a pasta de dados (PHP precisa escrever no banco)
-RUN chown -www-data:www-data /var/www/html/data && \
+RUN chown -R www-data:www-data /var/www/html/data && \
     chmod -R 775 /var/www/html/data
 
 # Expõe a porta 80
