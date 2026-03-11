@@ -32,7 +32,7 @@ const ConvencionalApp = {
 
         if (!conteudo) return alert("Por favor, descreva a atividade.");
 
-        const btn = document.querySelector('button.bg-green-600');
+        const btn = document.querySelector('button.cdi-bg-success');
         btn.disabled = true;
         btn.textContent = "Salvando...";
 
@@ -74,13 +74,13 @@ const ConvencionalApp = {
 
         this.atividades.forEach(post => {
             const postElement = document.createElement("div");
-            postElement.className = "border-b border-gray-100 p-6 hover:bg-gray-50/50 transition-colors";
+            postElement.className = "border-b border-gray-100 p-6 hover:cdi-bg-success-light transition-colors";
             
             const autor = post.funcionario_nome || "Sistema";
 
             postElement.innerHTML = `
                 <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <div class="w-10 h-10 rounded-full cdi-bg-success-light flex items-center justify-center cdi-text-success">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
                     <div class="flex-1">
@@ -118,7 +118,7 @@ const ConvencionalApp = {
             const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
             dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm transition-all
-                ${this.selectedDate === dateString ? 'bg-green-600 text-white font-bold shadow-md' : 'text-gray-600 hover:bg-green-50'}`;
+                ${this.selectedDate === dateString ? 'cdi-bg-success text-white font-bold shadow-md' : 'text-gray-600 hover:cdi-bg-success-light'}`;
             dayElement.textContent = day;
 
             dayElement.onclick = () => {
@@ -139,7 +139,7 @@ const ConvencionalApp = {
     },
 
     bindEvents() {
-        const btnPost = document.querySelector('button.bg-green-600');
+        const btnPost = document.querySelector('button.cdi-bg-success');
         if (btnPost) btnPost.onclick = () => this.postarAtividade();
 
         document.getElementById("prevMonth").onclick = () => {

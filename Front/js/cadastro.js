@@ -60,7 +60,7 @@ const CadastroApp = {
     });
 
     // Mudar visual para Edição
-    document.getElementById("form-header-color").classList.replace("bg-blue-600", "bg-yellow-600");
+    document.getElementById("form-header-color").classList.replace("cdi-bg-primary", "cdi-bg-warning");
     document.getElementById("form-title").textContent = "Editando: " + p.nome;
     document.querySelector('button[type="submit"]').textContent = "Atualizar Cadastro";
   },
@@ -68,7 +68,7 @@ const CadastroApp = {
   resetarFormulario() {
     document.getElementById("cadastroForm").reset();
     document.getElementById("paciente_id").value = "";
-    document.getElementById("form-header-color").classList.replace("bg-yellow-600", "bg-blue-600");
+    document.getElementById("form-header-color").classList.replace("cdi-bg-warning", "cdi-bg-primary");
     document.getElementById("form-title").textContent = "Novo Cadastro";
     document.querySelector('button[type="submit"]').textContent = "Salvar Cadastro";
   },

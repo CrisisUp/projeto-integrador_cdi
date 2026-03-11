@@ -16,7 +16,7 @@
                 <h1 class="text-xl font-bold text-gray-800">Frequência Diária</h1>
                 <div class="flex items-center gap-3">
                     <span class="text-sm font-medium text-gray-600 hidden md:block">Unidade Central</span>
-                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs" style="background-color: var(--primary-color);">
+                    <div class="w-8 h-8 rounded-full cdi-bg-primary flex items-center justify-center text-white text-xs">
                         <i class="fas fa-user"></i>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
 
                 <!-- Botões de Ação -->
                 <div class="mt-12 flex justify-center items-center pb-20">
-                    <button id="reset-btn" class="w-full sm:w-auto px-10 py-4 bg-gray-600 text-white font-bold rounded-2xl hover:bg-gray-700 shadow-lg transition-all transform hover:-translate-y-1">
+                    <button id="reset-btn" class="w-full sm:w-auto px-10 py-4 cdi-bg-muted text-white font-bold rounded-2xl cdi-hover-muted shadow-lg transition-all transform hover:-translate-y-1">
                         <i class="fas fa-eye-slash mr-2"></i> Nenhum Nome Oculto
                     </button>
                 </div>

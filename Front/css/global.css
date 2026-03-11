@@ -1,181 +1,273 @@
-/* css/global.css - Estilos Compartilhados do Sistema CDI */
+/* css/global.css - Design System CDI Digital */
 
+/* ======================================================
+   1. VARIÁVEIS DO SISTEMA (:root)
+   ====================================================== */
 :root {
-    --primary-color: #1d9bf0;
-    --primary-light: rgba(29, 155, 240, 0.1);
-    
-    /* Cores de Status Semânticas */
-    --success-color: #10b981; /* Verde (Substitui text-green-600) */
-    --success-light: rgba(16, 185, 129, 0.1);
-    
-    --danger-color: #ef4444;  /* Vermelho (Substitui text-red-600) */
-    --danger-light: rgba(239, 68, 68, 0.1);
-    
-    --warning-color: #f59e0b; /* Laranja/Amarelo (Substitui text-amber-500) */
-    --warning-light: rgba(245, 158, 11, 0.1);
-    
-    --info-color: #3b82f6;    /* Azul Info */
-    --info-light: rgba(59, 130, 246, 0.1);
+  --primary-color: #1d9bf0;
+  --primary-light: rgba(29, 155, 240, 0.1);
 
-    --gray-muted: #9ca3af;
-    --gray-text: #4b5563;
+  /* Cores de Status Semânticas */
+  --success-color: #10b981;
+  --success-light: rgba(16, 185, 129, 0.1);
 
-    --bg-main: #f5f0e5;
-    --text-main: #1f2937;
-    --white: #ffffff;
-    --border-color: #e5e7eb;
-    --transition-fast: 0.2s ease;
-    --radius-md: 12px;
-    --radius-lg: 24px;
+  --danger-color: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.1);
+
+  --warning-color: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.1);
+
+  --info-color: #3b82f6;
+  --info-light: rgba(59, 130, 246, 0.1);
+
+  --accent-color: #8b5cf6;
+  --accent-light: rgba(139, 92, 246, 0.1);
+
+  /* Tons Neutros e Superfícies */
+  --white: #ffffff;
+  --black: #000000;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Variáveis Semânticas de UI */
+  --gray-muted: var(--gray-400);
+  --gray-text: var(--gray-600);
+  --dark-bg: var(--gray-700);
+  --bg-main: #f5f0e5;
+  --text-main: var(--gray-800);
+  --border-color: var(--gray-200);
+
+  --transition-fast: 0.2s ease;
+  --radius-md: 12px;
+  --radius-lg: 24px;
 }
 
-/* CLASSES UTILITÁRIAS DE CORES (Substitutos do Tailwind) */
-.cdi-text-primary { color: var(--primary-color) !important; }
-.cdi-bg-primary { background-color: var(--primary-color) !important; }
-
-.cdi-text-success { color: var(--success-color) !important; }
-.cdi-bg-success { background-color: var(--success-color) !important; }
-.cdi-bg-success-light { background-color: var(--success-light) !important; }
-
-.cdi-text-danger { color: var(--danger-color) !important; }
-.cdi-bg-danger { background-color: var(--danger-color) !important; }
-.cdi-bg-danger-light { background-color: var(--danger-light) !important; }
-
-.cdi-text-warning { color: var(--warning-color) !important; }
-.cdi-bg-warning { background-color: var(--warning-color) !important; }
-.cdi-bg-warning-light { background-color: var(--warning-light) !important; }
-
-.cdi-text-muted { color: var(--gray-muted) !important; }
-.cdi-text-gray { color: var(--gray-text) !important; }
-
-/* HOVER STATES */
-.cdi-hover-danger-light:hover { background-color: var(--danger-light) !important; }
-.cdi-hover-success-light:hover { background-color: var(--success-light) !important; }
-.cdi-hover-primary-light:hover { background-color: var(--primary-light) !important; }
-
-/* 1. RESET E BASE */
+/* ======================================================
+   2. RESET E ESTILOS BASE
+   ====================================================== */
 body {
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }
 
-/* 2. MODO ESCURO (DEFINIÇÕES GLOBAIS) */
+/* ======================================================
+   3. MODO ESCURO (Dark Mode)
+   ====================================================== */
 body.dark-mode {
-    --bg-main: #111827; /* Fundo cinza muito escuro */
-    --text-main: #f9fafb; /* Texto quase branco */
-    --white: #1f2937;    /* Cards ficam em cinza escuro */
-    --border-color: #374151;
+  --bg-main: #111827;
+  --text-main: #f9fafb;
+  --white: #1f2937;
+  --border-color: #374151;
 }
 
-/* Aplicando a cor de fundo e texto globalmente */
 .dark-mode body {
-    background-color: var(--bg-main);
+  background-color: var(--bg-main);
 }
-
 .dark-mode .bg-white {
-    background-color: var(--white) !important;
+  background-color: var(--white) !important;
 }
-
-.dark-mode .text-gray-800, 
+.dark-mode .text-gray-800,
 .dark-mode .text-gray-700 {
-    color: var(--text-main) !important;
+  color: var(--text-main) !important;
 }
-
 .dark-mode .text-gray-500,
 .dark-mode .text-gray-600 {
-    color: #9ca3af !important; /* Texto secundário cinza claro */
+  color: var(--gray-400) !important;
 }
-
 .dark-mode .border-gray-200,
 .dark-mode .border-gray-300 {
-    border-color: var(--border-color) !important;
+  border-color: var(--border-color) !important;
 }
 
-/* 3. GLASSMORPHISM (CABEÇALHOS) */
-.glass-header {
-    background-color: rgba(245, 240, 229, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+/* ======================================================
+   4. CLASSES UTILITÁRIAS (cdi-*)
+   ====================================================== */
+.cdi-text-primary {
+  color: var(--primary-color) !important;
+}
+.cdi-bg-primary {
+  background-color: var(--primary-color) !important;
 }
 
-body.dark-mode .glass-header {
-    background-color: rgba(17, 24, 39, 0.85);
+.cdi-text-success {
+  color: var(--success-color) !important;
+}
+.cdi-bg-success {
+  background-color: var(--success-color) !important;
+}
+.cdi-bg-success-light {
+  background-color: var(--success-light) !important;
 }
 
-/* 4. SCROLLBARS PERSONALIZADAS */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+.cdi-text-danger {
+  color: var(--danger-color) !important;
+}
+.cdi-bg-danger {
+  background-color: var(--danger-color) !important;
+}
+.cdi-bg-danger-light {
+  background-color: var(--danger-light) !important;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
+.cdi-text-warning {
+  color: var(--warning-color) !important;
+}
+.cdi-bg-warning {
+  background-color: var(--warning-color) !important;
+}
+.cdi-bg-warning-light {
+  background-color: var(--warning-light) !important;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
+.cdi-text-accent {
+  color: var(--accent-color) !important;
+}
+.cdi-bg-accent {
+  background-color: var(--accent-color) !important;
+}
+.cdi-bg-accent-light {
+  background-color: var(--accent-light) !important;
 }
 
-.dark-mode ::-webkit-scrollbar-thumb {
-    background: #4b5563;
+.cdi-text-muted {
+  color: var(--gray-muted) !important;
+}
+.cdi-bg-muted {
+  background-color: var(--gray-muted) !important;
+}
+.cdi-bg-dark {
+  background-color: var(--dark-bg) !important;
+}
+.cdi-text-gray {
+  color: var(--gray-text) !important;
 }
 
-/* 5. COMPONENTES REUTILIZÁVEIS */
+/* Estados de Hover */
+.cdi-hover-danger-light:hover {
+  background-color: var(--danger-light) !important;
+}
+.cdi-hover-success-light:hover {
+  background-color: var(--success-light) !important;
+}
+.cdi-hover-primary-light:hover {
+  background-color: var(--primary-light) !important;
+}
+.cdi-hover-muted:hover {
+  opacity: 0.8 !important;
+}
+.cdi-hover-accent:hover {
+  filter: brightness(0.9) !important;
+}
+
+/* ======================================================
+   5. COMPONENTES E ANIMAÇÕES
+   ====================================================== */
 .shadow-card {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 6. REGRAS PARA IMPRESSÃO / GERAR PDF */
+.glass-header {
+  background-color: rgba(245, 240, 229, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.dark-mode .glass-header {
+  background-color: rgba(17, 24, 39, 0.85);
+}
+
+/* ======================================================
+   6. SCROLLBARS PERSONALIZADAS
+   ====================================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+/* ======================================================
+   7. REGRAS PARA IMPRESSÃO / PDF
+   ====================================================== */
 @media print {
-    /* Esconde elementos desnecessários no prontuário impresso */
-    aside, .sidebar, .logout-btn, button, #btn-imprimir, header.sticky {
-        display: none !important;
-    }
-
-    body {
-        background-color: white !important;
-        color: black !important;
-        margin: 0;
-        padding: 0;
-    }
-
-    main {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-    }
-
-    .bg-main {
-        background-color: white !important;
-    }
-
-    /* Garante que as cores de fundo dos cards apareçam no PDF */
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-    /* Força quebras de página evitadas dentro de itens da linha do tempo */
-    .timeline-item {
-        page-break-inside: avoid;
-    }
-
-    .card, .bg-white {
-        border: 1px solid #eee !important;
-        box-shadow: none !important;
-    }
+  aside,
+  .sidebar,
+  .logout-btn,
+  button,
+  #btn-imprimir,
+  header.sticky {
+    display: none !important;
+  }
+  body {
+    background-color: white !important;
+    color: black !important;
+    margin: 0;
+    padding: 0;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  .bg-main {
+    background-color: white !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .timeline-item {
+    page-break-inside: avoid;
+  }
+  .card,
+  .bg-white {
+    border: 1px solid #eee !important;
+    box-shadow: none !important;
+  }
 }

@@ -39,7 +39,7 @@
 .logout-btn {
   background-color: var(--gray-100);
   color: var(--gray-600);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-200);
   border-radius: var(--radius-md);
   padding: 8px 16px;
   display: flex;
@@ -50,8 +50,8 @@
 
 .logout-btn:hover {
   background-color: var(--danger-light);
-  color: var(--danger);
-  border-color: #fecaca;
+  color: var(--danger-color);
+  border-color: var(--danger-light);
 }
 
 /* 1. Remover o Rodapé visualmente e ajustar o layout */

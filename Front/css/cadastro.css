@@ -41,7 +41,7 @@
 /* Estilização dos inputs para manter o padrão CDI */
 .form-input-style {
   width: 100%;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-300);
   border-radius: var(--radius-md, 8px);
   padding: 0.5rem;
   outline: none;
@@ -49,6 +49,6 @@
 }
 
 .form-input-style:focus {
-  border-color: var(--primary-color, #1d9bf0);
-  box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }

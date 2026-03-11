@@ -30,13 +30,13 @@
 
                 <!-- Bloco de Mensagem de Erro -->
                 <?php if (isset($_GET['erro'])): ?>
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded shadow-sm animate-pulse" role="alert">
+                    <div class="cdi-bg-danger-light border-l-4 cdi-text-danger p-3 mb-4 rounded shadow-sm animate-pulse" style="border-color: var(--danger-color);" role="alert">
                         <p class="text-sm font-bold"><i class="fas fa-exclamation-circle mr-2"></i> Usuário ou senha incorretos.</p>
                     </div>
                 <?php endif; ?>
 
                 <?php if (isset($_GET['saiu'])): ?>
-                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 mb-4 rounded shadow-sm">
+                    <div class="cdi-bg-success-light border-l-4 cdi-text-success p-3 mb-4 rounded shadow-sm" style="border-color: var(--success-color);">
                         <p class="text-sm font-bold"><i class="fas fa-check-circle mr-2"></i> Você saiu com segurança!</p>
                     </div>
                 <?php endif; ?>

@@ -12,7 +12,7 @@
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Gerenciar Idosos</h1>
-                <p class="text-gray-500">Cadastre novos idosos ou edite informações existentes.</p>
+                <p class="cdi-text-muted">Cadastre novos idosos ou edite informações existentes.</p>
             </div>
             
             <!-- BUSCA PARA EDIÇÃO -->
@@ -31,7 +31,7 @@
 
             <!-- Seção 1: Dados Gerais -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
-                <div id="form-header-color" class="bg-blue-600 text-white px-6 py-4 transition-colors">
+                <div id="form-header-color" class="cdi-bg-primary text-white px-6 py-4 transition-colors">
                     <h2 class="text-lg font-semibold flex items-center">
                         <i class="fas fa-id-card mr-3"></i><span id="form-title">Novo Cadastro</span>
                     </h2>
@@ -110,7 +110,7 @@
 
                 <!-- Card Dieta -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="bg-green-600 text-white px-6 py-3 font-semibold flex items-center">
+                    <div class="cdi-bg-success text-white px-6 py-3 font-semibold flex items-center">
                         <i class="fas fa-utensils mr-2"></i>Dieta
                     </div>
                     <div class="p-6 space-y-4">
@@ -135,7 +135,7 @@
 
                 <!-- Card Benefícios -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="bg-purple-600 text-white px-6 py-3 font-semibold flex items-center">
+                    <div class="cdi-bg-primary text-white px-6 py-3 font-semibold flex items-center">
                         <i class="fas fa-hand-holding-heart mr-2 required"></i> Benefícios
                     </div>
                     <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -145,13 +145,13 @@
                                 id="nao_recebe"
                                 name="beneficios[]"
                                 value="Não recebe"
-                                class="h-4 w-4 text-blue-600">
+                                class="h-4 w-4 cdi-text-primary">
                             <span>Não recebe</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                             <input
                                 type="checkbox"
-                                name="beneficios[]" value="Bolsa Família" class="h-4 w-4 text-blue-600">
+                                name="beneficios[]" value="Bolsa Família" class="h-4 w-4 cdi-text-primary">
                             <span>Bolsa Família</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
@@ -159,7 +159,7 @@
                                 type="checkbox"
                                 name="beneficios[]"
                                 value="BPC - Idoso"
-                                class="h-4 w-4 text-blue-600">
+                                class="h-4 w-4 cdi-text-primary">
                             <span>BPC - Idoso</span>
                         </label>
                         <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
@@ -167,7 +167,7 @@
                                 type="checkbox"
                                 name="beneficios[]"
                                 value="Aposentadoria"
-                                class="h-4 w-4 text-blue-600">
+                                class="h-4 w-4 cdi-text-primary">
                             <span>Aposentadoria</span>
                         </label>
                     </div>
@@ -176,8 +176,8 @@
 
             <!-- Botões de Ação (Ajustados para celular) -->
             <div class="flex flex-col sm:flex-row justify-end gap-4 pb-12">
-                <button type="reset" class="px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition duration-200">Limpar</button>
-                <button type="submit" class="px-10 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition duration-200">Salvar Cadastro</button>
+                <button type="reset" class="px-6 py-3 cdi-bg-muted cdi-text-gray font-bold rounded-lg hover:opacity-80 transition duration-200">Limpar</button>
+                <button type="submit" class="px-10 py-3 cdi-bg-primary text-white font-bold rounded-lg hover:opacity-90 shadow-md transition duration-200">Salvar Cadastro</button>
             </div>
         </form>
     </div>

@@ -10,6 +10,23 @@
   font-weight: var(--weight-bold);
 }
 
+/* Estilo para células marcadas como Presente (1) */
+.active-mark {
+  background-color: var(--success-light) !important;
+  color: var(--success-color) !important;
+  font-weight: bold;
+}
+
+.dark-mode .active-mark {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  color: var(--success-color) !important;
+}
+
+.grid-header-cell {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
 .post {
   transition: var(--transition);
 }
@@ -126,7 +143,7 @@
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: var(--gray-300);
   border-radius: 10px;
   border: 2px solid var(--white);
 }

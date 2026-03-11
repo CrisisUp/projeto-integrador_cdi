@@ -34,7 +34,7 @@ const EnfermagemApp = {
 
         if (!conteudo) return alert("Por favor, descreva a evolução ou intercorrência.");
 
-        const btn = document.querySelector('button.bg-blue-500');
+        const btn = document.querySelector('button.cdi-bg-primary');
         const originalText = btn.textContent;
         btn.disabled = true;
         btn.textContent = "Salvando...";
@@ -77,13 +77,13 @@ const EnfermagemApp = {
 
         this.atividades.forEach(post => {
             const postElement = document.createElement("div");
-            postElement.className = "border-b border-gray-200 p-6 hover:bg-blue-50/30 transition-colors";
+            postElement.className = "border-b border-gray-200 p-6 hover:cdi-bg-primary-light transition-colors";
             
             const autor = post.funcionario_nome || "Equipe Enfermagem";
 
             postElement.innerHTML = `
                 <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <div class="w-10 h-10 rounded-full cdi-bg-primary-light flex items-center justify-center cdi-text-primary">
                         <i class="fas fa-user-nurse"></i>
                     </div>
                     <div class="flex-1">
@@ -117,7 +117,7 @@ const EnfermagemApp = {
             const dateString = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
             dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm transition-all
-                ${this.selectedDate === dateString ? 'bg-blue-500 text-white font-bold shadow-md' : 'text-gray-600 hover:bg-blue-50'}`;
+                ${this.selectedDate === dateString ? 'cdi-bg-primary text-white font-bold shadow-md' : 'text-gray-600 hover:cdi-bg-primary-light'}`;
             dayElement.textContent = day;
 
             dayElement.onclick = () => {
@@ -138,7 +138,7 @@ const EnfermagemApp = {
     },
 
     bindEvents() {
-        const btnPost = document.querySelector('button.bg-blue-500');
+        const btnPost = document.querySelector('button.cdi-bg-primary');
         if (btnPost) btnPost.onclick = () => this.registrarEvolucao();
 
         document.getElementById("prevMonth").onclick = () => {

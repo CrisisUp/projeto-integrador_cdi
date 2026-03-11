@@ -69,19 +69,19 @@ const EncaminhamentoApp = {
 
     templateCard(item) {
         const isConcluido = item.status === "Concluído";
-        const corStatus = isConcluido ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700";
-        const corUrgencia = (item.urgencia === "Alta" || item.urgencia === "Urgente") ? "text-red-600 font-bold" : "text-gray-500";
+        const corStatus = isConcluido ? "cdi-bg-success-light cdi-text-success" : "cdi-bg-warning-light cdi-text-warning";
+        const corUrgencia = (item.urgencia === "Alta" || item.urgencia === "Urgente") ? "cdi-text-danger font-bold" : "cdi-text-muted";
         const autor = item.funcionario_nome || "Sistema";
 
         return `
             <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition flex flex-col md:flex-row md:items-center justify-between gap-4 animate-fade-in">
                 <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full ${isConcluido ? 'bg-green-50 text-green-500' : 'bg-blue-50 text-blue-500'} flex items-center justify-center text-xl">
+                    <div class="w-12 h-12 rounded-full ${isConcluido ? 'cdi-bg-success-light cdi-text-success' : 'cdi-bg-primary-light cdi-text-primary'} flex items-center justify-center text-xl">
                         <i class="fas ${isConcluido ? 'fa-check-circle' : 'fa-file-medical'}"></i>
                     </div>
                     <div class="ml-4">
                         <h3 class="font-bold text-gray-800 text-lg ${isConcluido ? 'line-through opacity-50' : ''}">${item.paciente_nome}</h3>
-                        <p class="text-xs text-blue-500 font-bold uppercase tracking-tighter mb-1">Matrícula: ${item.matricula || '---'}</p>
+                        <p class="text-xs cdi-text-primary font-bold uppercase tracking-tighter mb-1">Matrícula: ${item.matricula || '---'}</p>
                         <p class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i> ${item.destino}</p>
                         <p class="text-[10px] text-gray-400 mt-1 uppercase">Registrado por: ${autor}</p>
                     </div>
@@ -101,10 +101,10 @@ const EncaminhamentoApp = {
                     </div>
                     <div class="flex gap-2">
                         ${!isConcluido ? `
-                            <button onclick="EncaminhamentoApp.executarAcao(${item.id}, 'concluir')" class="p-2 text-green-500 hover:bg-green-50 rounded-lg transition" title="Marcar como Concluído">
+                            <button onclick="EncaminhamentoApp.executarAcao(${item.id}, 'concluir')" class="p-2 cdi-text-success hover:cdi-bg-success-light rounded-lg transition" title="Marcar como Concluído">
                                 <i class="fas fa-check"></i>
                             </button>` : ''}
-                        <button onclick="EncaminhamentoApp.executarAcao(${item.id}, 'excluir')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Excluir">
+                        <button onclick="EncaminhamentoApp.executarAcao(${item.id}, 'excluir')" class="p-2 text-gray-400 hover:cdi-text-danger hover:cdi-bg-danger-light rounded-lg transition" title="Excluir">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>

@@ -28,9 +28,9 @@
         <header class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Encaminhamentos</h1>
-                <p class="text-muted">Gestão de encaminhamentos para especialidades e serviços externos.</p>
+                <p class="cdi-text-muted">Gestão de encaminhamentos para especialidades e serviços externos.</p>
             </div>
-            <button id="btn-novo-encaminhamento" class="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition transform hover:-translate-y-1 flex items-center justify-center" style="background-color: var(--primary-color);">
+            <button id="btn-novo-encaminhamento" class="cdi-bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition transform hover:-translate-y-1 flex items-center justify-center">
                 <i class="fas fa-plus mr-2"></i> Novo Registro
             </button>
         </header>
@@ -109,10 +109,10 @@
 
                 <div class="flex gap-4 pt-6">
                     <button type="button" onclick="EncaminhamentoApp.toggleModal(false)"
-                        class="flex-1 py-4 text-gray-500 font-bold hover:bg-gray-50 rounded-2xl transition">
+                        class="flex-1 py-4 cdi-text-muted font-bold hover:bg-gray-50 rounded-2xl transition">
                         Cancelar
                     </button>
-                    <button type="submit" class="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg hover:opacity-90 transition" style="background-color: var(--primary-color);">
+                    <button type="submit" class="flex-1 py-4 cdi-bg-primary text-white rounded-2xl font-bold shadow-lg hover:opacity-90 transition">
                         Salvar
                     </button>
                 </div>

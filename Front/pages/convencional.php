@@ -20,7 +20,7 @@
                     <h1 class="text-xl font-bold text-gray-800">Atividades</h1>
                 </div>
                 <div class="bg-white/50">
-                    <div class="py-4 text-center font-bold border-b-4 border-green-500 text-green-600 uppercase text-xs tracking-widest">
+                    <div class="py-4 text-center font-bold border-b-4 cdi-text-success uppercase text-xs tracking-widest" style="border-color: var(--success-color);">
                         Atividade Convencional
                     </div>
                 </div>
@@ -29,7 +29,7 @@
             <!-- Formulário de Postagem de Atividades -->
             <div class="border-b border-gray-300 p-6 bg-white/30">
                 <div class="flex gap-4">
-                    <div class="w-12 h-12 rounded-full bg-green-500 flex-shrink-0 flex items-center justify-center text-white shadow-sm">
+                    <div class="w-12 h-12 rounded-full cdi-bg-success flex-shrink-0 flex items-center justify-center text-white shadow-sm">
                         <i class="fas fa-clipboard-list text-xl"></i>
                     </div>
                     <div class="flex-1">
@@ -38,10 +38,10 @@
 
                         <div class="flex justify-between items-center mt-4">
                             <div class="flex space-x-4 text-gray-400">
-                                <button class="hover:text-green-500 transition" title="Adicionar Foto"><i class="fas fa-camera"></i></button>
-                                <button class="hover:text-green-500 transition" title="Marcar Participantes"><i class="fas fa-users"></i></button>
+                                <button class="hover:cdi-text-success transition" title="Adicionar Foto"><i class="fas fa-camera"></i></button>
+                                <button class="hover:cdi-text-success transition" title="Marcar Participantes"><i class="fas fa-users"></i></button>
                             </div>
-                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-8 rounded-xl transition shadow-md transform hover:-translate-y-1">
+                            <button class="cdi-bg-success text-white font-bold py-2 px-8 rounded-xl transition shadow-md hover:opacity-90 transform hover:-translate-y-1">
                                 Postar Atividade
                             </button>
                         </div>
@@ -70,9 +70,9 @@
                 <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-2">Filtrar por Data</h2>
                 <div id="calendar" class="bg-white rounded-3xl p-5 shadow-card border border-gray-100">
                     <div class="flex justify-between items-center mb-6">
-                        <button id="prevMonth" class="text-green-600 hover:bg-green-50 p-2 rounded-lg"><i class="fas fa-chevron-left"></i></button>
+                        <button id="prevMonth" class="cdi-text-success hover:cdi-bg-success-light p-2 rounded-lg"><i class="fas fa-chevron-left"></i></button>
                         <h3 id="monthYear" class="font-bold text-gray-700 cursor-pointer"></h3>
-                        <button id="nextMonth" class="text-green-600 hover:bg-green-50 p-2 rounded-lg"><i class="fas fa-chevron-right"></i></button>
+                        <button id="nextMonth" class="cdi-text-success hover:cdi-bg-success-light p-2 rounded-lg"><i class="fas fa-chevron-right"></i></button>
                     </div>
 
                     <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-gray-300 mb-2">
@@ -92,8 +92,8 @@
             </div>
 
             <!-- Filtro Ativo -->
-            <div id="activeFilter" class="hidden mt-4 bg-green-50 p-4 rounded-2xl border border-green-100 animate-fade-in">
-                <div class="flex justify-between items-center text-sm text-green-700 font-medium">
+            <div id="activeFilter" class="hidden mt-4 cdi-bg-success-light p-4 rounded-2xl border border-green-100 animate-fade-in">
+                <div class="flex justify-between items-center text-sm cdi-text-success font-medium">
                     <span><i class="fas fa-calendar-day mr-2"></i> <span id="filterDate"></span></span>
                     <button id="clearFilter" class="hover:text-red-500 transition"><i class="fas fa-times"></i></button>
                 </div>

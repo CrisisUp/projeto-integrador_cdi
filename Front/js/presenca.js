@@ -34,12 +34,12 @@ const PresencaApp = {
     if (btnReset) {
       if (totalOcultos > 0) {
         btnReset.innerHTML = `<i class="fas fa-eye mr-2"></i> Ver Ocultos (${totalOcultos})`;
-        btnReset.classList.remove("bg-red-500", "hover:bg-red-600");
-        btnReset.classList.add("bg-gray-600", "hover:bg-gray-700");
+        btnReset.classList.remove("cdi-bg-danger", "cdi-hover-muted");
+        btnReset.classList.add("cdi-bg-muted", "cdi-hover-muted");
       } else {
         btnReset.innerHTML = `<i class="fas fa-eye-slash mr-2"></i> Nenhum Nome Oculto`;
-        btnReset.classList.remove("bg-gray-600", "hover:bg-gray-700");
-        btnReset.classList.add("bg-red-500", "hover:bg-red-600");
+        btnReset.classList.remove("cdi-bg-muted", "cdi-hover-muted");
+        btnReset.classList.add("cdi-bg-danger", "cdi-hover-muted");
       }
     }
   },
@@ -110,12 +110,12 @@ const PresencaApp = {
     const header = document.getElementById("grid-header");
     if (!header) return;
     let days = CDIUtils.getDaysInMonth(this.date.year, this.date.month);
-    let html = `<th class="border border-gray-300 p-2 text-left text-xs font-bold uppercase bg-gray-50">Nome</th>`;
+    let html = `<th class="border border-gray-300 p-2 text-left text-xs font-bold uppercase grid-header-cell">Nome</th>`;
     for (let d = 1; d <= days; d++) {
       let isWeekend = [0, 6].includes(new Date(this.date.year, this.date.month, d).getDay());
-      html += `<th class="border border-gray-300 p-1 text-center text-xs ${isWeekend ? "bg-gray-200" : ""}">${d}</th>`;
+      html += `<th class="border border-gray-300 p-1 text-center text-xs ${isWeekend ? "cdi-bg-muted opacity-50" : "grid-header-cell"}">${d}</th>`;
     }
-    html += `<th class="border border-gray-300 p-1 bg-blue-50 text-blue-600 text-xs font-bold">Total</th>`;
+    html += `<th class="border border-gray-300 p-1 cdi-bg-primary-light cdi-text-primary text-xs font-bold">Total</th>`;
     header.innerHTML = `<tr>${html}</tr>`;
   },
 

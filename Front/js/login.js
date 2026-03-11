@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const icon = this.parentElement.querySelector(".input-icon");
       if (icon) {
         // Usa a cor primária definida no seu global.css
-        icon.style.color = "var(--primary-color, #1d9bf0)";
+        icon.style.color = "var(--primary-color)";
         icon.style.transform = "scale(1.1)";
         icon.style.transition = "all 0.3s ease";
       }
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     input.addEventListener("blur", function () {
       const icon = this.parentElement.querySelector(".input-icon");
       if (icon) {
-        icon.style.color = "#9ca3af"; // Cinza padrão
+        icon.style.color = "var(--gray-400)"; // Cinza padrão
         icon.style.transform = "scale(1)";
       }
     });

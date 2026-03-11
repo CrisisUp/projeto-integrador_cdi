@@ -53,7 +53,7 @@
 
 .form-input::placeholder {
   font-size: var(--text-sm);
-  color: #9ca3af;
+  color: var(--gray-400);
 }
 
 .login-btn {

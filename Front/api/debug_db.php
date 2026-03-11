@@ -8,15 +8,15 @@ echo "<!DOCTYPE html>
     <title>Debug Banco de Dados - CDI</title>
     <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
     <style>
-        body { background: #f3f4f6; padding: 2rem; font-family: sans-serif; }
-        .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+        body { background: var(--gray-100); padding: 2rem; font-family: sans-serif; }
+        .card { background: var(--white); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: var(--gray-800); border-bottom: 2px solid var(--gray-200); padding-bottom: 0.5rem; }
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; }
-        th { background: #f9fafb; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--gray-200); font-size: 0.875rem; }
+        th { background: var(--gray-50); color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; }
         .tag { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .tag-red { background: #fee2e2; color: #991b1b; }
-        .tag-green { background: #dcfce7; color: #166534; }
+        .tag-red { background: var(--danger-light); color: var(--danger-color); }
+        .tag-green { background: var(--success-light); color: var(--success-color); }
     </style>
 </head>
 <body>
