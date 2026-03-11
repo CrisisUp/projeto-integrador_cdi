@@ -1,0 +1,25 @@
+# Controle de Versão
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentação
+README.md
+
+# Logs e Arquivos Temporários
+*.log
+.DS_Store
+Thumbs.db
+
+# Dados Sensíveis/Ambiente (se houver no futuro)
+.env
+
+# Backup e Arquivos de Editor
+*.swp
+*.bak
+.vscode/
+.idea/

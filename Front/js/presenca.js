@@ -1,35 +1,52 @@
 /**
- * ARQUIVO: presenca.js (Versão com Banco de Dados e Link para Prontuário)
+ * ARQUIVO: presenca.js (Versão com Gestão de Ocultos Individual e Modal)
  */
 const PresencaApp = {
-  pacientes: [], // Agora armazena {id, nome}
-  names: [], // Array simples de nomes para busca rápida
-  rows: 0,
+  pacientesAtivos: [],
+  pacientesNoGrid: [],
+  pacientesOcultos: [],
   date: { month: new Date().getMonth(), year: new Date().getFullYear() },
 
   async init() {
-    await this.carregarNomesDoBanco();
+    await this.carregarPacientes();
     this.render();
-    await this.loadData(); // Carrega as presenças do banco
+    await this.loadData();
     this.bindEvents();
   },
 
-  async carregarNomesDoBanco() {
+  async carregarPacientes() {
     try {
       const resposta = await fetch("../api/get_cadastrados.php");
-      this.pacientes = await resposta.json();
-      this.names = this.pacientes.map((p) => p.nome);
-      this.rows = this.pacientes.length;
+      this.pacientesAtivos = await resposta.json();
+      
+      this.pacientesNoGrid = this.pacientesAtivos.filter(p => p.exibir_na_presenca == 1 || p.exibir_na_presenca === null || p.exibir_na_presenca === undefined);
+      this.pacientesOcultos = this.pacientesAtivos.filter(p => p.exibir_na_presenca == 0 && p.exibir_na_presenca !== null);
+      
+      this.atualizarContadorOcultos();
     } catch (erro) {
-      console.error("Erro ao carregar nomes:", erro);
+      console.error("Erro ao carregar pacientes:", erro);
+    }
+  },
+
+  atualizarContadorOcultos() {
+    const totalOcultos = this.pacientesOcultos.length;
+    const btnReset = document.getElementById("reset-btn");
+    if (btnReset) {
+      if (totalOcultos > 0) {
+        btnReset.innerHTML = `<i class="fas fa-eye mr-2"></i> Ver Ocultos (${totalOcultos})`;
+        btnReset.classList.remove("bg-red-500", "hover:bg-red-600");
+        btnReset.classList.add("bg-gray-600", "hover:bg-gray-700");
+      } else {
+        btnReset.innerHTML = `<i class="fas fa-eye-slash mr-2"></i> Nenhum Nome Oculto`;
+        btnReset.classList.remove("bg-gray-600", "hover:bg-gray-700");
+        btnReset.classList.add("bg-red-500", "hover:bg-red-600");
+      }
     }
   },
 
   async loadData() {
     try {
-      const resposta = await fetch(
-        `../api/get_presencas.php?mes=${this.date.month + 1}&ano=${this.date.year}`,
-      );
+      const resposta = await fetch(`../api/get_presencas.php?mes=${this.date.month + 1}&ano=${this.date.year}`);
       const presencas = await resposta.json();
 
       document.querySelectorAll(".grid-cell").forEach((c) => {
@@ -40,12 +57,10 @@ const PresencaApp = {
 
       presencas.forEach((p) => {
         const dia = parseInt(p.data_presenca.split("-")[2]);
-        const rowIdx = this.names.indexOf(p.nome);
+        const rowIdx = this.pacientesNoGrid.findIndex(pg => pg.nome === p.nome);
 
         if (rowIdx !== -1 && p.status == 1) {
-          const cell = document.querySelector(
-            `.grid-cell[data-row="${rowIdx}"][data-col="${dia - 1}"]`,
-          );
+          const cell = document.querySelector(`.grid-cell[data-row="${rowIdx}"][data-col="${dia - 1}"]`);
           if (cell) {
             cell.dataset.value = "1";
             cell.textContent = "1";
@@ -68,23 +83,15 @@ const PresencaApp = {
     cell.classList.toggle("active-mark", isMarked);
     this.updateSums(cell.dataset.row, cell.dataset.col);
 
-    const nomeIdoso = this.names[cell.dataset.row];
+    const idoso = this.pacientesNoGrid[cell.dataset.row];
     const dia = parseInt(cell.dataset.col) + 1;
     const dataFormatada = `${this.date.year}-${String(this.date.month + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
 
-    try {
-      await fetch("../api/salvar_presenca.php", {
-        method: "POST",
-        body: JSON.stringify({
-          nome_paciente: nomeIdoso,
-          data: dataFormatada,
-          status: novoStatus,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (erro) {
-      console.error("Erro ao salvar presença:", erro);
-    }
+    await fetch("../api/salvar_presenca.php", {
+      method: "POST",
+      body: JSON.stringify({ nome_paciente: idoso.nome, data: dataFormatada, status: novoStatus }),
+      headers: { "Content-Type": "application/json" },
+    });
   },
 
   render() {
@@ -96,23 +103,19 @@ const PresencaApp = {
 
   updateMonthDisplay() {
     const display = document.getElementById("current-month");
-    if (display)
-      display.textContent = `${CDIUtils.getMonthNames()[this.date.month]} ${this.date.year}`;
+    if (display) display.textContent = `${CDIUtils.getMonthNames()[this.date.month]} ${this.date.year}`;
   },
 
   createHeader() {
     const header = document.getElementById("grid-header");
     if (!header) return;
     let days = CDIUtils.getDaysInMonth(this.date.year, this.date.month);
-
-    let html = `<th class="border border-gray-300 dark:border-gray-700 p-2  text-left text-xs font-bold uppercase bg-opacity-60 text-main">Nome</th>`;
+    let html = `<th class="border border-gray-300 p-2 text-left text-xs font-bold uppercase bg-gray-50">Nome</th>`;
     for (let d = 1; d <= days; d++) {
-      let isWeekend = [0, 6].includes(
-        new Date(this.date.year, this.date.month, d).getDay(),
-      );
-      html += `<th class="border border-gray-300 dark:border-gray-700 p-1 text-center text-xs ${isWeekend ? "bg-black bg-opacity-70 text-gray-500" : "bg-black bg-opacity-60 text-primary"}">${d}</th>`;
+      let isWeekend = [0, 6].includes(new Date(this.date.year, this.date.month, d).getDay());
+      html += `<th class="border border-gray-300 p-1 text-center text-xs ${isWeekend ? "bg-gray-200" : ""}">${d}</th>`;
     }
-    html += `<th class="border border-gray-300 dark:border-gray-700 p-1 bg-black bg-opacity-60 text-primary text-xs font-bold">Total</th>`;
+    html += `<th class="border border-gray-300 p-1 bg-blue-50 text-blue-600 text-xs font-bold">Total</th>`;
     header.innerHTML = `<tr>${html}</tr>`;
   },
 
@@ -122,44 +125,36 @@ const PresencaApp = {
     let days = CDIUtils.getDaysInMonth(this.date.year, this.date.month);
     grid.innerHTML = "";
 
-    for (let i = 0; i < this.rows; i++) {
-      const p = this.pacientes[i];
+    this.pacientesNoGrid.forEach((p, i) => {
       let rowHtml = `
-                <td class="border border-gray-300 dark:border-gray-700 p-2 text-sm text-main whitespace-nowrap font-medium">
-                    <a href="perfil.php?id=${p.id}" class="text-blue-600 hover:underline flex items-center gap-2" title="Ver Prontuário">
-                        <i class="fas fa-file-medical text-[10px] opacity-50"></i>
+                <td class="border border-gray-300 p-2 text-sm whitespace-nowrap font-medium flex justify-between items-center group">
+                    <a href="perfil.php?id=${p.id}" class="text-blue-600 hover:underline">
                         ${p.nome}
                     </a>
+                    <button onclick="PresencaApp.removerDaLista(${p.id}, '${p.nome}')" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition p-1">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </td>`;
       for (let d = 0; d < days; d++) {
-        let isWeekend = [0, 6].includes(
-          new Date(this.date.year, this.date.month, d + 1).getDay(),
-        );
-        rowHtml += `
-                    <td class="grid-cell border border-gray-300 dark:border-gray-700 text-center h-10 cursor-pointer ${isWeekend ? "bg-black bg-opacity-5" : ""}" 
-                        data-row="${i}" data-col="${d}" data-value="0" onclick="PresencaApp.toggleCell(this)">
-                    </td>`;
+        let isWeekend = [0, 6].includes(new Date(this.date.year, this.date.month, d + 1).getDay());
+        rowHtml += `<td class="grid-cell border border-gray-300 text-center h-10 cursor-pointer ${isWeekend ? "bg-gray-50" : ""}" 
+                        data-row="${i}" data-col="${d}" data-value="0" onclick="PresencaApp.toggleCell(this)"></td>`;
       }
-      rowHtml += `<td class="border border-gray-300 dark:border-gray-700 text-center font-bold text-blue-500" data-row-sum="${i}">0</td>`;
+      rowHtml += `<td class="border border-gray-300 text-center font-bold text-blue-500" data-row-sum="${i}">0</td>`;
       grid.innerHTML += `<tr>${rowHtml}</tr>`;
-    }
+    });
     this.addFooterRow(days);
   },
 
   addFooterRow(days) {
     let footer = `<td class="footer-label border p-2 font-bold text-xs text-right bg-gray-50">TOTAL DIA</td>`;
-    for (let d = 0; d < days; d++)
-      footer += `<td class="footer-cell border text-center font-bold text-xs" data-col-sum="${d}">0</td>`;
+    for (let d = 0; d < days; d++) footer += `<td class="footer-cell border text-center font-bold text-xs" data-col-sum="${d}">0</td>`;
     footer += `<td class="footer-total border text-center font-bold bg-blue-100 text-blue-900" id="total-sum">0</td>`;
     document.getElementById("grid").innerHTML += `<tr>${footer}</tr>`;
   },
 
   updateSums(row, col) {
-    const getSum = (selector) =>
-      Array.from(document.querySelectorAll(selector)).reduce(
-        (acc, c) => acc + parseInt(c.dataset.value || 0),
-        0,
-      );
+    const getSum = (selector) => Array.from(document.querySelectorAll(selector)).reduce((acc, c) => acc + parseInt(c.dataset.value || 0), 0);
     if (row !== undefined) {
       const el = document.querySelector(`[data-row-sum="${row}"]`);
       if (el) el.textContent = getSum(`[data-row="${row}"]`);
@@ -168,66 +163,71 @@ const PresencaApp = {
       const el = document.querySelector(`[data-col-sum="${col}"]`);
       if (el) el.textContent = getSum(`[data-col="${col}"]`);
     }
-    document.getElementById("total-sum").textContent = getSum(".grid-cell");
+    const totalSum = document.getElementById("total-sum");
+    if (totalSum) totalSum.textContent = getSum(".grid-cell");
   },
 
   adjustTableSize() {
     const table = document.querySelector("table");
-    if (table)
-      table.style.minWidth =
-        CDIUtils.getDaysInMonth(this.date.year, this.date.month) * 35 +
-        200 +
-        "px";
+    if (table) table.style.minWidth = CDIUtils.getDaysInMonth(this.date.year, this.date.month) * 35 + 200 + "px";
+  },
+
+  async removerDaLista(id, nome) {
+    if (confirm(`Ocultar ${nome} da lista de presença?`)) await this.toggleExibicao(id, 0);
+  },
+
+  async toggleExibicao(id, exibir) {
+    const res = await fetch("../api/toggle_presenca_lista.php", {
+      method: "POST",
+      body: JSON.stringify({ id, exibir }),
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await res.json();
+    if (data.status === "sucesso") await this.init();
+  },
+
+  mostrarOcultos() {
+    if (this.pacientesOcultos.length === 0) return alert("Nenhum idoso oculto.");
+    
+    const container = document.getElementById("lista-pacientes-ocultos");
+    container.innerHTML = this.pacientesOcultos.map(p => `
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-100">
+            <span class="text-gray-700 font-medium">${p.nome}</span>
+            <button onclick="PresencaApp.toggleExibicao(${p.id}, 1)" class="bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-xs font-bold hover:bg-blue-100 transition">
+                Restaurar
+            </button>
+        </div>
+    `).join("");
+    
+    document.getElementById("modal-ocultos").classList.remove("hidden");
+  },
+
+  async restaurarTodos() {
+    if (confirm("Restaurar todos os idosos ocultos?")) {
+        for (let p of this.pacientesOcultos) {
+            await fetch("../api/toggle_presenca_lista.php", {
+                method: "POST",
+                body: JSON.stringify({ id: p.id, exibir: 1 }),
+                headers: { "Content-Type": "application/json" }
+            });
+        }
+        document.getElementById("modal-ocultos").classList.add("hidden");
+        await this.init();
+    }
   },
 
   bindEvents() {
     document.getElementById("prev-month").onclick = async () => {
       this.date.month--;
-      if (this.date.month < 0) {
-        this.date.month = 11;
-        this.date.year--;
-      }
-      this.render();
-      await this.loadData();
+      if (this.date.month < 0) { this.date.month = 11; this.date.year--; }
+      this.render(); await this.loadData();
     };
     document.getElementById("next-month").onclick = async () => {
       this.date.month++;
-      if (this.date.month > 11) {
-        this.date.month = 0;
-        this.date.year++;
-      }
-      this.render();
-      await this.loadData();
+      if (this.date.month > 11) { this.date.month = 0; this.date.year++; }
+      this.render(); await this.loadData();
     };
-
-    const addBtn = document.getElementById("add-person-btn");
-    if (addBtn) {
-      addBtn.innerHTML =
-        '<i class="fas fa-user-minus mr-2"></i> Remover da Lista';
-      addBtn.className = addBtn.className
-        .replace("bg-green-600", "bg-red-500")
-        .replace("hover:bg-green-700", "hover:bg-red-600");
-
-      addBtn.onclick = async () => {
-        const nome = prompt(
-          "Digite o nome EXATO do idoso que deseja remover desta lista:",
-        );
-        if (nome && confirm(`Deseja remover ${nome} da frequência diária?`)) {
-          const res = await fetch("../api/inativar_paciente.php", {
-            method: "POST",
-            body: JSON.stringify({ nome: nome }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          if (data.status === "sucesso") {
-            alert("Removido!");
-            await this.init();
-          } else {
-            alert(data.mensagem);
-          }
-        }
-      };
-    }
+    document.getElementById("reset-btn").onclick = () => this.mostrarOcultos();
   },
 };
 

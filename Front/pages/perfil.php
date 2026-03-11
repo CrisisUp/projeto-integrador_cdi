@@ -159,15 +159,56 @@
                                 <i class="fas fa-calendar-check mr-2 text-green-500"></i> Frequência Recente
                             </h3>
                             <div class="space-y-2">
-                                ${data.presencas.map(pr => `
-                                    <div class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
-                                        <span class="text-gray-600">${CDIUtils.formatarDataBR(pr.data_presenca)}</span>
-                                        <span class="font-bold ${pr.status == 1 ? 'text-green-600' : 'text-red-400'}">
-                                            ${pr.status == 1 ? 'Presente' : 'Faltou'}
-                                        </span>
-                                    </div>
-                                `).slice(0, 5).join('')}
+                                ${(() => {
+                                    const dataCadastro = new Date(p.cadastrado_em).toISOString().split('T')[0];
+                                    const ultimos7Dias = [];
+                                    for (let i = 0; i < 7; i++) {
+                                        const d = new Date();
+                                        d.setDate(d.getDate() - i);
+                                        const dataISO = d.toISOString().split('T')[0];
+                                        const diaSemana = d.getDay(); 
+                                        ultimos7Dias.push({ dataISO, diaSemana });
+                                    }
+
+                                    return ultimos7Dias.map(diaObj => {
+                                        const registro = data.presencas.find(pr => pr.data_presenca === diaObj.dataISO);
+                                        let statusTxt = "";
+                                        let statusCor = "";
+
+                                        // 1. Verificamos se o dia é anterior ao cadastro
+                                        if (diaObj.dataISO < dataCadastro) {
+                                            statusTxt = "Pré-admissão";
+                                            statusCor = "text-gray-300 italic";
+                                        } 
+                                        // 2. Se já era cadastrado, verificamos o banco
+                                        else if (registro) {
+                                            statusTxt = registro.status == 1 ? "Presente" : "Faltou";
+                                            statusCor = registro.status == 1 ? "text-green-600" : "text-red-400";
+                                        } 
+                                        // 3. Se não há registro e já era cadastrado
+                                        else {
+                                            if (diaObj.diaSemana === 0 || diaObj.diaSemana === 6) {
+                                                statusTxt = "Fim de Semana";
+                                                statusCor = "text-gray-300";
+                                            } else {
+                                                statusTxt = "Não Lançado";
+                                                statusCor = "text-amber-500";
+                                            }
+                                        }
+
+                                        return `
+                                            <div class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
+                                                <div class="flex flex-col">
+                                                    <span class="text-gray-600 font-medium">${CDIUtils.formatarDataBR(diaObj.dataISO)}</span>
+                                                    <span class="text-[9px] uppercase text-gray-400">${["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"][diaObj.diaSemana]}</span>
+                                                </div>
+                                                <span class="font-bold ${statusCor}">${statusTxt}</span>
+                                            </div>
+                                        `;
+                                    }).join('');
+                                })()}
                             </div>
+                            <p class="text-[10px] text-gray-400 mt-4 uppercase text-center font-bold tracking-widest">Últimos 7 dias corridos</p>
                         </div>
 
                         <div class="bg-blue-600 rounded-3xl p-6 text-white shadow-lg" style="background-color: var(--primary-color);">

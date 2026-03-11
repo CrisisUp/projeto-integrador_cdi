@@ -1,10 +1,19 @@
 # Usamos a imagem oficial do PHP com Apache
 FROM php:8.2-apache
 
-# Instala as dependências necessárias para o SQLite
+# Define o fuso horário (Timezone)
+ENV TZ=America/Sao_Paulo
+
+# Instala as dependências, configura o fuso horário e limpa cache
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
-    && docker-php-ext-install pdo pdo_sqlite
+    tzdata \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && docker-php-ext-install pdo pdo_sqlite \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configura o Timezone no PHP.ini (via comando direto)
+RUN echo "date.timezone = America/Sao_Paulo" > /usr/local/etc/php/conf.d/timezone.ini
 
 # Habilita o mod_rewrite do Apache (necessário para o .htaccess funcionar)
 RUN a2enmod rewrite

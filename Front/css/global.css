@@ -3,6 +3,23 @@
 :root {
     --primary-color: #1d9bf0;
     --primary-light: rgba(29, 155, 240, 0.1);
+    
+    /* Cores de Status Semânticas */
+    --success-color: #10b981; /* Verde (Substitui text-green-600) */
+    --success-light: rgba(16, 185, 129, 0.1);
+    
+    --danger-color: #ef4444;  /* Vermelho (Substitui text-red-600) */
+    --danger-light: rgba(239, 68, 68, 0.1);
+    
+    --warning-color: #f59e0b; /* Laranja/Amarelo (Substitui text-amber-500) */
+    --warning-light: rgba(245, 158, 11, 0.1);
+    
+    --info-color: #3b82f6;    /* Azul Info */
+    --info-light: rgba(59, 130, 246, 0.1);
+
+    --gray-muted: #9ca3af;
+    --gray-text: #4b5563;
+
     --bg-main: #f5f0e5;
     --text-main: #1f2937;
     --white: #ffffff;
@@ -11,6 +28,25 @@
     --radius-md: 12px;
     --radius-lg: 24px;
 }
+
+/* CLASSES UTILITÁRIAS DE CORES (Substitutos do Tailwind) */
+.cdi-text-primary { color: var(--primary-color) !important; }
+.cdi-bg-primary { background-color: var(--primary-color) !important; }
+
+.cdi-text-success { color: var(--success-color) !important; }
+.cdi-bg-success { background-color: var(--success-color) !important; }
+.cdi-bg-success-light { background-color: var(--success-light) !important; }
+
+.cdi-text-danger { color: var(--danger-color) !important; }
+.cdi-bg-danger { background-color: var(--danger-color) !important; }
+.cdi-bg-danger-light { background-color: var(--danger-light) !important; }
+
+.cdi-text-warning { color: var(--warning-color) !important; }
+.cdi-bg-warning { background-color: var(--warning-color) !important; }
+.cdi-bg-warning-light { background-color: var(--warning-light) !important; }
+
+.cdi-text-muted { color: var(--gray-muted) !important; }
+.cdi-text-gray { color: var(--gray-text) !important; }
 
 /* 1. RESET E BASE */
 body {

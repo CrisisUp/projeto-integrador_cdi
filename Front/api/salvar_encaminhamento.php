@@ -24,18 +24,20 @@ if ($dados['data'] < $hoje) {
 }
 
 try {
-    $stmtP = $pdo->prepare("SELECT nome FROM pacientes WHERE id = ?");
+    // Apenas validamos se o paciente existe, não precisamos mais salvar o nome em texto no banco
+    $stmtP = $pdo->prepare("SELECT id FROM pacientes WHERE id = ?");
     $stmtP->execute([$dados['paciente_id']]);
-    $paciente = $stmtP->fetch();
-    $nome_paciente = $paciente ? $paciente['nome'] : 'Desconhecido';
+    if (!$stmtP->fetch()) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Idoso não encontrado no sistema.']);
+        exit;
+    }
 
-    $sql = "INSERT INTO encaminhamentos (paciente_id, paciente, data, urgencia, destino, usuario_id) 
-            VALUES (:paciente_id, :paciente_nome, :data, :urgencia, :destino, :usuario_id)";
+    $sql = "INSERT INTO encaminhamentos (paciente_id, data, urgencia, destino, usuario_id) 
+            VALUES (:paciente_id, :data, :urgencia, :destino, :usuario_id)";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':paciente_id'   => $dados['paciente_id'],
-        ':paciente_nome' => $nome_paciente,
         ':data'          => $dados['data'],
         ':urgencia'      => $dados['urgencia'],
         ':destino'       => $dados['destino'],

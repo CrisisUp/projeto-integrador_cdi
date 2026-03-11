@@ -18,7 +18,7 @@
             <i class="fas fa-calendar-check mr-4 text-xl"></i><span class="text-xl">Frequência</span>
         </a>
         <a href="encaminhamentos.php" class="flex items-center p-3 text-gray-700 sidebar-item rounded-full mb-2 transition hover:bg-gray-100">
-            <i class="fas fa-file-export mr-4 text-xl"></i> <span class="text-xl">Encaminhamentos</span>
+            <i class="fas fa-file-export mr-4 text-xl"></i> <span class="text-xl">Encaminhamento</span>
         </a>
 
         <div class="pt-4 pb-2">

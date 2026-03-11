@@ -17,10 +17,15 @@ const EncaminhamentoApp = {
             const pacientes = await res.json();
             const select = document.getElementById("select-pacientes");
             if (select) {
+                // Ordenar por matrícula para facilitar a busca numérica
+                pacientes.sort((a, b) => (a.matricula || "").localeCompare(b.matricula || ""));
+                
                 pacientes.forEach(p => {
                     const opt = document.createElement("option");
                     opt.value = p.id;
-                    opt.textContent = `${p.nome} (Matrícula: ${p.matricula || '---'})`;
+                    // Destaque para a Matrícula primeiro, Nome como confirmação
+                    const matriculaStr = p.matricula ? `[${p.matricula}]` : "[S/ MATRÍCULA]";
+                    opt.textContent = `${matriculaStr} - ${p.nome}`;
                     select.appendChild(opt);
                 });
             }

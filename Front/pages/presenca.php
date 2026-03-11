@@ -59,19 +59,37 @@
                 </div>
 
                 <!-- Botões de Ação -->
-                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4 pb-20">
-                    <button id="reset-btn" class="w-full sm:w-auto px-8 py-4 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 shadow-lg transition-all transform hover:-translate-y-1">
-                        <i class="fas fa-trash-can mr-2"></i> Limpar Mês Atual
-                    </button>
-                    <button id="add-person-btn" class="w-full sm:w-auto px-8 py-4 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 shadow-lg transition-all transform hover:-translate-y-1">
-                        <i class="fas fa-user-plus mr-2"></i> Adicionar Pessoa
+                <div class="mt-12 flex justify-center items-center pb-20">
+                    <button id="reset-btn" class="w-full sm:w-auto px-10 py-4 bg-gray-600 text-white font-bold rounded-2xl hover:bg-gray-700 shadow-lg transition-all transform hover:-translate-y-1">
+                        <i class="fas fa-eye-slash mr-2"></i> Nenhum Nome Oculto
                     </button>
                 </div>
+
 
             </div>
         </main>
     </div>
 
+    <!-- MODAL DE GESTÃO DE OCULTOS -->
+    <div id="modal-ocultos" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50/50">
+                <h2 class="text-xl font-bold text-gray-800">Gerenciar Ocultos</h2>
+                <button onclick="document.getElementById('modal-ocultos').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition text-gray-400">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="lista-pacientes-ocultos" class="p-6 max-h-[400px] overflow-y-auto space-y-3">
+                <!-- Populado via JS -->
+            </div>
+            <div class="p-4 bg-gray-50 border-t text-center">
+                <button onclick="PresencaApp.restaurarTodos()" class="text-blue-600 font-bold hover:underline text-sm">
+                    <i class="fas fa-undo mr-1"></i> Restaurar Todos
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts de Funcionalidade -->
     <script src="../js/presenca.js"></script>
-<?php include '../includes/footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>
