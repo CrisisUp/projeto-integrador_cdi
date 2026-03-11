@@ -48,6 +48,11 @@
 .cdi-text-muted { color: var(--gray-muted) !important; }
 .cdi-text-gray { color: var(--gray-text) !important; }
 
+/* HOVER STATES */
+.cdi-hover-danger-light:hover { background-color: var(--danger-light) !important; }
+.cdi-hover-success-light:hover { background-color: var(--success-light) !important; }
+.cdi-hover-primary-light:hover { background-color: var(--primary-light) !important; }
+
 /* 1. RESET E BASE */
 body {
     background-color: var(--bg-main);

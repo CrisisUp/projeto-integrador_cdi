@@ -27,7 +27,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10 animate-fade-in">
                     <!-- Presentes Hoje -->
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl">
+                        <div class="w-12 h-12 rounded-xl cdi-bg-success-light cdi-text-success flex items-center justify-center text-xl">
                             <i class="fas fa-user-check"></i>
                         </div>
                         <div>
@@ -38,7 +38,7 @@
 
                     <!-- Evoluções 24h -->
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <div class="w-12 h-12 rounded-xl cdi-bg-primary-light cdi-text-primary flex items-center justify-center text-xl">
                             <i class="fas fa-notes-medical"></i>
                         </div>
                         <div>
@@ -49,7 +49,7 @@
 
                     <!-- Encaminhamentos Urgentes -->
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl">
+                        <div class="w-12 h-12 rounded-xl cdi-bg-danger-light cdi-text-danger flex items-center justify-center text-xl">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                         <div>
@@ -60,7 +60,7 @@
 
                     <!-- Total Ativos -->
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                        <div class="w-12 h-12 rounded-xl cdi-bg-warning-light cdi-text-warning flex items-center justify-center text-xl">
                             <i class="fas fa-users"></i>
                         </div>
                         <div>
