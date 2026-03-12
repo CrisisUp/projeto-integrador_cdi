@@ -27,7 +27,7 @@
         <!-- Cabeçalho Superior -->
         <header class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-gray-800">Encaminhamentos</h1>
+                <h1 class="cdi-text-3xl font-bold text-gray-800">Encaminhamentos</h1>
                 <p class="cdi-text-muted">Gestão de encaminhamentos para especialidades e serviços externos.</p>
             </div>
             <button id="btn-novo-encaminhamento" class="cdi-bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition transform hover:-translate-y-1 flex items-center justify-center">
@@ -38,7 +38,7 @@
         <!-- Filtros Rápidos -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Filtrar Status</label>
+                <label class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Filtrar Status</label>
                 <select class="w-full mt-1 focus:outline-none bg-transparent text-gray-700 font-medium">
                     <option>Todos os Status</option>
                     <option>Pendente</option>
@@ -47,7 +47,7 @@
                 </select>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm md:col-span-2">
-                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Buscar Paciente</label>
+                <label class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Buscar Paciente</label>
                 <div class="flex items-center">
                     <i class="fas fa-search text-gray-300 mr-2"></i>
                     <input type="text" placeholder="Digite o nome do idoso..." class="w-full mt-1 focus:outline-none bg-transparent text-gray-700">
@@ -59,7 +59,7 @@
         <div id="lista-encaminhamentos" class="grid grid-cols-1 gap-4 pb-10">
             <!-- Loader ou Estado Vazio Inicial -->
             <div class="p-20 text-center text-gray-400 animate-pulse">
-                <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
+                <i class="fas fa-spinner fa-spin cdi-text-3xl mb-4"></i>
                 <p>Carregando registros...</p>
             </div>
         </div>
@@ -69,7 +69,7 @@
     <div id="modal-encaminhamento" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
             <div class="p-6 border-b flex justify-between items-center bg-gray-50/50">
-                <h2 class="text-xl font-bold text-gray-800">Novo Registro</h2>
+                <h2 class="cdi-text-xl font-bold text-gray-800">Novo Registro</h2>
                 <button onclick="EncaminhamentoApp.toggleModal(false)" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition text-gray-400">
                     <i class="fas fa-times"></i>
                 </button>
@@ -77,7 +77,7 @@
 
             <form id="form-encaminhamento" class="p-8 space-y-5">
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Paciente (Inscrição)</label>
+                    <label class="block cdi-text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Paciente (Inscrição)</label>
                     <select name="paciente_id" id="select-pacientes" required
                         class="w-full border border-gray-200 p-4 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
                         <option value="">Selecione o Idoso...</option>
@@ -87,12 +87,12 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Data Prevista</label>
+                        <label class="block cdi-text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Data Prevista</label>
                         <input type="date" name="data" required
                             class="w-full border border-gray-200 p-4 rounded-2xl outline-none focus:border-blue-500 transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Urgência</label>
+                        <label class="block cdi-text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Urgência</label>
                         <select name="urgencia" class="w-full border border-gray-200 p-4 rounded-2xl outline-none focus:border-blue-500 transition bg-white">
                             <option value="Normal">Normal</option>
                             <option value="Alta">Alta</option>
@@ -102,7 +102,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Destino / Especialidade</label>
+                    <label class="block cdi-text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Destino / Especialidade</label>
                     <input type="text" name="destino" required placeholder="Ex: Hospital Municipal, CRAS, etc."
                         class="w-full border border-gray-200 p-4 rounded-2xl outline-none focus:border-blue-500 transition">
                 </div>

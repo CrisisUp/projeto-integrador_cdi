@@ -23,6 +23,10 @@
   --accent-color: #8b5cf6;
   --accent-light: rgba(139, 92, 246, 0.1);
 
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
   /* Tons Neutros e Superfícies */
   --white: #ffffff;
   --black: #000000;
@@ -45,7 +49,18 @@
   --text-main: var(--gray-800);
   --border-color: var(--gray-200);
 
+  /* Escala Tipográfica */
+  --font-xs: 0.75rem; /* 12px */
+  --font-sm: 0.875rem; /* 14px */
+  --font-base: 1rem; /* 16px */
+  --font-lg: 1.125rem; /* 18px */
+  --font-xl: 1.25rem; /* 20px */
+  --font-2xl: 1.5rem; /* 24px */
+  --font-3xl: 1.875rem; /* 30px */
+  --font-4xl: 2.25rem; /* 36px */
+
   --transition-fast: 0.2s ease;
+
   --radius-md: 12px;
   --radius-lg: 24px;
 }
@@ -79,6 +94,7 @@ body.dark-mode {
   --text-main: #f9fafb;
   --white: #1f2937;
   --border-color: #374151;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
 
 .dark-mode body {
@@ -108,6 +124,10 @@ body.dark-mode {
 }
 .cdi-bg-primary {
   background-color: var(--primary-color) !important;
+}
+
+.cdi-bg-alternative {
+  background-color: var(--accent-color);
 }
 
 .cdi-text-success {
@@ -163,6 +183,32 @@ body.dark-mode {
   color: var(--gray-text) !important;
 }
 
+/* Tipografia (Substitutos do Tailwind) */
+.cdi-text-xs {
+  font-size: var(--font-xs) !important;
+}
+.cdi-text-sm {
+  font-size: var(--font-sm) !important;
+}
+.cdi-text-base {
+  font-size: var(--font-base) !important;
+}
+.cdi-text-lg {
+  font-size: var(--font-lg) !important;
+}
+.cdi-text-xl {
+  font-size: var(--font-xl) !important;
+}
+.cdi-text-2xl {
+  font-size: var(--font-2xl) !important;
+}
+.cdi-text-3xl {
+  font-size: var(--font-3xl) !important;
+}
+.cdi-text-4xl {
+  font-size: var(--font-4xl) !important;
+}
+
 /* Estados de Hover */
 .cdi-hover-danger-light:hover {
   background-color: var(--danger-light) !important;
@@ -178,6 +224,20 @@ body.dark-mode {
 }
 .cdi-hover-accent:hover {
   filter: brightness(0.9) !important;
+}
+
+/* Bordas */
+.cdi-border {
+  border: 1px solid var(--border-color) !important;
+}
+.cdi-border-light {
+  border: 1px solid var(--gray-100) !important;
+}
+.cdi-border-b {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.cdi-border-t {
+  border-top: 1px solid var(--border-color) !important;
 }
 
 /* ======================================================
@@ -270,4 +330,20 @@ body.dark-mode .glass-header {
     border: 1px solid #eee !important;
     box-shadow: none !important;
   }
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transition-fast);
 }

@@ -17,10 +17,10 @@
             <!-- Cabeçalho com Glassmorphism -->
             <header class="sticky top-0 z-10 border-b border-gray-300 glass-header" style="background-color: rgba(245, 240, 229, 0.9); backdrop-filter: blur(8px);">
                 <div class="p-4">
-                    <h1 class="text-xl font-bold text-gray-800">Atividades</h1>
+                    <h1 class="cdi-text-xl font-bold text-gray-800">Atividades</h1>
                 </div>
                 <div class="bg-white/50">
-                    <div class="py-4 text-center font-bold border-b-4 cdi-text-success uppercase text-xs tracking-widest" style="border-color: var(--success-color);">
+                    <div class="py-4 text-center font-bold border-b-4 cdi-text-success uppercase cdi-text-xs tracking-widest" style="border-color: var(--success-color);">
                         Atividade Convencional
                     </div>
                 </div>
@@ -30,10 +30,10 @@
             <div class="border-b border-gray-300 p-6 bg-white/30">
                 <div class="flex gap-4">
                     <div class="w-12 h-12 rounded-full cdi-bg-success flex-shrink-0 flex items-center justify-center text-white shadow-sm">
-                        <i class="fas fa-clipboard-list text-xl"></i>
+                        <i class="fas fa-clipboard-list cdi-text-xl"></i>
                     </div>
                     <div class="flex-1">
-                        <textarea class="w-full bg-transparent text-lg outline-none resize-none placeholder-gray-400 border-b border-transparent focus:border-green-500 transition-all"
+                        <textarea class="w-full bg-transparent cdi-text-lg outline-none resize-none placeholder-gray-400 border-b border-transparent focus:border-green-500 transition-all"
                             placeholder="Descreva a atividade realizada hoje..." rows="2"></textarea>
 
                         <div class="flex justify-between items-center mt-4">
@@ -67,7 +67,7 @@
 
             <!-- Calendário de Filtro -->
             <div class="mb-6">
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-2">Filtrar por Data</h2>
+                <h2 class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-2">Filtrar por Data</h2>
                 <div id="calendar" class="bg-white rounded-3xl p-5 shadow-card border border-gray-100">
                     <div class="flex justify-between items-center mb-6">
                         <button id="prevMonth" class="cdi-text-success hover:cdi-bg-success-light p-2 rounded-lg"><i class="fas fa-chevron-left"></i></button>
@@ -75,7 +75,7 @@
                         <button id="nextMonth" class="cdi-text-success hover:cdi-bg-success-light p-2 rounded-lg"><i class="fas fa-chevron-right"></i></button>
                     </div>
 
-                    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-gray-300 mb-2">
+                    <div class="grid grid-cols-7 gap-1 text-center cdi-text-xs font-bold text-gray-300 mb-2">
                         <div>DOM</div>
                         <div>SEG</div>
                         <div>TER</div>
@@ -84,7 +84,7 @@
                         <div>SEX</div>
                         <div>SAB</div>
                     </div>
-                    <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center text-sm"></div>
+                    <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center cdi-text-sm"></div>
                 </div>
 
                 <!-- Seletor de Mês/Ano (Modal interno do calendário) -->
@@ -93,7 +93,7 @@
 
             <!-- Filtro Ativo -->
             <div id="activeFilter" class="hidden mt-4 cdi-bg-success-light p-4 rounded-2xl border border-green-100 animate-fade-in">
-                <div class="flex justify-between items-center text-sm cdi-text-success font-medium">
+                <div class="flex justify-between items-center cdi-text-sm cdi-text-success font-medium">
                     <span><i class="fas fa-calendar-day mr-2"></i> <span id="filterDate"></span></span>
                     <button id="clearFilter" class="hover:text-red-500 transition"><i class="fas fa-times"></i></button>
                 </div>

@@ -56,7 +56,7 @@ const EncaminhamentoApp = {
         if (this.dados.length === 0) {
             container.innerHTML = `
                 <div class="p-20 text-center text-gray-400">
-                    <i class="fas fa-folder-open text-4xl mb-4"></i>
+                    <i class="fas fa-folder-open cdi-text-4xl mb-4"></i>
                     <p>Nenhum encaminhamento encontrado.</p>
                 </div>`;
             return;
@@ -76,27 +76,27 @@ const EncaminhamentoApp = {
         return `
             <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition flex flex-col md:flex-row md:items-center justify-between gap-4 animate-fade-in">
                 <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full ${isConcluido ? 'cdi-bg-success-light cdi-text-success' : 'cdi-bg-primary-light cdi-text-primary'} flex items-center justify-center text-xl">
+                    <div class="w-12 h-12 rounded-full ${isConcluido ? 'cdi-bg-success-light cdi-text-success' : 'cdi-bg-primary-light cdi-text-primary'} flex items-center justify-center cdi-text-xl">
                         <i class="fas ${isConcluido ? 'fa-check-circle' : 'fa-file-medical'}"></i>
                     </div>
                     <div class="ml-4">
-                        <h3 class="font-bold text-gray-800 text-lg ${isConcluido ? 'line-through opacity-50' : ''}">${item.paciente_nome}</h3>
-                        <p class="text-xs cdi-text-primary font-bold uppercase tracking-tighter mb-1">Matrícula: ${item.matricula || '---'}</p>
-                        <p class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i> ${item.destino}</p>
-                        <p class="text-[10px] text-gray-400 mt-1 uppercase">Registrado por: ${autor}</p>
+                        <h3 class="font-bold text-gray-800 cdi-text-lg ${isConcluido ? 'line-through opacity-50' : ''}">${item.paciente_nome}</h3>
+                        <p class="cdi-text-xs cdi-text-primary font-bold uppercase tracking-tighter mb-1">Matrícula: ${item.matricula || '---'}</p>
+                        <p class="cdi-text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i> ${item.destino}</p>
+                        <p class="cdi-text-xs text-gray-400 mt-1 uppercase">Registrado por: ${autor}</p>
                     </div>
                 </div>
                 
                 <div class="flex flex-wrap items-center gap-6">
                     <div class="text-center">
-                        <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest">Data Prevista</span>
+                        <span class="block cdi-text-xs uppercase font-bold text-gray-400 tracking-widest">Data Prevista</span>
                         <span class="text-gray-700 font-medium">${new Date(item.data).toLocaleDateString('pt-BR')}</span>
                     </div>
                     <div class="text-center">
-                        <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest">Urgência</span>
+                        <span class="block cdi-text-xs uppercase font-bold text-gray-400 tracking-widest">Urgência</span>
                         <span class="${corUrgencia}">${item.urgencia}</span>
                     </div>
-                    <div class="px-4 py-1 rounded-full text-xs font-bold ${corStatus}">
+                    <div class="px-4 py-1 rounded-full cdi-text-xs font-bold ${corStatus}">
                         ${item.status}
                     </div>
                     <div class="flex gap-2">

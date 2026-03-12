@@ -26,18 +26,18 @@
     <div class="login-container">
         <div class="login-card">
             <div class="p-8">
-                <h1 class="text-2xl font-bold text-center mb-6">Bem-vindo</h1>
+                <h1 class="cdi-text-2xl font-bold text-center mb-6">Bem-vindo</h1>
 
                 <!-- Bloco de Mensagem de Erro -->
                 <?php if (isset($_GET['erro'])): ?>
                     <div class="cdi-bg-danger-light border-l-4 cdi-text-danger p-3 mb-4 rounded shadow-sm animate-pulse" style="border-color: var(--danger-color);" role="alert">
-                        <p class="text-sm font-bold"><i class="fas fa-exclamation-circle mr-2"></i> Usuário ou senha incorretos.</p>
+                        <p class="cdi-text-sm font-bold"><i class="fas fa-exclamation-circle mr-2"></i> Usuário ou senha incorretos.</p>
                     </div>
                 <?php endif; ?>
 
                 <?php if (isset($_GET['saiu'])): ?>
                     <div class="cdi-bg-success-light border-l-4 cdi-text-success p-3 mb-4 rounded shadow-sm" style="border-color: var(--success-color);">
-                        <p class="text-sm font-bold"><i class="fas fa-check-circle mr-2"></i> Você saiu com segurança!</p>
+                        <p class="cdi-text-sm font-bold"><i class="fas fa-check-circle mr-2"></i> Você saiu com segurança!</p>
                     </div>
                 <?php endif; ?>
 

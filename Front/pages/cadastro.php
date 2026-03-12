@@ -11,14 +11,14 @@
     <div class="flex-1 min-w-0 p-4 md:p-8">
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-gray-800">Gerenciar Idosos</h1>
+                <h1 class="cdi-text-3xl font-bold text-gray-800">Gerenciar Idosos</h1>
                 <p class="cdi-text-muted">Cadastre novos idosos ou edite informações existentes.</p>
             </div>
-            
+
             <!-- BUSCA PARA EDIÇÃO -->
             <div class="bg-white p-3 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 min-w-[300px]">
                 <i class="fas fa-search text-gray-400 ml-2"></i>
-                <select id="select-editar" class="w-full bg-transparent outline-none text-sm font-medium text-gray-700">
+                <select id="select-editar" class="w-full bg-transparent outline-none cdi-text-sm font-medium text-gray-700">
                     <option value="">Novo Cadastro...</option>
                     <!-- Populado via JS -->
                 </select>
@@ -32,7 +32,7 @@
             <!-- Seção 1: Dados Gerais -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
                 <div id="form-header-color" class="cdi-bg-primary text-white px-6 py-4 transition-colors">
-                    <h2 class="text-lg font-semibold flex items-center">
+                    <h2 class="cdi-text-lg font-semibold flex items-center">
                         <i class="fas fa-id-card mr-3"></i><span id="form-title">Novo Cadastro</span>
                     </h2>
                 </div>
@@ -41,17 +41,17 @@
                 <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Nº Matrícula</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Nº Matrícula</label>
                         <input type="text" id="matricula" name="matricula" class="form-input-style">
                     </div>
 
                     <div class="flex flex-col md:col-span-2 lg:col-span-3">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Nome do Usuário</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Nome do Usuário</label>
                         <input type="text" id="nome" name="nome" class="form-input-style">
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Sexo</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Sexo</label>
                         <select id="sexo" name="sexo" class="form-input-style">
                             <option value="">Selecione</option>
                             <option value="masculino">Masculino</option>
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Cor/Raça</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Cor/Raça</label>
                         <select id="cor_raca" name="cor_raca" class="form-input-style">
                             <option value="">Selecione</option>
                             <option value="branca">Branca</option>
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">NIS</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">NIS</label>
                         <input
                             type="text"
                             id="nis"
@@ -85,18 +85,18 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1 required">Data de Nascimento</label>
-                        <input type="date" id="data_nascimento" name="data_nascimento" class="form-input-style" 
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Data de Nascimento</label>
+                        <input type="date" id="data_nascimento" name="data_nascimento" class="form-input-style"
                             max="<?php echo date('Y-m-d'); ?>" onchange="calcularIdade()">
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Idade</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1">Idade</label>
                         <input type="text" id="idade" name="idade" class="form-input-style bg-gray-50 font-bold" readonly>
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="text-xs font-bold text-gray-600 uppercase mb-1">Status</label>
+                        <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1">Status</label>
                         <select id="status" name="status" class="form-input-style font-bold">
                             <option value="ativo">Ativo</option>
                             <option value="desligado">Desligado</option>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="p-6 space-y-4">
                         <div class="flex flex-col">
-                            <label class="text-xs font-bold text-gray-600 uppercase mb-1">Lanche Tipo 2</label>
+                            <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1">Lanche Tipo 2</label>
                             <select name="lanche_tipo_2" class="form-input-style">
                                 <option>Selecione</option>
                                 <option>Sim</option>
@@ -123,7 +123,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="text-xs font-bold text-gray-600 uppercase mb-1">Dieta Especial</label>
+                            <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1">Dieta Especial</label>
                             <select name="dieta_especial" id="dieta_especial" class="form-input-style">
                                 <option>Selecione</option>
                                 <option value="sim">Sim</option>
@@ -135,11 +135,11 @@
 
                 <!-- Card Benefícios -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="cdi-bg-primary text-white px-6 py-3 font-semibold flex items-center">
+                    <div class="cdi-bg-alternative text-white px-6 py-3 font-semibold flex items-center">
                         <i class="fas fa-hand-holding-heart mr-2 required"></i> Benefícios
                     </div>
                     <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                        <label class="flex items-center space-x-2 cdi-text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                             <input
                                 type="checkbox"
                                 id="nao_recebe"
@@ -148,13 +148,13 @@
                                 class="h-4 w-4 cdi-text-primary">
                             <span>Não recebe</span>
                         </label>
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                        <label class="flex items-center space-x-2 cdi-text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                             <input
                                 type="checkbox"
                                 name="beneficios[]" value="Bolsa Família" class="h-4 w-4 cdi-text-primary">
                             <span>Bolsa Família</span>
                         </label>
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                        <label class="flex items-center space-x-2 cdi-text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                             <input
                                 type="checkbox"
                                 name="beneficios[]"
@@ -162,7 +162,7 @@
                                 class="h-4 w-4 cdi-text-primary">
                             <span>BPC - Idoso</span>
                         </label>
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                        <label class="flex items-center space-x-2 cdi-text-sm text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                             <input
                                 type="checkbox"
                                 name="beneficios[]"
@@ -198,4 +198,4 @@
             document.getElementById('idade').value = idade >= 0 ? idade + " anos" : "Data inválida";
         }
     </script>
-<?php include '../includes/footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>

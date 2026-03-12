@@ -16,7 +16,7 @@
             <!-- Cabeçalho -->
             <header class="sticky top-0 z-10 border-b border-gray-300 glass-header" style="background-color: rgba(245, 240, 229, 0.9); backdrop-filter: blur(8px);">
                 <div class="p-4">
-                    <h1 class="text-xl font-bold text-gray-800">Enfermagem</h1>
+                    <h1 class="cdi-text-xl font-bold text-gray-800">Enfermagem</h1>
                 </div>
                 <div class="bg-white/50">
                     <div class="py-4 text-center font-bold border-b-4 cdi-text-primary" style="border-color: var(--primary-color);">
@@ -29,10 +29,10 @@
             <div class="border-b border-gray-300 p-4 bg-white/30">
                 <div class="flex">
                     <div class="w-12 h-12 rounded-full cdi-bg-primary flex-shrink-0 flex items-center justify-center text-white">
-                        <i class="fas fa-user-nurse text-xl"></i>
+                        <i class="fas fa-user-nurse cdi-text-xl"></i>
                     </div>
                     <div class="ml-3 flex-1">
-                        <textarea class="w-full bg-transparent text-lg outline-none resize-none placeholder-gray-500 border-b border-transparent focus:border-blue-500 transition" placeholder="Relate a evolução ou intercorrência do paciente..." rows="3"></textarea>
+                        <textarea class="w-full bg-transparent cdi-text-lg outline-none resize-none placeholder-gray-500 border-b border-transparent focus:border-blue-500 transition" placeholder="Relate a evolução ou intercorrência do paciente..." rows="3"></textarea>
                         <div class="flex justify-between items-center mt-4">
                             <div class="flex space-x-4 cdi-text-primary">
                                 <button title="Anexar Imagem"><i class="fas fa-image"></i></button>
@@ -62,14 +62,14 @@
 
             <!-- Calendário -->
             <div class="mb-6 relative">
-                <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Filtrar por Data</h2>
+                <h2 class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Filtrar por Data</h2>
                 <div id="calendar" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-4">
                         <button id="prevMonth" class="cdi-text-primary"><i class="fas fa-chevron-left"></i></button>
                         <h3 id="monthYear" class="font-bold text-gray-700"></h3>
                         <button id="nextMonth" class="cdi-text-primary"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-gray-400 mb-2">
+                    <div class="grid grid-cols-7 gap-1 text-center cdi-text-xs font-bold text-gray-400 mb-2">
                         <div>DOM</div>
                         <div>SEG</div>
                         <div>TER</div>
@@ -78,7 +78,7 @@
                         <div>SEX</div>
                         <div>SAB</div>
                     </div>
-                    <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center text-sm"></div>
+                    <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center cdi-text-sm"></div>
                 </div>
 
                 <!-- Seletor de Mês e Ano (Dropdown) -->
@@ -88,7 +88,7 @@
             </div>
 
             <div id="activeFilter" class="hidden cdi-bg-primary-light p-4 rounded-xl border border-blue-100">
-                <div class="flex justify-between items-center text-sm cdi-text-primary">
+                <div class="flex justify-between items-center cdi-text-sm cdi-text-primary">
                     <span><i class="fas fa-filter mr-2"></i> <span id="filterDate" class="font-bold"></span></span>
                     <button id="clearFilter" class="hover:text-red-500"><i class="fas fa-times"></i></button>
                 </div>

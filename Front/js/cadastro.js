@@ -80,6 +80,29 @@ const CadastroApp = {
 
     selectEditar?.addEventListener("change", (e) => this.carregarDadosParaEdicao(e.target.value));
 
+    // Lógica Exclusiva de Benefícios
+    const checkNaoRecebe = document.getElementById("nao_recebe");
+    const outrosBeneficios = document.querySelectorAll('input[name="beneficios[]"]:not(#nao_recebe)');
+
+    checkNaoRecebe?.addEventListener("change", (e) => {
+      if (e.target.checked) {
+        outrosBeneficios.forEach(cb => {
+          cb.checked = false;
+          cb.disabled = true;
+        });
+      } else {
+        outrosBeneficios.forEach(cb => cb.disabled = false);
+      }
+    });
+
+    outrosBeneficios.forEach(cb => {
+      cb.addEventListener("change", (e) => {
+        if (e.target.checked && checkNaoRecebe) {
+          checkNaoRecebe.checked = false;
+        }
+      });
+    });
+
     // Validação de Ano (Impede anos com mais de 4 dígitos)
     inputData?.addEventListener("input", (e) => {
       const valor = e.target.value;

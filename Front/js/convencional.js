@@ -68,7 +68,7 @@ const ConvencionalApp = {
         container.innerHTML = "";
 
         if (this.atividades.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center text-gray-400"><p class="text-lg">Nenhuma atividade registrada.</p></div>`;
+            container.innerHTML = `<div class="p-8 text-center text-gray-400"><p class="cdi-text-lg">Nenhuma atividade registrada.</p></div>`;
             return;
         }
 
@@ -85,11 +85,11 @@ const ConvencionalApp = {
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-gray-800">${autor}</span>
-                            <span class="text-gray-400 text-xs">·</span>
-                            <span class="text-gray-400 text-xs">${new Date(post.data_postagem).toLocaleString('pt-BR')}</span>
+                            <span class="font-bold text-gray-800 cdi-text-base">${autor}</span>
+                            <span class="text-gray-400 cdi-text-xs">·</span>
+                            <span class="text-gray-400 cdi-text-xs">${new Date(post.data_postagem).toLocaleString('pt-BR')}</span>
                         </div>
-                        <p class="text-gray-700 leading-relaxed">${post.descricao}</p>
+                        <p class="text-gray-700 leading-relaxed cdi-text-base">${post.descricao}</p>
                     </div>
                 </div>`;
             container.appendChild(postElement);
@@ -117,7 +117,7 @@ const ConvencionalApp = {
             const dayElement = document.createElement("div");
             const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
-            dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer text-sm transition-all
+            dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer cdi-text-sm transition-all
                 ${this.selectedDate === dateString ? 'cdi-bg-success text-white font-bold shadow-md' : 'text-gray-600 hover:cdi-bg-success-light'}`;
             dayElement.textContent = day;
 

@@ -1,12 +1,12 @@
 .calendar-day {
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition-fast);
 }
 
 .calendar-day:hover,
 .calendar-day.selected {
   background-color: var(--primary-color) !important;
-  color: var(--white); /* Branco fixo para contraste com o azul */
+  color: var(--white) !important;
   font-weight: var(--weight-bold);
 }
 
@@ -15,6 +15,7 @@
   background-color: var(--success-light) !important;
   color: var(--success-color) !important;
   font-weight: bold;
+  font-size: large;
 }
 
 .dark-mode .active-mark {
@@ -23,8 +24,14 @@
 }
 
 .grid-header-cell {
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+  font-weight: 600;
+}
+
+.dark-mode .grid-header-cell {
+  background-color: var(--gray-800);
+  color: var(--gray-100);
 }
 
 .post {
@@ -68,7 +75,7 @@
   z-index: 50;
   width: 280px;
   display: none;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-color);
 }
 
 .month-grid,
@@ -129,13 +136,28 @@
   padding-bottom: 20px; /* Garante que não colem no fim da página */
 }
 
+/* Aumenta os números dos totais diários */
+.footer-cell {
+  font-size: 2rem !important; /* Tamanho maior (aprox. 20px) */
+  font-weight: 800 !important; /* Deixa o número mais "grosso" */
+}
+
 #total-sum {
+  font-size: 1rem !important; /* Ainda maior que os outros */
+  padding: 4px !important; /* Garante espaço interno para o número maior */
   border-radius: 4px !important; /* Em vez de circular, fica um quadrado arredondado */
 }
 
 /* Estilos específicos para a tabela de presença */
 .overflow-x-auto::-webkit-scrollbar {
   height: 10px;
+}
+
+.footer-cell,
+.footer-label,
+#total-sum {
+  height: 40px !important; /* Dá mais respiro vertical para os números grandes */
+  vertical-align: middle;
 }
 
 .overflow-x-auto::-webkit-scrollbar-track {
@@ -151,15 +173,166 @@
 .grid-cell {
   min-width: 40px;
   height: 40px;
+  border: 2px solid var(--border-color);
+}
+
+/* Estilo para o nome do idoso na tabela */
+#grid td a {
+  font-size: var(--font-lg);
+  text-decoration: none !important;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: var(--transition-fast);
+}
+
+#grid td a:hover {
+  color: var(--primary-color);
+  text-decoration: none !important;
+}
+
+.footer-section {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding-bottom: 30px;
+}
+
+.cdi-input-search {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  color: var(--text-main);
 }
 
 /* Backdrop blur para o cabeçalho no scroll */
 .glass-header {
   background-color: rgba(245, 240, 229, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .dark-mode .glass-header {
   background-color: rgba(17, 24, 39, 0.8);
+}
+
+/* ======================================================
+   AJUSTES DE TAMANHO: LINHA DE TOTAIS (RODAPÉ)
+   ====================================================== */
+
+/* 1. Aumenta os números diários (0, 0, 0...) */
+.footer-cell {
+  font-size: 1.4rem !important; /* Tamanho 20px */
+  font-weight: 800 !important; /* Extra negrito */
+  color: var(--gray-800) !important;
+  height: 50px !important; /* Altura maior para caber o número */
+  vertical-align: middle !important;
+}
+
+/* 2. Ajusta o Modo Escuro para os números diários */
+.dark-mode .footer-cell {
+  color: var(--white) !important;
+}
+
+/* 3. Aumenta o número do TOTAL GERAL (Quadrado Roxo/Accent) */
+#total-sum {
+  font-size: 1.2rem !important; /* Tamanho 24px */
+  font-weight: bold !important; /* Máximo negrito */
+  min-width: 60px !important; /* Garante que o quadrado não aperte o número */
+  height: 40px !important;
+  display: table-cell !important; /* Garante alinhamento de tabela */
+  vertical-align: middle !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1); /* Leve profundidade */
+}
+
+/* 4. Ajuste da etiqueta "TOTAL DIA" para acompanhar o tamanho */
+.footer-label {
+  font-size: 1.4rem !important; /* Ajuste conforme necessário (ex: 1.2rem) */
+  font-weight: bold !important; /* Deixa o texto mais negrito */
+  text-transform: uppercase; /* Mantém em letras maiúsculas */
+  letter-spacing: 0.05em; /* Espaçamento entre letras para melhor leitura */
+  padding-right: 20px !important; /* Espaço entre o texto e o primeiro número */
+  color: var(--white) !important; /* Garante o contraste no fundo escuro */
+}
+
+/* Cabeçalhos da Tabela */
+.presenca-th-idoso {
+  background-color: var(--gray-700);
+  color: var(--white);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 6px !important;
+}
+
+.grid-header-cell {
+  font-size: 1rem !important; /* Tamanho maior para os dias */
+  font-weight: 700 !important; /* Mais negrito */
+}
+
+.presenca-th-total {
+  background-color: var(--accent-color);
+  color: var(--white);
+  font-size: 1.2rem;
+  font-weight: bold;
+  min-width: 40px;
+  border-radius: 0 4px 0 0;
+}
+
+/* Rodapé (Total Dia) */
+.presenca-footer-label {
+  background-color: var(--gray-700);
+  color: var(--white);
+  font-size: 1.1rem !important;
+  font-weight: 800;
+  text-align: right;
+  padding: 6px !important;
+}
+
+.presenca-footer-sum {
+  font-size: 1.2rem !important;
+  font-weight: 800;
+  text-align: center;
+  color: var(--gray-800);
+}
+
+.dark-mode .presenca-footer-sum {
+  color: var(--white);
+}
+
+/* Células de Soma da Linha (Direita) */
+.presenca-row-total {
+  font-size: 1.4rem !important;
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Total Geral */
+#total-sum {
+  background-color: var(--gray-400);
+  color: var(--white);
+  font-size: 1.4rem !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Muda a cor do fundo das células de nome (primeira coluna) */
+#grid td:first-child {
+  background-color: #fcfaf5 !important; /* Escolha sua cor aqui */
+  color: black;
+  transition: background-color 0.2s ease;
+}
+
+/* Garante que no Dark Mode a cor também mude para não ofuscar */
+.dark-mode #grid td:first-child {
+  background-color: var(--gray-800) !important;
+  border-right: 2px solid var(--border-color);
+}
+
+/* Efeito opcional: destaca a linha inteira ao passar o mouse */
+#grid tr:hover td:first-child {
+  background-color: var(--primary-light) !important;
 }

@@ -21,7 +21,7 @@ echo "<!DOCTYPE html>
 </head>
 <body>
 
-    <h1 class='text-3xl font-bold mb-8 text-gray-800'>🔍 Inspeção de Banco de Dados (Auditoria)</h1>
+    <h1 class='cdi-text-3xl font-bold mb-8 text-gray-800'>🔍 Inspeção de Banco de Dados (Auditoria)</h1>
 
     <!-- 1. TABELA DE PACIENTES -->
     <div class='card'>
@@ -83,7 +83,7 @@ echo "      </tbody>
         </table>
     </div>
 
-    <div class='text-center text-gray-400 text-sm'>
+    <div class='text-center text-gray-400 cdi-text-sm'>
         Caminho do Banco: <code>data/clinica.db</code>
     </div>
 
