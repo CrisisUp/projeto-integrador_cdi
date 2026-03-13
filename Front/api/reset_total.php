@@ -7,12 +7,13 @@ try {
     // 1. Apaga dados das tabelas dependentes primeiro (Chaves Estrangeiras)
     $pdo->exec("DELETE FROM presenca");
     $pdo->exec("DELETE FROM atividades");
+    $pdo->exec("DELETE FROM encaminhamentos");
     
     // 2. Apaga todos os pacientes
     $pdo->exec("DELETE FROM pacientes");
 
     // 3. Reseta os contadores de ID de todas as tabelas para 1
-    $pdo->exec("DELETE FROM sqlite_sequence WHERE name IN ('pacientes', 'presenca', 'atividades')");
+    $pdo->exec("DELETE FROM sqlite_sequence WHERE name IN ('pacientes', 'presenca', 'atividades', 'encaminhamentos')");
 
     $pdo->commit();
 

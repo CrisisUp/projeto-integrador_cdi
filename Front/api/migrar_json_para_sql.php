@@ -18,8 +18,8 @@ $erros = 0;
 
 // Prepara a query de inserção (evita SQL Injection)
 $stmt = $pdo->prepare("INSERT OR IGNORE INTO pacientes 
-    (matricula, nome, sexo, cor_raca, data_nascimento, nis, beneficios, cadastrado_em) 
-    VALUES (:matricula, :nome, :sexo, :cor_raca, :data_nascimento, :nis, :beneficios, :cadastrado_em)");
+    (matricula, nome, sexo, cor_raca, data_nascimento, nis, beneficios, cadastrado_em, status, exibir_na_presenca) 
+    VALUES (:matricula, :nome, :sexo, :cor_raca, :data_nascimento, :nis, :beneficios, :cadastrado_em, :status, :exibir_na_presenca)");
 
 foreach ($pacientes_json as $p) {
     // Trata o campo benefícios (se for array, vira string JSON)
@@ -34,7 +34,9 @@ foreach ($pacientes_json as $p) {
             ':data_nascimento' => $p['data_nascimento'] ?? null,
             ':nis'             => $p['nis'] ?? null,
             ':beneficios'      => $beneficios,
-            ':cadastrado_em'   => $p['cadastrado_em'] ?? date('Y-m-d H:i:s')
+            ':cadastrado_em'   => $p['cadastrado_em'] ?? date('Y-m-d H:i:s'),
+            ':status'          => $p['status'] ?? 'ativo',
+            ':exibir_na_presenca' => $p['exibir_na_presenca'] ?? 1
         ]);
         
         if ($stmt->rowCount() > 0) {

@@ -12,7 +12,12 @@ try {
         data_nascimento TEXT,
         nis TEXT UNIQUE,
         beneficios TEXT, -- Salvaremos como JSON texto
-        cadastrado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        status TEXT DEFAULT 'ativo', -- 'ativo' ou 'inativo'
+        exibir_na_presenca INTEGER DEFAULT 1, -- 1: Sim, 0: Não
+        inativado_por INTEGER,
+        inativado_em TIMESTAMP,
+        cadastrado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (inativado_por) REFERENCES usuarios(id)
     )");
 
     // 2. Tabela de Presença (Frequência)
@@ -28,11 +33,13 @@ try {
     $pdo->exec("CREATE TABLE IF NOT EXISTS atividades (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         paciente_id INTEGER,
+        usuario_id INTEGER,
         tipo TEXT, -- 'convencional' ou 'enfermagem'
         descricao TEXT NOT NULL,
         foto_path TEXT,
         data_postagem TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+        FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");
 
     // 4. Tabela de Usuários (Login Seguro)
@@ -47,13 +54,14 @@ try {
     // 5. Tabela de Encaminhamentos
     $pdo->exec("CREATE TABLE IF NOT EXISTS encaminhamentos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        paciente TEXT NOT NULL,
+        paciente_id INTEGER,
         data TEXT NOT NULL,
         urgencia TEXT,
         destino TEXT,
         status TEXT DEFAULT 'Pendente',
         usuario_id INTEGER,
         criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");
 

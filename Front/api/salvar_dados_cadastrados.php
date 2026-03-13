@@ -35,8 +35,8 @@ try {
     }
 
     // 3. Prepara a inserção se passar nas verificações
-    $sql = "INSERT INTO pacientes (matricula, nome, sexo, cor_raca, data_nascimento, nis, beneficios) 
-            VALUES (:matricula, :nome, :sexo, :cor_raca, :data_nascimento, :nis, :beneficios)";
+    $sql = "INSERT INTO pacientes (matricula, nome, sexo, cor_raca, data_nascimento, nis, beneficios, status, exibir_na_presenca) 
+            VALUES (:matricula, :nome, :sexo, :cor_raca, :data_nascimento, :nis, :beneficios, :status, :exibir_na_presenca)";
     
     $stmt = $pdo->prepare($sql);
     
@@ -49,7 +49,9 @@ try {
         ':cor_raca'        => $novo_paciente['cor_raca'] ?? null,
         ':data_nascimento' => $novo_paciente['data_nascimento'] ?? null,
         ':nis'             => $novo_paciente['nis'] ?? null,
-        ':beneficios'      => $beneficios_json
+        ':beneficios'      => $beneficios_json,
+        ':status'          => $novo_paciente['status'] ?? 'ativo',
+        ':exibir_na_presenca' => $novo_paciente['exibir_na_presenca'] ?? 1
     ]);
 
     // 4. Retorna sucesso
