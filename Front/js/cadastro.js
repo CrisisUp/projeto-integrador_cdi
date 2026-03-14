@@ -121,13 +121,43 @@ const CadastroApp = {
 
   aplicarMascaras() {
     const nisInput = document.getElementById("nis");
-    nisInput?.addEventListener("input", (e) => {
-      let value = e.target.value.replace(/\D/g, "");
-      if (value.length > 3 && value.length <= 8) value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
-      else if (value.length > 8 && value.length <= 10) value = value.replace(/^(\d{3})(\d{5})(\d+)/, "$1.$2.$3");
-      else if (value.length > 10) value = value.replace(/^(\d{3})(\d{5})(\d{2})(\d{1})/, "$1.$2.$3-$4");
-      e.target.value = value;
-    });
+    const cpfInput = document.getElementById("cpf"); // Caso você adicione um campo CPF no futuro
+
+    if (nisInput) {
+      nisInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+        if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+
+        // Formato NIS: 000.00000.00-0
+        if (value.length > 10) {
+          value = value.replace(/^(\d{3})(\d{5})(\d{2})(\d{1})/, "$1.$2.$3-$4");
+        } else if (value.length > 8) {
+          value = value.replace(/^(\d{3})(\d{5})(\d+)/, "$1.$2.$3");
+        } else if (value.length > 3) {
+          value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
+        }
+        
+        e.target.value = value;
+      });
+    }
+
+    if (cpfInput) {
+      cpfInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+
+        // Formato CPF: 000.000.000-00
+        if (value.length > 9) {
+          value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        } else if (value.length > 6) {
+          value = value.replace(/^(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+        } else if (value.length > 3) {
+          value = value.replace(/^(\d{3})(\d+)/, "$1.$2");
+        }
+
+        e.target.value = value;
+      });
+    }
   },
 
   async handleSubmit(form) {
@@ -152,7 +182,7 @@ const CadastroApp = {
       const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify(dados),
-        headers: { "Content-Type": "application/json" },
+        headers: CDIUtils.getHeaders(), // Agora inclui o Token CSRF automaticamente
       });
       const result = await res.json();
 

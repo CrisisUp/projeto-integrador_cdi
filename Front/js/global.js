@@ -30,9 +30,31 @@ const CDIUtils = {
   },
 
   formatarDataBR(dataISO) {
-    if (!dataISO) return "---";
-    const [ano, mes, dia] = dataISO.split("-");
+    if (!dataISO || dataISO === "---") return "---";
+    const parts = dataISO.split("-");
+    if (parts.length < 3) return dataISO;
+    const [ano, mes, dia] = parts;
     return `${dia}/${mes}/${ano}`;
+  },
+
+  // 2. SEGURANÇA E ESCAPE (Prevenção de XSS)
+  escapeHTML(str) {
+    if (!str) return "";
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  },
+
+  /**
+   * Retorna os cabeçalhos padrão para requisições Fetch,
+   * incluindo o Token CSRF para proteção contra ataques.
+   */
+  getHeaders(extraHeaders = {}) {
+    return {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": window.csrfToken || "", // Pega o token gerado no PHP
+      ...extraHeaders
+    };
   },
 
   showToast(message, type = "success") {
@@ -48,7 +70,7 @@ const CDIUtils = {
     setTimeout(() => toast.remove(), 3000);
   },
 
-  // 2. TEMA E APARÊNCIA (CARREGAMENTO INICIAL)
+  // 3. TEMA E APARÊNCIA (CARREGAMENTO INICIAL)
   initTheme() {
     // Aplica Cor Principal
     const savedColor = localStorage.getItem("theme-color") || "#1d9bf0";
@@ -73,11 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // Executa IMEDIATAMENTE (para evitar flash branco)
 if (localStorage.getItem("dark-mode") === "enabled") {
   document.documentElement.classList.add("dark-mode");
-  // Nota: Aplicamos no documentElement também para garantir cobertura total
 }
 
 /**
- * Função global para alternar o modo escuro (chamada pela página de configurações)
+ * Função global para alternar o modo escuro
  */
 function applyDarkMode(enabled) {
   if (enabled) {

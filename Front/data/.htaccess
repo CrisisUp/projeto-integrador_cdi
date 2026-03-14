@@ -1,2 +1,6 @@
-1# Bloqueia o acesso a todos os arquivos desta pasta via navegador
-Require all denied
+# Bloqueia o acesso a todos os arquivos desta pasta
+Order deny,allow
+Deny from all
+
+# Opcional: Impede a listagem de diretórios
+Options -Indexes

@@ -43,7 +43,7 @@
                 if (result.status === 'sucesso') {
                     renderizarPerfil(result);
                 } else {
-                    document.getElementById('perfil-container').innerHTML = `<div class='text-center p-20'>${result.mensagem}</div>`;
+                    document.getElementById('perfil-container').innerHTML = `<div class='text-center p-20'>${CDIUtils.escapeHTML(result.mensagem)}</div>`;
                 }
             } catch (e) {
                 console.error(e);
@@ -54,6 +54,7 @@
             const p = data.dados;
             const container = document.getElementById('perfil-container');
             
+            // Usamos escapeHTML para prevenir ataques XSS ao injetar dados no innerHTML
             container.innerHTML = `
                 <!-- Cabeçalho do Perfil -->
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden mb-8 animate-fade-in">
@@ -66,15 +67,15 @@
                                 </div>
                             </div>
                             <div class="flex-1 pb-2">
-                                <h1 class="cdi-text-3xl font-bold text-gray-800">${p.nome}</h1>
-                                <p class="cdi-text-base text-gray-500 font-medium">Matrícula: ${p.matricula || '---'}</p>
+                                <h1 class="cdi-text-3xl font-bold text-gray-800">${CDIUtils.escapeHTML(p.nome)}</h1>
+                                <p class="cdi-text-base text-gray-500 font-medium">Matrícula: ${CDIUtils.escapeHTML(p.matricula) || '---'}</p>
                             </div>
                             <div class="pb-2 flex gap-3">
                                 <button id="btn-imprimir" onclick="window.print()" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-600 font-bold cdi-text-sm hover:bg-gray-200 transition flex items-center gap-2">
                                     <i class="fas fa-file-pdf"></i> PDF / Imprimir
                                 </button>
                                 <span class="px-4 py-2 rounded-full cdi-bg-success-light cdi-text-success font-bold cdi-text-sm flex items-center">
-                                    <i class="fas fa-circle mr-2 text-[10px]"></i>Status: ${p.status.toUpperCase()}
+                                    <i class="fas fa-circle mr-2 text-[10px]"></i>Status: ${CDIUtils.escapeHTML(p.status.toUpperCase())}
                                 </span>
                             </div>
                         </div>
@@ -82,7 +83,7 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-gray-100 pt-8">
                             <div>
                                 <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">NIS</span>
-                                <span class="font-bold text-gray-700">${p.nis || '---'}</span>
+                                <span class="font-bold text-gray-700">${CDIUtils.escapeHTML(p.nis) || '---'}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Data de Nascimento</span>
@@ -90,11 +91,11 @@
                             </div>
                             <div>
                                 <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Sexo</span>
-                                <span class="font-bold text-gray-700 capitalize">${p.sexo || '---'}</span>
+                                <span class="font-bold text-gray-700 capitalize">${CDIUtils.escapeHTML(p.sexo) || '---'}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Cor/Raça</span>
-                                <span class="font-bold text-gray-700 capitalize">${p.cor_raca || '---'}</span>
+                                <span class="font-bold text-gray-700 capitalize">${CDIUtils.escapeHTML(p.cor_raca) || '---'}</span>
                             </div>
                         </div>
                     </div>
@@ -116,12 +117,12 @@
                                         <div class="absolute left-0 w-6 h-6 rounded-full bg-white border-4 cdi-text-primary flex items-center justify-center z-10" style="border-color: var(--primary-color);"></div>
                                         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                                             <div class="flex justify-between items-start mb-2">
-                                                <span class="cdi-text-xs font-bold cdi-text-primary uppercase">${at.tipo}</span>
+                                                <span class="cdi-text-xs font-bold cdi-text-primary uppercase">${CDIUtils.escapeHTML(at.tipo)}</span>
                                                 <span class="cdi-text-xs text-gray-400">${new Date(at.data_postagem).toLocaleString('pt-BR')}</span>
                                             </div>
-                                            <p class="text-gray-700 leading-relaxed cdi-text-base">${at.descricao}</p>
+                                            <p class="text-gray-700 leading-relaxed cdi-text-base">${CDIUtils.escapeHTML(at.descricao)}</p>
                                             <div class="mt-4 pt-4 border-t border-gray-50 flex items-center text-[10px] text-gray-400 uppercase font-bold tracking-tighter">
-                                                <i class="fas fa-user-nurse mr-2"></i> Registrado por: ${at.funcionario || 'Sistema'}
+                                                <i class="fas fa-user-nurse mr-2"></i> Registrado por: ${CDIUtils.escapeHTML(at.funcionario_nome || 'Sistema')}
                                             </div>
                                         </div>
                                     </div>
@@ -140,12 +141,12 @@
                                     <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
                                         <div class="flex justify-between items-start mb-3">
                                             <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${en.status === 'Concluído' ? 'cdi-bg-success-light cdi-text-success' : 'cdi-bg-warning-light cdi-text-warning'}">
-                                                ${en.status}
+                                                ${CDIUtils.escapeHTML(en.status)}
                                             </span>
                                             <span class="text-[10px] font-bold text-gray-400">${new Date(en.data).toLocaleDateString('pt-BR')}</span>
                                         </div>
-                                        <h4 class="font-bold text-gray-800 mb-1">${en.destino}</h4>
-                                        <p class="cdi-text-xs text-gray-500">Urgência: <span class="font-bold ${en.urgencia === 'Urgente' ? 'cdi-text-danger' : 'text-gray-700'}">${en.urgencia}</span></p>
+                                        <h4 class="font-bold text-gray-800 mb-1">${CDIUtils.escapeHTML(en.destino)}</h4>
+                                        <p class="cdi-text-xs text-gray-500">Urgência: <span class="font-bold ${en.urgencia === 'Urgente' ? 'cdi-text-danger' : 'text-gray-700'}">${CDIUtils.escapeHTML(en.urgencia)}</span></p>
                                     </div>
                                 `).join('') : '<div class="col-span-2 bg-gray-50 p-6 rounded-2xl text-center text-gray-400 cdi-text-sm">Sem encaminhamentos registrados.</div>'}
                             </div>
@@ -199,7 +200,7 @@
                                                     <span class="text-gray-600 font-medium">${CDIUtils.formatarDataBR(diaObj.dataISO)}</span>
                                                     <span class="text-[9px] uppercase text-gray-400">${["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"][diaObj.diaSemana]}</span>
                                                 </div>
-                                                <span class="font-bold ${statusCor}">${statusTxt}</span>
+                                                <span class="font-bold ${statusCor}">${CDIUtils.escapeHTML(statusTxt)}</span>
                                             </div>
                                         `;
                                     }).join('');

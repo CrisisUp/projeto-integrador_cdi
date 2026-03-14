@@ -39,26 +39,26 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
                 <label class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Filtrar Status</label>
-                <select class="w-full mt-1 focus:outline-none bg-transparent text-gray-700 font-medium">
-                    <option>Todos os Status</option>
-                    <option>Pendente</option>
-                    <option>Concluído</option>
-                    <option>Cancelado</option>
+                <select id="filtro-status" class="w-full mt-1 focus:outline-none bg-transparent text-gray-700 font-medium">
+                    <option value="Todos os Status">Todos os Status</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Cancelado">Cancelado</option>
                 </select>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm md:col-span-2">
                 <label class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Buscar Paciente</label>
                 <div class="flex items-center">
                     <i class="fas fa-search text-gray-300 mr-2"></i>
-                    <input type="text" placeholder="Digite o nome do idoso..." class="w-full mt-1 focus:outline-none bg-transparent text-gray-700">
+                    <input type="text" id="busca-idoso" placeholder="Digite o nome do idoso..." class="w-full mt-1 focus:outline-none bg-transparent text-gray-700">
                 </div>
             </div>
         </div>
 
         <!-- Lista de Encaminhamentos (Cards injetados pelo JS) -->
-        <div id="lista-encaminhamentos" class="grid grid-cols-1 gap-4 pb-10">
+        <div id="encaminhamentos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-10">
             <!-- Loader ou Estado Vazio Inicial -->
-            <div class="p-20 text-center text-gray-400 animate-pulse">
+            <div class="col-span-full p-20 text-center text-gray-400 animate-pulse">
                 <i class="fas fa-spinner fa-spin cdi-text-3xl mb-4"></i>
                 <p>Carregando registros...</p>
             </div>
@@ -70,12 +70,12 @@
         <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
             <div class="p-6 border-b flex justify-between items-center bg-gray-50/50">
                 <h2 class="cdi-text-xl font-bold text-gray-800">Novo Registro</h2>
-                <button onclick="EncaminhamentoApp.toggleModal(false)" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition text-gray-400">
+                <button id="btn-fechar-modal" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition text-gray-400">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <form id="form-encaminhamento" class="p-8 space-y-5">
+            <form id="formEncaminhamento" class="p-8 space-y-5">
                 <div>
                     <label class="block cdi-text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Paciente (Inscrição)</label>
                     <select name="paciente_id" id="select-pacientes" required
@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="flex gap-4 pt-6">
-                    <button type="button" onclick="EncaminhamentoApp.toggleModal(false)"
+                    <button type="button" id="btn-cancelar-modal"
                         class="flex-1 py-4 cdi-text-muted font-bold hover:bg-gray-50 rounded-2xl transition">
                         Cancelar
                     </button>

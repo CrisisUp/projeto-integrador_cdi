@@ -65,8 +65,9 @@ const PresencaApp = {
 
       presencas.forEach((p) => {
         const dia = parseInt(p.data_presenca.split("-")[2]);
+        // Identificação por ID em vez de Nome para evitar duplicidade
         const rowIdx = this.pacientesNoGrid.findIndex(
-          (pg) => pg.nome === p.nome,
+          (pg) => pg.id == p.paciente_id,
         );
 
         if (rowIdx !== -1 && p.status == 1) {
@@ -106,14 +107,12 @@ const PresencaApp = {
       await fetch("../api/salvar_presenca.php", {
         method: "POST",
         body: JSON.stringify({
-          nome_paciente: idoso.nome,
+          paciente_id: idoso.id,
           data: dataFormatada,
           status: novoStatus,
         }),
-        headers: { "Content-Type": "application/json" },
+        headers: CDIUtils.getHeaders(),
       });
-      // Toast opcional para não poluir muito a tela
-      // CDIUtils.showToast("Presença atualizada", "success");
     } catch (e) {
       CDIUtils.showToast("Erro ao salvar no servidor", "danger");
     }
@@ -156,9 +155,9 @@ const PresencaApp = {
       let rowHtml = `
         <td class="cdi-border p-2 cdi-text-sm whitespace-nowrap font-medium flex justify-between items-center group bg-white dark:bg-gray-800">
             <a href="perfil.php?id=${p.id}" class="cdi-text-primary hover:underline font-bold">
-                ${p.nome}
+                ${CDIUtils.escapeHTML(p.nome)}
             </a>
-            <button onclick="PresencaApp.removerDaLista(${p.id}, '${p.nome}')" class="opacity-0 group-hover:opacity-100 cdi-text-danger hover:scale-110 transition-all p-1">
+            <button onclick="PresencaApp.removerDaLista(${p.id}, '${CDIUtils.escapeHTML(p.nome)}')" class="opacity-0 group-hover:opacity-100 cdi-text-danger hover:scale-110 transition-all p-1">
                 <i class="fas fa-eye-slash"></i>
             </button>
         </td>`;
@@ -220,7 +219,7 @@ const PresencaApp = {
       const res = await fetch("../api/toggle_presenca_lista.php", {
         method: "POST",
         body: JSON.stringify({ id, exibir }),
-        headers: { "Content-Type": "application/json" },
+        headers: CDIUtils.getHeaders(),
       });
       const data = await res.json();
       if (data.status === "sucesso") await this.init();

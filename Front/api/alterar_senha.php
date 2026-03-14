@@ -1,13 +1,7 @@
 <?php
 header('Content-Type: application/json');
-session_start();
+require_once __DIR__ . '/../includes/api_auth.php';
 require_once __DIR__ . '/../includes/db.php';
-
-// 1. Verifica se o usuário está logado
-if (!isset($_SESSION['logado'])) {
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Sessão expirada. Faça login novamente.']);
-    exit;
-}
 
 // 2. Recebe os dados
 $json_input = file_get_contents('php://input');

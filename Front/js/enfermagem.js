@@ -1,161 +1,170 @@
 /**
- * ARQUIVO: enfermagem.js (Versão com Banco de Dados)
- * DESCRIÇÃO: Gerencia o calendário e as postagens da página de enfermagem.
+ * ARQUIVO: enfermagem.js - Integrado ao Design System CDI
  */
-
 const EnfermagemApp = {
+    selectedDate: new Date().toISOString().split('T')[0],
     currentDate: new Date(),
-    selectedDate: null,
-    atividades: [],
-    monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+    monthNames: CDIUtils.getMonthNames(),
 
-    async init() {
-        await this.carregarAtividades();
+    init() {
         this.renderCalendar();
+        this.carregarAtividades();
         this.bindEvents();
     },
 
     async carregarAtividades(data = null) {
+        const container = document.getElementById('atividades-container');
+        if (!container) return;
+
         let url = `../api/get_atividades.php?tipo=enfermagem`;
         if (data) url += `&data=${data}`;
 
         try {
             const resposta = await fetch(url);
-            this.atividades = await resposta.json();
-            this.renderPosts();
+            const atividades = await resposta.json();
+            this.renderAtividades(atividades);
         } catch (erro) {
-            console.error("Erro ao carregar atividades:", erro);
+            CDIUtils.showToast("Erro ao carregar registros", "danger");
         }
     },
 
-    async registrarEvolucao() {
-        const textarea = document.querySelector('textarea');
-        const conteudo = textarea.value.trim();
+    async salvarAtividade(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector('button[type="submit"]');
 
-        if (!conteudo) return alert("Por favor, descreva a evolução ou intercorrência.");
+        const dados = {
+            paciente_id: form.paciente_id.value,
+            tipo: 'enfermagem',
+            descricao: form.descricao.value
+        };
 
-        const btn = document.querySelector('button.cdi-bg-primary');
-        const originalText = btn.textContent;
+        if (!dados.paciente_id || !dados.descricao) {
+            CDIUtils.showToast("Preencha todos os campos", "warning");
+            return;
+        }
+
         btn.disabled = true;
         btn.textContent = "Salvando...";
 
         try {
             const resposta = await fetch('../api/salvar_atividade.php', {
                 method: 'POST',
-                body: JSON.stringify({
-                    tipo: 'enfermagem',
-                    descricao: conteudo
-                }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dados)
             });
 
-            const resultado = await resposta.json();
+            const result = await resposta.json();
 
-            if (resultado.status === 'sucesso') {
-                textarea.value = "";
-                await this.carregarAtividades(); // Recarrega o feed
+            if (result.status === 'sucesso') {
+                CDIUtils.showToast("Registro salvo com sucesso!", "success");
+                form.reset();
+                this.carregarAtividades(this.selectedDate);
             } else {
-                alert("Erro ao salvar: " + resultado.mensagem);
+                CDIUtils.showToast(result.mensagem, "danger");
             }
         } catch (erro) {
-            alert("Erro técnico ao salvar evolução.");
+            CDIUtils.showToast("Erro de comunicação com o servidor", "danger");
         } finally {
             btn.disabled = false;
-            btn.textContent = originalText;
+            btn.textContent = "Publicar Registro";
         }
     },
 
-    renderPosts() {
-        const container = document.getElementById("posts-container");
-        if (!container) return;
+    renderAtividades(atividades) {
+        const container = document.getElementById('atividades-container');
         container.innerHTML = "";
 
-        if (this.atividades.length === 0) {
+        if (atividades.length === 0) {
             container.innerHTML = `<div class="p-8 text-center text-gray-400"><p class="cdi-text-lg">Nenhum registro de enfermagem encontrado.</p></div>`;
             return;
         }
 
-        this.atividades.forEach(post => {
-            const postElement = document.createElement("div");
-            postElement.className = "border-b border-gray-200 p-6 hover:cdi-bg-primary-light transition-colors";
+        atividades.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = "bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-4 animate-fade-in";
             
-            const autor = post.funcionario_nome || "Equipe Enfermagem";
+            const autor = post.funcionario_nome || 'Equipe de Enfermagem';
+            const paciente = post.paciente_nome || 'Paciente';
 
             postElement.innerHTML = `
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full cdi-bg-primary-light flex items-center justify-center cdi-text-primary">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full cdi-bg-primary-light cdi-text-primary flex items-center justify-center font-bold">
                         <i class="fas fa-user-nurse"></i>
                     </div>
                     <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-gray-800 cdi-text-base">${autor}</span>
-                            <span class="text-gray-400 cdi-text-xs">·</span>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-gray-800 cdi-text-base">${CDIUtils.escapeHTML(autor)}</span>
                             <span class="text-gray-400 cdi-text-xs">${new Date(post.data_postagem).toLocaleString('pt-BR')}</span>
                         </div>
-                        <p class="text-gray-700 leading-relaxed cdi-text-base">${post.descricao}</p>
+                        <p class="cdi-text-xs cdi-text-primary font-bold uppercase tracking-tighter mb-2">Paciente: ${CDIUtils.escapeHTML(paciente)}</p>
+                        <p class="text-gray-700 leading-relaxed cdi-text-base">${CDIUtils.escapeHTML(post.descricao)}</p>
                     </div>
-                </div>`;
+                </div>
+            `;
             container.appendChild(postElement);
         });
     },
 
     renderCalendar() {
-        const monthYear = document.getElementById("monthYear");
-        const calendarDays = document.getElementById("calendarDays");
-        if (!monthYear || !calendarDays) return;
+        const calendarDays = document.getElementById('calendar-days');
+        const monthYear = document.getElementById('month-year');
+        if (!calendarDays || !monthYear) return;
 
-        monthYear.textContent = `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
         calendarDays.innerHTML = "";
+        monthYear.textContent = `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
 
         const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
         const daysInMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
 
-        for (let i = 0; i < firstDay; i++) calendarDays.appendChild(document.createElement("div"));
+        for (let i = 0; i < firstDay; i++) {
+            calendarDays.appendChild(document.createElement('div'));
+        }
 
         for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement("div");
+            const dayElement = document.createElement('div');
             const dateString = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             
-            dayElement.className = `h-8 w-8 flex items-center justify-center rounded-full cursor-pointer cdi-text-sm transition-all
+            dayElement.className = `h-10 w-10 flex items-center justify-center rounded-xl cursor-pointer transition-all cdi-text-sm
                 ${this.selectedDate === dateString ? 'cdi-bg-primary text-white font-bold shadow-md' : 'text-gray-600 hover:cdi-bg-primary-light'}`;
+            
             dayElement.textContent = day;
-
             dayElement.onclick = () => {
-                if (this.selectedDate === dateString) {
-                    this.selectedDate = null;
-                    document.getElementById("activeFilter").classList.add("hidden");
-                    this.carregarAtividades();
-                } else {
-                    this.selectedDate = dateString;
-                    this.carregarAtividades(dateString);
-                    document.getElementById("activeFilter").classList.remove("hidden");
-                    document.getElementById("filterDate").textContent = `${day} de ${this.monthNames[this.currentDate.getMonth()]}`;
-                }
+                this.selectedDate = dateString;
                 this.renderCalendar();
+                this.carregarAtividades(dateString);
+                
+                const filterLabel = document.getElementById("filterDate");
+                if (filterLabel) {
+                    filterLabel.textContent = `${day} de ${this.monthNames[this.currentDate.getMonth()]}`;
+                }
             };
             calendarDays.appendChild(dayElement);
         }
     },
 
-    bindEvents() {
-        const btnPost = document.querySelector('button.cdi-bg-primary');
-        if (btnPost) btnPost.onclick = () => this.registrarEvolucao();
+    changeMonth(offset) {
+        this.currentDate.setMonth(this.currentDate.getMonth() + offset);
+        this.renderCalendar();
+    },
 
-        document.getElementById("prevMonth").onclick = () => {
-            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+    bindEvents() {
+        const form = document.getElementById('formEnfermagem');
+        if (form) {
+            form.addEventListener('submit', (e) => this.salvarAtividade(e));
+        }
+
+        document.getElementById('prevMonth')?.addEventListener('click', () => this.changeMonth(-1));
+        document.getElementById('nextMonth')?.addEventListener('click', () => this.changeMonth(1));
+        
+        document.getElementById('btn-hoje')?.addEventListener('click', () => {
+            this.currentDate = new Date();
+            this.selectedDate = new Date().toISOString().split('T')[0];
             this.renderCalendar();
-        };
-        document.getElementById("nextMonth").onclick = () => {
-            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-            this.renderCalendar();
-        };
-        document.getElementById("clearFilter").onclick = () => {
-            this.selectedDate = null;
-            document.getElementById("activeFilter").classList.add("hidden");
-            this.carregarAtividades();
-            this.renderCalendar();
-        };
+            this.carregarAtividades(this.selectedDate);
+            document.getElementById("filterDate").textContent = "Hoje";
+        });
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => EnfermagemApp.init());
+document.addEventListener('DOMContentLoaded', () => EnfermagemApp.init());

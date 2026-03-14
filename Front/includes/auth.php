@@ -2,6 +2,7 @@
 // 1. Inicia a sessão
 session_start();
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // 2. Verifica se os dados foram enviados via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -17,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = $stmt->fetch();
 
         // 4. Validação das Credenciais
-        // password_verify compara a senha digitada com o Hash do banco
         if ($usuario && password_verify($senha_digitada, $usuario['senha'])) {
 
             // SUCESSO! 
@@ -25,6 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['usuario_nome'] = $usuario['nome'];
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['ultimo_acesso'] = time();
+
+            // GERAR TOKEN CSRF SEGURO
+            if (empty($_SESSION['csrf_token'])) {
+                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            }
+
+            // Auditoria
+            registrarLog($pdo, 'LOGIN', 'usuarios', $usuario['id'], 'Login bem-sucedido para o email: ' . $email_digitado);
 
             // Redireciona para a página principal
             header("Location: ../pages/navegacao.php");

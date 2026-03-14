@@ -12,6 +12,8 @@ try {
         data_nascimento TEXT,
         nis TEXT UNIQUE,
         beneficios TEXT, -- Salvaremos como JSON texto
+        lanche_tipo_2 TEXT,
+        dieta_especial TEXT,
         status TEXT DEFAULT 'ativo', -- 'ativo' ou 'inativo'
         exibir_na_presenca INTEGER DEFAULT 1, -- 1: Sim, 0: Não
         inativado_por INTEGER,
@@ -62,6 +64,19 @@ try {
         usuario_id INTEGER,
         criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )");
+
+    // 6. Tabela de Logs (Trilha de Auditoria)
+    $pdo->exec("CREATE TABLE IF NOT EXISTS logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        usuario_id INTEGER,
+        acao TEXT NOT NULL,
+        tabela TEXT,
+        registro_id INTEGER,
+        detalhes TEXT,
+        ip_address TEXT,
+        data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )");
 

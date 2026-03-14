@@ -28,4 +28,8 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     
     <!-- Estilos e Scripts Base do Sistema -->
     <link rel="stylesheet" href="../css/global.css">
+    <script>
+        // Define o Token CSRF para ser usado em todas as chamadas de API via JS
+        window.csrfToken = "<?php echo $_SESSION['csrf_token'] ?? ''; ?>";
+    </script>
     <script src="../js/global.js"></script>

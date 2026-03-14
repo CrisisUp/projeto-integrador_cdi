@@ -25,10 +25,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.status === "sucesso") {
         const s = data.stats;
-        document.getElementById("stat-presentes").textContent = s.presentes;
-        document.getElementById("stat-evolucoes").textContent = s.evolucoes;
+        
+        // Atualiza Presentes com comparativo
+        const elPresentes = document.getElementById("stat-presentes");
+        const elTotalEsperado = document.getElementById("label-total-esperado");
+        if (elPresentes) elPresentes.textContent = s.presentes;
+        if (elTotalEsperado) elTotalEsperado.textContent = `de ${s.total_esperado} esperados`;
+
+        // Atualiza Evoluções com alerta de pendência
+        const elEvolucoes = document.getElementById("stat-evolucoes");
+        const elPendentes = document.getElementById("label-evolucoes-pendentes");
+        if (elEvolucoes) elEvolucoes.textContent = s.evolucoes;
+        if (elPendentes) {
+          elPendentes.textContent = s.evolucoes_pendentes > 0 
+            ? `${s.evolucoes_pendentes} pendentes hoje` 
+            : "Tudo em dia";
+          
+          // Muda a cor se houver pendência
+          if (s.evolucoes_pendentes > 0) {
+            elPendentes.classList.add("cdi-text-danger");
+            elPendentes.classList.remove("text-gray-400");
+          } else {
+            elPendentes.classList.remove("cdi-text-danger");
+            elPendentes.classList.add("cdi-text-success");
+          }
+        }
+
+        // Urgentes e Total
         document.getElementById("stat-urgentes").textContent = s.urgentes;
-        document.getElementById("stat-total").textContent = s.total;
+        document.getElementById("stat-total").textContent = s.total_ativos;
       }
     } catch (e) {
       console.error("Erro ao carregar dashboard:", e);

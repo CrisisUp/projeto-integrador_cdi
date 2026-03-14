@@ -42,7 +42,7 @@
 
                     <div class="flex flex-col">
                         <label class="cdi-text-xs font-bold text-gray-600 uppercase mb-1 required">Nº Matrícula</label>
-                        <input type="text" id="matricula" name="matricula" class="form-input-style">
+                        <input type="text" id="matricula" name="matricula" class="form-input-style" required>
                     </div>
 
                     <div class="flex flex-col md:col-span-2 lg:col-span-3">

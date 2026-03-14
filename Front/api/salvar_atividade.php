@@ -1,13 +1,8 @@
 <?php
 header('Content-Type: application/json');
-session_start();
+require_once __DIR__ . '/../includes/api_auth.php';
 require_once __DIR__ . '/../includes/db.php';
-
-// 1. Verifica se o usuário está logado (Auditoria)
-if (!isset($_SESSION['usuario_id'])) {
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Sessão expirada.']);
-    exit;
-}
+require_once __DIR__ . '/../includes/functions.php';
 
 // 2. Recebe os dados
 $json_input = file_get_contents('php://input');
@@ -30,6 +25,10 @@ try {
         ':paciente_id' => $dados['paciente_id'] ?? null,
         ':usuario_id'  => $_SESSION['usuario_id'] // ID do funcionário vindo da sessão
     ]);
+
+    $paciente_id = $dados['paciente_id'] ?? null;
+    $tipo = $dados['tipo'] ?? 'convencional';
+    registrarLog($pdo, 'SAVE_ACTIVITY', 'atividades', $paciente_id, "Tipo: $tipo, Descrição: {$dados['descricao']}");
 
     echo json_encode(['status' => 'sucesso']);
 

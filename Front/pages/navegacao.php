@@ -32,7 +32,8 @@
                         </div>
                         <div>
                             <span id="stat-presentes" class="block cdi-text-2xl font-bold text-gray-800">0</span>
-                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Presentes Hoje</p>
+                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Presentes</p>
+                            <span id="label-total-esperado" class="text-[10px] text-gray-400 font-bold">---</span>
                         </div>
                     </div>
 
@@ -43,7 +44,8 @@
                         </div>
                         <div>
                             <span id="stat-evolucoes" class="block cdi-text-2xl font-bold text-gray-800">0</span>
-                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Evoluções (24h)</p>
+                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Evoluções</p>
+                            <span id="label-evolucoes-pendentes" class="text-[10px] text-gray-400 font-bold uppercase">---</span>
                         </div>
                     </div>
 
@@ -54,7 +56,8 @@
                         </div>
                         <div>
                             <span id="stat-urgentes" class="block cdi-text-2xl font-bold text-gray-800">0</span>
-                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Urgentes Pendentes</p>
+                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Pendências Urgentes</p>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase">Atenção Crítica</span>
                         </div>
                     </div>
 
@@ -65,7 +68,8 @@
                         </div>
                         <div>
                             <span id="stat-total" class="block cdi-text-2xl font-bold text-gray-800">0</span>
-                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Total de Ativos</p>
+                            <p class="cdi-text-xs font-bold text-gray-400 uppercase tracking-widest">Idosos Ativos</p>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase">No Cadastro</span>
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,7 @@
 <?php
 header('Content-Type: application/json');
-session_start();
+require_once __DIR__ . '/../includes/api_auth.php';
 require_once __DIR__ . '/../includes/db.php';
-
-if (!isset($_SESSION['usuario_id'])) {
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Sessão expirada.']);
-    exit;
-}
 
 $json_input = file_get_contents('php://input');
 $dados = json_decode($json_input, true);
